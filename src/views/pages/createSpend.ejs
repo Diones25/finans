@@ -1,0 +1,36 @@
+<%- include('../partials/header.ejs'); -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Adicionar gasto</h1>
+      <form action="/spents/add" method="post">
+      
+        <div class="mb-3">
+          <label for="desc" class="form-label">Descrição:</label>
+          <input type="text" name="description" class="form-control" id="desc" aria-describedby="emailHelp">    
+        </div>
+      
+        <div class="mb-3">
+          <label for="val" class="form-label">valor:</label>
+          <input type="text" name="val_spent" class="form-control" id="val">
+        </div>
+      
+        <div class="mb-3">
+          <label for="cat" class="form-label">Categoria:</label>
+          <select class="form-select" aria-label="Default select example">
+            <option selected></option>
+            <option value="1">Alimentação</option>
+            <option value="2">Negócios</option>
+          </select>
+        </div>
+        
+      
+        <button type="submit" class="btn btn-success">Adicionar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<%- include('../partials/footer.ejs'); -%>
