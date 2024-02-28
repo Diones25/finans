@@ -1,4 +1,4 @@
-<%- include('../partials/header.ejs'); -%>
+<%- include('../../partials/header.ejs'); -%>
 
 <div class="container">
   <div class="row">
@@ -20,17 +20,19 @@
           <label for="cat" class="form-label">Categoria:</label>
           <select class="form-select" aria-label="Default select example">
             <option selected></option>
-            <option value="1">Alimentação</option>
-            <option value="2">Negócios</option>
+            <% categories.forEach(category => { %>               
+              <option value="<%= category.id %>"><%= category.name %> - <%= category.id %></option>
+            <% }) %>
           </select>
         </div>
-        
-      
-        <button type="submit" class="btn btn-success">Adicionar</button>
+        <div class="d-flex justify-content-end">
+          <a href="/spents/all" class="btn btn-outline-success">Voltar</a>
+          <button type="submit" class="btn btn-outline-success ms-3">Adicionar</button>
+        </div>        
       </form>
     </div>
   </div>
 </div>
 
 
-<%- include('../partials/footer.ejs'); -%>
+<%- include('../../partials/footer.ejs'); -%>

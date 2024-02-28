@@ -1,13 +1,17 @@
 import { Router } from'express';
-import finansCardController from'../controllers/finansCardController.js';
+import cardController from'../controllers/cardController.js';
+import categoryController from '../controllers/categoryController.js'
+import balanceController from '../controllers/balanceController.js';
 
 const router = Router();
 
-router.get('/spents/all', finansCardController.listSpendRender); 
-router.get('/spents/list/create', finansCardController.createSpendRender);
-router.get('/cat/list/create', finansCardController.createCatRender);
+router.get('/spents/all', cardController.home); 
+router.get('/spents/render/create', cardController.createRender);
+router.get('/cat/render/create', categoryController.createRender);
+router.get('/balance/render/create', balanceController.createRender);
 
-router.post('/spents/add', finansCardController.createSpend); 
-router.post('/cat/add', finansCardController.createCat); 
+router.post('/spents/add', cardController.create); 
+router.post('/cat/add', categoryController.create); 
+router.post('/balance/add', balanceController.create); 
 
 export default router;

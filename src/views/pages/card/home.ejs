@@ -1,0 +1,71 @@
+<%- include('../../partials/header.ejs'); -%>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h1 class="my-4">Lista de gastos</h1>
+
+        <div>
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr class="table-info">
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>gasto de teste</td>
+                <td>10</td>
+                <td>------</td>
+              </tr>
+              <tr>
+                <td>gasto de teste 2</td>
+                <td>25</td>
+                <td>------</td>
+              </tr>
+              <tr>
+                <td>gasto de teste 3</td>
+                <td>42</td>
+                <td>------</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-end">
+            <a href="/spents/render/create" class="btn btn-outline-success">Adicionar gasto</a>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr class="table-info">
+                <th scope="col">Categoria</th>
+                <th scope="col">Saldo</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <% categories.forEach(category => { %>               
+                <tr>
+                  <td><%= category.name %></td>                  
+                  <td>250</td>
+                </tr>
+              <% }) %>
+
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-end">
+            <a href="/cat/render/create" class="btn btn-outline-success">Adicionar categoria</a>
+            <a href="/balance/render/create" class="btn btn-outline-success ms-3">Adicionar saldo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+  
+  
+  
+<%- include('../../partials/footer.ejs'); -%>

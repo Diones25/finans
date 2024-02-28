@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
-app.set('views', path.join('views'));
+app.set('views', 'src/views');
 
 
 app.use(router);
