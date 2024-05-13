@@ -1,0 +1,29 @@
+<%- include('../partials/header.ejs'); -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Adicionar Saldo</h1>
+      <form action="/cat/add/balance" method="post">
+      
+        <div class="mb-3"> 
+          <input type="hidden" name="id" value="<%= categoria.id %>">
+          <div class="mb-3">
+            <label for="saldo" class="form-label">Saldo:</label>
+            <input type="text" name="saldo" class="form-control" id="saldo">
+          </div>                           
+        </div>  
+
+        <p><%= categoria.nome %></p>
+                    
+        <div class="d-flex justify-content-end">
+          <a href="/spents/all" class="btn btn-primary">Voltar</a>
+          <button type="submit" class="btn btn-success ms-3">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<%- include('../partials/footer.ejs'); -%>

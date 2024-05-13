@@ -1,17 +1,16 @@
 import { Router } from'express';
 import cardController from'../controllers/cardController';
-import categoryController from '../controllers/categoryController'
-import balanceController from '../controllers/balanceController';
 
 const router = Router();
 
 router.get('/spents/all', cardController.home); 
-router.get('/spents/render/create', cardController.createRender);
-router.get('/cat/render/create', categoryController.createRender);
-router.get('/balance/render/create', balanceController.createRender);
+router.get('/spents/render/create', cardController.pageSpents);
+router.get('/category/create', cardController.pageCreateCategory);
+router.get('/cat/render/add/balance/category/:id', cardController.pageAddCategoryBalance);
 
-router.post('/spents/add', cardController.create); 
-router.post('/cat/add', categoryController.createCategory); 
-router.post('/balance/add', balanceController.create); 
+router.post('/cat/add', cardController.createCategory);  
+router.post('/cat/add/balance', cardController.addBalanceCategory);  
+router.post('/cat/edit/:id', cardController.editCategory);  
+router.post('/cat/delete/:id', cardController.deleteCategory);  
 
 export default router;
