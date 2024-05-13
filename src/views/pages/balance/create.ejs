@@ -26,6 +26,11 @@
           <button type="submit" class="btn btn-outline-success ms-3">Adicionar</button>
         </div>
       </form>
+
+      <% categories.forEach(category => { %>               
+        <p><%= category.name %></p>
+      <% }) %>
+
     </div>
   </div>
 </div>

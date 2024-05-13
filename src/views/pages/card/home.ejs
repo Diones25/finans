@@ -16,19 +16,14 @@
             </thead>
             <tbody>
               <tr>
-                <td>gasto de teste</td>
-                <td>10</td>
-                <td>------</td>
-              </tr>
-              <tr>
-                <td>gasto de teste 2</td>
-                <td>25</td>
-                <td>------</td>
-              </tr>
-              <tr>
                 <td>gasto de teste 3</td>
                 <td>42</td>
-                <td>------</td>
+                <td>
+                  <div class="d-flex justify-content-end">
+                    <a href="" class="btn btn-warning me-2">Editar</a>
+                    <a href="" class="btn btn-danger">Excluir</a>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -43,14 +38,22 @@
               <tr class="table-info">
                 <th scope="col">Categoria</th>
                 <th scope="col">Saldo</th>
+                <td>Ações</td>
               </tr>
             </thead>
             <tbody>
               
-              <% categories.forEach(category => { %>               
+              <% categorias.forEach(categoria => { %>               
                 <tr>
-                  <td><%= category.name %></td>                  
-                  <td>250</td>
+                  <td><%= categoria.nome %></td>                  
+                  <td><%= categoria.saldo %></td>
+                  <td>
+                    <div class="d-flex justify-content-end">
+                      <a href="" class="btn btn-success me-2">Adicionar saldo</a>
+                      <a href="" class="btn btn-warning me-2">Editar</a>
+                      <a href="" class="btn btn-danger">Excluir</a>
+                    </div>
+                  </td>
                 </tr>
               <% }) %>
 
@@ -58,7 +61,6 @@
           </table>
           <div class="d-flex justify-content-end">
             <a href="/cat/render/create" class="btn btn-outline-success">Adicionar categoria</a>
-            <a href="/balance/render/create" class="btn btn-outline-success ms-3">Adicionar saldo</a>
           </div>
         </div>
       </div>

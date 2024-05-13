@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Gasto {
+  id          String    @id @default(uuid())
+  valor       Decimal   @db.Decimal(10, 2)
+  descricao   String
+  categoriaId String
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+}
+
+model Categoria {
+  id    String  @id @default(uuid())
+  nome  String
+  saldo Decimal @db.Decimal(10, 2)
+  gasto Gasto[]
+}
