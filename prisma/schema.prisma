@@ -13,17 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Gasto {
-  id          String    @id @default(uuid())
-  valor       Decimal   @db.Decimal(10, 2)
-  descricao   String
-  categoriaId String
-  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+model Spent {
+  id          String   @id @default(uuid())
+  value       Decimal  @db.Decimal(10, 2)
+  description String
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
 }
 
-model Categoria {
-  id    String  @id @default(uuid())
-  nome  String
-  saldo Decimal @db.Decimal(10, 2)
-  gasto Gasto[]
+model Category {
+  id      String  @id @default(uuid())
+  name    String
+  balance Decimal @db.Decimal(10, 2)
+  spent   Spent[]
 }

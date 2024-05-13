@@ -1,16 +1,16 @@
 import { Router } from'express';
-import cardController from'../controllers/cardController';
+import cardController from '../controllers/cardController';
+import categoryController from '../controllers/categoryController';
 
 const router = Router();
 
-router.get('/spents/all', cardController.home); 
-router.get('/spents/render/create', cardController.pageSpents);
-router.get('/category/create', cardController.pageCreateCategory);
-router.get('/cat/render/add/balance/category/:id', cardController.pageAddCategoryBalance);
+//Rotas de categorias
+router.get('/category/list', categoryController.list);
+router.post('/category/create', categoryController.create);  
+router.put('/category/add/balance/:id', categoryController.addBalanceCategory);  
+router.put('/category/edit/:id', categoryController.edit);  
+router.delete('/category/remove/:id', categoryController.remove); 
 
-router.post('/cat/add', cardController.createCategory);  
-router.post('/cat/add/balance', cardController.addBalanceCategory);  
-router.post('/cat/edit/:id', cardController.editCategory);  
-router.post('/cat/delete/:id', cardController.deleteCategory);  
+//Rotas de gastos
 
 export default router;
