@@ -1,5 +1,5 @@
 import { Router } from'express';
-import cardController from '../controllers/cardController';
+import spentController from '../controllers/spentController';
 import categoryController from '../controllers/categoryController';
 
 const router = Router();
@@ -12,5 +12,7 @@ router.put('/category/edit/:id', categoryController.edit);
 router.delete('/category/remove/:id', categoryController.remove); 
 
 //Rotas de gastos
+router.get('/spent/all', spentController.list);
+router.post('/spent/create', spentController.addSpent)
 
 export default router;

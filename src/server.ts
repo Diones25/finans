@@ -5,6 +5,7 @@ import https from 'https';
 import http from 'http';
 import chalk from 'chalk';   
 import router from './routes/routes';
+import { Request, Response } from 'express';
 
 const app = express();
 
@@ -13,6 +14,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello')
+})
 
 const runServer = (port: number, server: http.Server) => {
   server.listen(port, () => {
