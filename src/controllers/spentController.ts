@@ -59,7 +59,7 @@ const addSpent = async (req: Request, res: Response) => {
       }
     })
 
-    await prisma.spent.create({
+    const newSpent = await prisma.spent.create({
       data: {
         value,
         description,
@@ -67,7 +67,7 @@ const addSpent = async (req: Request, res: Response) => {
       }
     });
 
-    return res.status(200).json({ message: 'Gasto adicionado com sucesso' })
+    return res.status(200).json(newSpent)
 
   } catch (error) {
     return res.json({ message: error });
@@ -75,11 +75,33 @@ const addSpent = async (req: Request, res: Response) => {
 }
 
 const edit = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { value, description, categoryId } = req.body;
 
+  const updateSpent = await prisma.spent.update({
+    where: {
+      id
+    },
+    data: {
+      value,
+      description,
+      categoryId
+    }
+  });
+
+  return res.status(200).json(updateSpent);
 }
 
 const remove = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
+  await prisma.spent.delete({
+    where: {
+      id
+    }
+  });
+
+  return res.status(200).json({ message: 'Gasto deletado com sucesso' });
 }
 
 export default {

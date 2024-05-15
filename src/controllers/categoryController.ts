@@ -35,14 +35,14 @@ const create = async (req: Request, res: Response) => {
         return res.status(400).json({ message: errors });
       }
 
-      await prisma.category.create({
+      const newCategory = await prisma.category.create({
         data: {
           name,
           balance
         }
       });
 
-      res.status(201).json({ message: "Categoria criada com sucesso" });
+      res.status(201).json(newCategory);
     }
 
   } catch (error) {
@@ -70,32 +70,27 @@ const addBalanceCategory = async (req: Request, res: Response) => {
       balance: joi.number().required()
     });
 
-    const { error } = schemaValidator.validate({
-      balance
-    })
+    const validation = schemaValidator.validate(req.body, { abortEarly: false });
 
-    const valid = error == null
-
-    if (!valid) {
-      res.json({ message: error.message })
+    if (validation.error) {
+      const errors = validation.error.details.map(detail => detail.message);
+      return res.status(400).json({ message: errors });
     }
-    else {
-      await prisma.category.update({
-        data: {
-          balance: newBalance
-        },
-        where: {
-          id
-        }
-      });
 
-      res.status(200).json({ message: "Saldo adicionado com sucesso" })
-    }    
+    const newBalanceCategory = await prisma.category.update({
+      data: {
+        balance: newBalance
+      },
+      where: {
+        id
+      }
+    });
+
+    res.status(200).json(newBalanceCategory);
+        
   } catch (error) {
     return res.json({ message: error })
-  }
-
-  
+  }  
 }
 
 const edit = async (req: Request, res: Response) => {
@@ -109,29 +104,25 @@ const edit = async (req: Request, res: Response) => {
       balance: joi.number().required()
     });
 
-    const { error } = schemaValidator.validate({
-      name,
-      balance
-    })
+    const validation = schemaValidator.validate(req.body, { abortEarly: false });
 
-    const valid = error == null
-
-    if (!valid) {
-      res.json({ message: error.message });
+    if (validation.error) {
+      const errors = validation.error.details.map(detail => detail.message);
+      return res.status(400).json({ message: errors });
     }
-    else {
-      await prisma.category.update({
-        where: {
-          id
-        },
-        data: {
-          name,
-          balance
-        }
-      });
 
-      res.status(201).json({ message: "Categoria atualizada com sucesso" });
-    }    
+    const updateCategory = await prisma.category.update({
+      where: {
+        id
+      },
+      data: {
+        name,
+        balance
+      }
+    });
+
+    res.status(201).json(updateCategory);
+        
   } catch (error) {
     return res.json({ message: error });
   }

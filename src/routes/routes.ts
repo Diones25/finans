@@ -13,6 +13,8 @@ router.delete('/category/remove/:id', categoryController.remove);
 
 //Rotas de gastos
 router.get('/spent/all', spentController.list);
-router.post('/spent/create', spentController.addSpent)
+router.post('/spent/create', spentController.addSpent);
+router.put('/spent/update/:id', spentController.edit);
+router.delete('/spent/remove/:id', spentController.remove);
 
 export default router;
