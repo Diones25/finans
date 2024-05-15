@@ -19,11 +19,15 @@ model Spent {
   description String
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 model Category {
-  id      String  @id @default(uuid())
-  name    String
-  balance Decimal @db.Decimal(10, 2)
-  spent   Spent[]
+  id        String   @id @default(uuid())
+  name      String
+  balance   Decimal  @db.Decimal(10, 2)
+  spent     Spent[]
+  createdAt DateTime @default(now())
 }
+
+
