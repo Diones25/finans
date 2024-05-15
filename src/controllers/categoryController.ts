@@ -12,12 +12,7 @@ const list = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   const { name, balance } = req.body
 
-  try {
-    const schemaValidator = joi.object({
-      name: joi.string().required(),
-      balance: joi.number().required()
-    });
-
+  try {    
     const existingCategory = await prisma.category.findFirst({
       where: {
         name
@@ -27,27 +22,27 @@ const create = async (req: Request, res: Response) => {
     if (existingCategory) { 
       res.json({ message: "Categoria já existe" })
     }
-    else {
-      const { error } = schemaValidator.validate({
-        name,
-        balance
-      })
+    else {      
+      const schemaValidator = joi.object({
+        name: joi.string().required(),
+        balance: joi.number().required()
+      });
 
-      const valid = error == null
+      const validation = schemaValidator.validate(req.body, { abortEarly: false });
 
-      if (!valid) {
-        res.json({ message: error.message });
+      if (validation.error) {
+        const errors = validation.error.details.map(detail => detail.message);        
+        return res.status(400).json({ message: errors });
       }
-      else {
-        await prisma.category.create({
-          data: {
-            name,
-            balance
-          }
-        });
 
-        res.status(201).json({ message: "Categoria criada com sucesso" });
-      }
+      await prisma.category.create({
+        data: {
+          name,
+          balance
+        }
+      });
+
+      res.status(201).json({ message: "Categoria criada com sucesso" });
     }
 
   } catch (error) {

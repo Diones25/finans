@@ -42,10 +42,7 @@ const addSpent = async (req: Request, res: Response) => {
       select: {
         balance: true
       }
-    });
-
-    console.log(category?.balance)
-    //console.log(Number(category?.balance))
+    });      
 
     if (Number(category?.balance) < value) {
       return res.status(400).json({ message: 'Saldo insuficiente' });
