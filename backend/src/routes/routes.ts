@@ -22,5 +22,7 @@ router.delete('/spent/remove/:id', spentController.remove);
 router.get('/construction/all', constructionController.list);
 router.get('/construction/amount', constructionController.getAmount);
 router.post('/construction/create', constructionController.create);
+router.put('/construction/edit/:id', constructionController.edit);
+router.delete('/construction/remove/:id', constructionController.remove);
 
 export default router;

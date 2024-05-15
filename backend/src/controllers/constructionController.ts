@@ -42,7 +42,7 @@ const create = async (req: Request, res: Response) => {
       }
     });
 
-    return res.status(200).json(newConstruction);
+    return res.status(201).json(newConstruction);
     
   } catch (error) {
     return res.status(500).json({ message: error });
@@ -70,24 +70,53 @@ const getAmount = async (req: Request, res: Response) => {
   }
 }
 
-/*
-const spending = await this.spendingRepository.find({
-      select: {
-        valorTotal: true
+const edit = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { name, quantity, unitaryValue } = req.body;
+
+  try {
+    const newAmount = quantity * unitaryValue;
+
+    const updateConstruction = await prisma.construction.update({
+      where: {
+        id
+      },
+      data: {
+        name,
+        quantity,
+        unitaryValue,
+        amount: newAmount
       }
     });
 
-    const nums = spending.map(function(item) {
-      return item.valorTotal;
-    })
+    return res.status(200).json(updateConstruction);
+    
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+}
 
-    const total = nums.reduce((acumulador, elemento) => acumulador + elemento, 0);
+const remove = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-    return total;
-*/
+  try {
+    await prisma.construction.delete({
+      where: {
+        id
+      }
+    });
+
+    return res.status(200).json({ message: 'Gasto deletado com sucesso' });
+    
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+}
 
 export default {
   list,
   create,
-  getAmount
+  getAmount,
+  edit,
+  remove
 }
