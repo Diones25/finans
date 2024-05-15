@@ -6,16 +6,22 @@ import { z } from 'zod';
 const prisma = new PrismaClient();
 
 const list = async (req: Request, res: Response) => {
-  const spents = await prisma.spent.findMany({
-    include: {
-      category: {
-        select: {
-          name: true
+  
+  try {
+    const spents = await prisma.spent.findMany({
+      include: {
+        category: {
+          select: {
+            name: true
+          }
         }
       }
-    }
-  });
-  return res.status(200).json(spents);
+    });
+    return res.status(200).json(spents);
+
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
 }
 
 const addSpent = async (req: Request, res: Response) => {
@@ -70,7 +76,7 @@ const addSpent = async (req: Request, res: Response) => {
     return res.status(200).json(newSpent)
 
   } catch (error) {
-    return res.json({ message: error });
+    return res.status(500).json({ message: error });
   }
 }
 
@@ -78,30 +84,40 @@ const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { value, description, categoryId } = req.body;
 
-  const updateSpent = await prisma.spent.update({
-    where: {
-      id
-    },
-    data: {
-      value,
-      description,
-      categoryId
-    }
-  });
+  try {
+    const updateSpent = await prisma.spent.update({
+      where: {
+        id
+      },
+      data: {
+        value,
+        description,
+        categoryId
+      }
+    });
 
-  return res.status(200).json(updateSpent);
+    return res.status(200).json(updateSpent);
+
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
 }
 
 const remove = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  await prisma.spent.delete({
-    where: {
-      id
-    }
-  });
+  try {
+    await prisma.spent.delete({
+      where: {
+        id
+      }
+    });
 
-  return res.status(200).json({ message: 'Gasto deletado com sucesso' });
+    return res.status(200).json({ message: 'Gasto deletado com sucesso' });
+
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
 }
 
 export default {

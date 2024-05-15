@@ -5,8 +5,14 @@ import joi from 'joi';
 const prisma = new PrismaClient();
 
 const list = async (req: Request, res: Response) => {
-  const categories = await prisma.category.findMany();
-  return res.json(categories)
+  
+  try {
+    const categories = await prisma.category.findMany();
+    return res.json(categories);
+
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
 }
 
 const create = async (req: Request, res: Response) => {
@@ -46,7 +52,7 @@ const create = async (req: Request, res: Response) => {
     }
 
   } catch (error) {
-    return res.json({ message: error });
+    return res.status(500).json({ message: error });
   }
 }
 
@@ -89,7 +95,7 @@ const addBalanceCategory = async (req: Request, res: Response) => {
     res.status(200).json(newBalanceCategory);
         
   } catch (error) {
-    return res.json({ message: error })
+    return res.status(500).json({ message: error });
   }  
 }
 
@@ -124,7 +130,7 @@ const edit = async (req: Request, res: Response) => {
     res.status(201).json(updateCategory);
         
   } catch (error) {
-    return res.json({ message: error });
+    return res.status(500).json({ message: error });
   }
 }
 
@@ -139,7 +145,7 @@ const remove = async(req: Request, res: Response) => {
     });
     return res.status(200).json({ message: "Categoria deletada com sucesso" });
   } catch (error) {
-    
+    return res.status(500).json({ message: error });
   }
 }
 
