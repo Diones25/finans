@@ -20,6 +20,7 @@ router.delete('/spent/remove/:id', spentController.remove);
 
 //rotas construction
 router.get('/construction/all', constructionController.list);
+router.get('/construction/amount', constructionController.getAmount);
 router.post('/construction/create', constructionController.create);
 
 export default router;
