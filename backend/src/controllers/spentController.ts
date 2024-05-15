@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi, { string } from 'joi';
-import { z } from 'zod';
 
 const prisma = new PrismaClient();
 

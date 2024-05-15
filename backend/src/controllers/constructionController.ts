@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import joi from 'joi';
+import joi, { number, string } from 'joi';
 
 const prisma = new PrismaClient();
 
@@ -10,9 +10,35 @@ const list = async (req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
-  const { name, quantity, unitaryValue, amount } = req.body;
+  const { name, quantity, unitaryValue } = req.body;
 
   try {
+    const addConstructionSchema = joi.object({
+      name: joi.string().required(),
+      quantity: joi.number().required(),
+      unitaryValue: joi.number().required(),
+      amount: joi.number().optional()
+    });
+
+    const validation = addConstructionSchema.validate(req.body, { abortEarly: false });
+
+    if (validation.error) {
+      const errors = validation.error.details.map(detail => detail.message);
+      return res.status(400).json({ message: errors });
+    }
+
+    const newAmount = quantity * unitaryValue;
+
+    const newConstruction = await prisma.construction.create({
+      data: {
+        name,
+        quantity,
+        unitaryValue,
+        amount: newAmount
+      }
+    });
+
+    return res.status(200).json(newConstruction);
     
   } catch (error) {
     return res.status(500).json({ message: error });
