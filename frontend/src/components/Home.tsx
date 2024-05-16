@@ -78,7 +78,9 @@ function Home() {
                 <TableCell>100</TableCell>
                 <TableCell className="text-left">
                   <div className="text-white space-x-2">
-                    <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
+                    <Link to={"/add/balance"}>
+                      <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
+                    </Link>
                     <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                     <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
                   </div>
