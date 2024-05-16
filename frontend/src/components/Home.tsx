@@ -50,7 +50,7 @@ function Home() {
               {spents ? (
                 <>
                   {spents.map((spt) => (
-                    <TableRow>
+                    <TableRow key={spt.id}>
                       <TableCell className="font-medium">{ spt.description }</TableCell>
                       <TableCell>{ formatCurrency(Number(spt.value)) }</TableCell>
                       <TableCell>{ spt.category.name }</TableCell>
