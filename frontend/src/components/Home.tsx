@@ -10,17 +10,25 @@ import { Button } from "./ui/button"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { Category } from "./types/Category";
-import { getAllCategories } from "@/service/api";
+import { getAllCategories, getAllSpents } from "@/service/api";
+import { Spent } from "./types/Spent";
+import { formatCurrency, formateDate } from "@/lib/utils";
 
 
 function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [spents, setSpents] = useState<Spent[]>([]);
 
   useEffect(() => {
     (async () => {
       const categories = await getAllCategories();
       setCategories(categories)
-    })()
+    })();
+
+    (async () => {
+      const spents = await getAllSpents();
+      setSpents(spents);
+    })();
   },[])
 
   return (
@@ -34,31 +42,33 @@ function Home() {
                 <TableHead>Descrição</TableHead>
                 <TableHead className="w-40">Valor</TableHead>
                 <TableHead className="w-64">Categoria</TableHead>
+                <TableHead className="w-64">Data</TableHead>
                 <TableHead className="w-56">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                </TableRow>
-              ))} */}
-              <TableRow>
-                <TableCell className="font-medium">Descrição 1</TableCell>
-                <TableCell>10</TableCell>
-                <TableCell>Alimentação</TableCell>
-                <TableCell className="text-left">
-                  <div className="text-white space-x-2">
-                    <Link to={"/edit/spent"}>
-                      <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
-                    </Link>
-                    <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+              {spents ? (
+                <>
+                  {spents.map((spt) => (
+                    <TableRow>
+                      <TableCell className="font-medium">{ spt.description }</TableCell>
+                      <TableCell>{ formatCurrency(Number(spt.value)) }</TableCell>
+                      <TableCell>{ spt.category.name }</TableCell>
+                      <TableCell>{formateDate(spt.createdAt) }</TableCell>
+                      <TableCell className="text-left">
+                        <div className="text-white space-x-2">
+                          <Link to={"/edit/spent"}>
+                            <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
+                          </Link>
+                          <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              ): (
+                  <p>Sem gastos para exibição</p>
+              )}              
             </TableBody>
           </Table>
           <div className="flex justify-end pt-3">
@@ -84,7 +94,7 @@ function Home() {
                   {categories.map((cat) => (
                     <TableRow key={cat.id}>
                       <TableCell className="font-medium">{ cat.name }</TableCell>
-                      <TableCell>{ cat.balance }</TableCell>
+                      <TableCell>{formatCurrency(Number(cat.balance)) }</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">
                           <Link to={"/add/balance"}>
