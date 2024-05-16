@@ -8,9 +8,21 @@ import {
 } from "@/components/ui/table"
 import { Button } from "./ui/button"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Category } from "./types/Category";
+import { getAllCategories } from "@/service/api";
 
 
 function Home() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const categories = await getAllCategories();
+      setCategories(categories)
+    })()
+  },[])
+
   return (
     <>
       <div className="container">
@@ -67,29 +79,30 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                </TableRow>
-              ))} */}
-              <TableRow>
-                <TableCell className="font-medium">Alimentação</TableCell>
-                <TableCell>100</TableCell>
-                <TableCell className="text-left">
-                  <div className="text-white space-x-2">
-                    <Link to={"/add/balance"}>
-                      <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
-                    </Link>
-                    <Link to={"/edit/category"}>
-                      <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>                    
-                    </Link>
-                    <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+              {categories ? (
+                <>
+                  {categories.map((cat) => (
+                    <TableRow key={cat.id}>
+                      <TableCell className="font-medium">{ cat.name }</TableCell>
+                      <TableCell>{ cat.balance }</TableCell>
+                      <TableCell className="text-left">
+                        <div className="text-white space-x-2">
+                          <Link to={"/add/balance"}>
+                            <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
+                          </Link>
+                          <Link to={"/edit/category"}>
+                            <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
+                          </Link>
+                          <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                    ))}
+                </>
+              ) : (
+                <p>Sem categorias para exibição</p>
+              )}
+              
             </TableBody>
           </Table>
           <div className="flex justify-end pt-3">
