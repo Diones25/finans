@@ -2,7 +2,7 @@ import AddBalance from '@/components/AddBalance';
 import AddCategory from '@/components/AddCategory';
 import AddSpent from '@/components/AddSpent';
 import Construction from '@/components/Construction';
-import EditCategory from '@/components/EditCategory';
+import EditSpent from '@/components/EditSpent';
 import Home from '@/components/Home';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -40,10 +40,10 @@ export const Router = createBrowserRouter([
     }
   },
   {
-    path: '/edit/category',
+    path: '/edit/spent',
     Component() {
       return (
-        <EditCategory />
+        <EditSpent />
       )
     }
   },

@@ -40,7 +40,7 @@ function Home() {
                 <TableCell>Alimentação</TableCell>
                 <TableCell className="text-left">
                   <div className="text-white space-x-2">
-                    <Link to={"/edit/category"}>
+                    <Link to={"/edit/spent"}>
                       <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                     </Link>
                     <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "./ui/button"
 
-function EditCategory() {
+function EditSpent() {
   return (
     <>
       <div className='container'>
@@ -53,4 +53,4 @@ function EditCategory() {
   )
 }
 
-export default EditCategory
+export default EditSpent
