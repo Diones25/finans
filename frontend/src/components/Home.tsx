@@ -13,7 +13,7 @@ function Home() {
   return (
     <>
       <div className="container">
-        <h1 className="text-3xl font-bold text-red-400">Tabela de testes</h1>
+        <h1 className="text-3xl font-bold text-gray-800 my-3">Lista de Gastos</h1>
         <Table className="border text-gray-700">
           <TableHeader className="bg-green-50">
             <TableRow>
