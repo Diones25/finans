@@ -9,8 +9,21 @@ export const getAllSpents = async (): Promise<Spent[]> => {
   return json;
 }
 
-export const addSpent = async () => {
+export const addSpent = async (value: number, description: string, categoryId: string) => {
+  const res = await fetch(`${baseUrl}/spent/create`, {
+    method: "POST",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
+      value,
+      description,
+      categoryId
+    })
+  });
 
+  const json = res.json();
+  return json;
 }
 
 export const editSpent = async () => {

@@ -33,7 +33,6 @@ function AddBalance() {
       <div className='container'>
         <div className="w-[730px]">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Adicionar saldo</h1>
-          <p>ID DA CATEGORIA: { id }</p>
           <form onSubmit={handleSubmit}>
             <InputCompoment
               label="Saldo"

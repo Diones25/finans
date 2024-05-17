@@ -14,7 +14,6 @@ import { deleteCategory, deleteSpent, getAllCategories, getAllSpents } from "@/s
 import { Spent } from "./types/Spent";
 import { formatCurrency, formateDate } from "@/lib/utils";
 
-
 function Home() {
   const navigate = useNavigate(); 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -30,7 +29,7 @@ function Home() {
       const spents = await getAllSpents();
       setSpents(spents);
     })();
-  }, [categories, spents]);
+  }, []);
 
   const handleDeleteCategory = async (id: string) => {
     (async () => {
