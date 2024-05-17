@@ -7,15 +7,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./ui/button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { Category } from "./types/Category";
-import { getAllCategories, getAllSpents } from "@/service/api";
+import { deleteCategory, deleteSpent, getAllCategories, getAllSpents } from "@/service/api";
 import { Spent } from "./types/Spent";
 import { formatCurrency, formateDate } from "@/lib/utils";
 
 
 function Home() {
+  const navigate = useNavigate(); 
   const [categories, setCategories] = useState<Category[]>([]);
   const [spents, setSpents] = useState<Spent[]>([]);
 
@@ -29,7 +30,21 @@ function Home() {
       const spents = await getAllSpents();
       setSpents(spents);
     })();
-  },[])
+  }, [categories, spents]);
+
+  const handleDeleteCategory = async (id: string) => {
+    (async () => {
+      await deleteCategory(id);
+      navigate("/");
+    })();
+  }
+
+  const handleDeleteSpent = (id: string) => {
+    (async () => {
+      await deleteSpent(id);
+      navigate("/");
+    })();
+  }
 
   return (
     <>
@@ -60,7 +75,7 @@ function Home() {
                           <Link to={"/edit/spent"}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
-                          <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
+                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteSpent(spt.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -103,7 +118,7 @@ function Home() {
                           <Link to={`/edit/category/${cat.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
-                          <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
+                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteCategory(cat.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>

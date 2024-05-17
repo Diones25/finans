@@ -15,6 +15,19 @@ export const getAllCategories = async (): Promise<Category[]> => {
   return json;
 }
 
+
+export const deleteSpent = async (id: string) => {
+  const res = await fetch(`${baseUrl}/spent/remove/${id}`, {
+    method: "DELETE",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  });
+
+  const json = res.json();
+  return json;
+}
+
 export const addCategory = async (name: string, balance: number) => {
   const res = await fetch(`${baseUrl}/category/create`, {
     method: "POST",
