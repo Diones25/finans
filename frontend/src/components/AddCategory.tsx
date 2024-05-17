@@ -5,15 +5,25 @@ import { addCategory } from "@/service/api";
 import { useNavigate } from "react-router-dom";
 
 function AddCategory() {
-  const [ name, setName] = useState('');
-  const [balance, setBalance] = useState(0);
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
+  const [formData, setFormData] = useState({
+    name: '',
+    balance: ''
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  }
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     (async () => {
-      await addCategory(name, balance);
+      await addCategory(formData.name, Number(formData.balance));
       navigate("/");
     })()
   }
@@ -27,15 +37,21 @@ function AddCategory() {
             <InputCompoment
               label="Nome"
               htmlFor="name"
+              type="text"
               id="name"
-              onChange={(e) => setName(e.target.value)}
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
             />
 
             <InputCompoment
               label="Saldo"
               htmlFor="balance"
+              type="text"
               id="balance"
-              onChange={(e) => setBalance(Number(e.target.value))}
+              name="balance"
+              value={Number(formData.balance)}
+              onChange={handleChange}
             />
 
             <div className="text-white pt-2 space-x-2 flex justify-end">

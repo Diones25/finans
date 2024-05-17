@@ -115,7 +115,7 @@ function Home() {
               
             </TableBody>
           </Table>
-          <div className="flex justify-end pt-3">
+          <div className="flex justify-end py-3">
             <Link to={"/add/category"}>
               <Button className="bg-green-600 text-white hover:bg-green-600">Adicionar categoria</Button>
             </Link>
