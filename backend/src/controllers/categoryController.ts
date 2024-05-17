@@ -7,7 +7,13 @@ const prisma = new PrismaClient();
 const list = async (req: Request, res: Response) => {
   
   try {
-    const categories = await prisma.category.findMany();
+    const categories = await prisma.category.findMany({
+      orderBy: [
+        {
+          name: 'asc'
+        }
+      ]
+    });
     return res.json(categories);
 
   } catch (error) {

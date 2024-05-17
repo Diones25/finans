@@ -8,6 +8,11 @@ const list = async (req: Request, res: Response) => {
   
   try {
     const spents = await prisma.spent.findMany({
+      orderBy: [
+        {
+          description: 'asc'
+        }
+      ],
       include: {
         category: {
           select: {
