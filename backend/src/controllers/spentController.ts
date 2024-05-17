@@ -21,7 +21,25 @@ const list = async (req: Request, res: Response) => {
         }
       }
     });
+
     return res.status(200).json(spents);
+
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+}
+
+const listOne = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const spent = await prisma.spent.findUnique({
+      where: {
+        id
+      }
+    });
+
+    return res.status(200).json(spent);
 
   } catch (error) {
     return res.status(500).json({ message: error });
@@ -126,6 +144,7 @@ const remove = async (req: Request, res: Response) => {
 
 export default {
   list,
+  listOne,
   addSpent,
   edit,
   remove

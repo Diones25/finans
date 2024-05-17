@@ -21,6 +21,22 @@ const list = async (req: Request, res: Response) => {
   }
 }
 
+const listOne = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const category = await prisma.category.findUnique({
+      where: {
+        id
+      }
+    });
+
+    return res.status(200).json(category);
+
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+}
+
 const create = async (req: Request, res: Response) => {
   const { name, balance } = req.body
 
@@ -157,6 +173,7 @@ const remove = async(req: Request, res: Response) => {
 
 export default {
   list,
+  listOne,
   create,
   addBalanceCategory,
   edit,
