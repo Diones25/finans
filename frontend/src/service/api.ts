@@ -15,3 +15,18 @@ export const getAllCategories = async (): Promise<Category[]> => {
   return json;
 }
 
+export const addCategory = async (name: string, balance: number) => {
+  const res = await fetch(`${baseUrl}/category/create`, {
+    method: "POST",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
+      name,
+      balance
+    })
+  });
+
+  const json = res.json();
+  return json;
+}
