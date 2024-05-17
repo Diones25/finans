@@ -6,7 +6,7 @@ type Props = {
   label: string;
   htmlFor: string;
   id: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function InputCompoment({ label, htmlFor, id, onChange }: Props) {

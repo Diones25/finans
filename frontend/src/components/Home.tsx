@@ -100,7 +100,7 @@ function Home() {
                           <Link to={"/add/balance"}>
                             <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
                           </Link>
-                          <Link to={"/edit/category"}>
+                          <Link to={`/edit/category/${cat.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
                           <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>

@@ -30,3 +30,31 @@ export const addCategory = async (name: string, balance: number) => {
   const json = res.json();
   return json;
 }
+
+export const editCategory = async (id: string, name: string, balance: string) => {
+  const res = await fetch(`${baseUrl}/category/edit/${id}`, {
+    method: "PUT",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
+      name,
+      balance
+    })
+  });
+
+  const json = res.json();
+  return json;
+}
+
+export const deleteCategory = async (id: string) => {
+  const res = await fetch(`${baseUrl}/category/remove/${id}`, {
+    method: "DELETE",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  });
+
+  const json = res.json();
+  return json;
+}

@@ -1,7 +1,10 @@
-import InputCompoment from "./InputCompoment"
-import { Button } from "./ui/button"
+import InputCompoment from "./InputCompoment";
+import { Button } from "./ui/button";
+import { Link, useParams } from "react-router-dom";
 
 function EditCategory() {
+  const { id } = useParams();
+
   return (
     <>
       <div className='container'>
