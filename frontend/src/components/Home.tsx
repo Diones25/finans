@@ -19,6 +19,9 @@ function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [spents, setSpents] = useState<Spent[]>([]);
 
+  //Usar os states categories e spents dentro do array [] do useEffect faz com que
+  //o fect ou axios fiquem dando multiplas requisições pendentes no back-end
+  //fazendo a aplicação consumir muito processamento e memória.
   useEffect(() => {
     (async () => {
       const categories = await getAllCategories();
@@ -31,17 +34,19 @@ function Home() {
     })();
   }, []);
 
+  //O navigate(0) faz com que o React Router navegue para a rota atual, forçando um reload na tela, uma
+  //atualização do componente associado a essa rota.
   const handleDeleteCategory = async (id: string) => {
     (async () => {
       await deleteCategory(id);
-      navigate("/");
+      navigate(0);
     })();
   }
 
   const handleDeleteSpent = (id: string) => {
     (async () => {
-      await deleteSpent(id);
-      navigate("/");
+      await deleteSpent(id);      
+      navigate(0)      
     })();
   }
 
