@@ -1,0 +1,340 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Finans",
+    "collectionId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+    "dateExported": "2024-05-17T19:44:53.973Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "Category",
+            "containerId": "",
+            "created": "2024-05-17T19:23:29.895Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "e67ba1e3-daa5-4474-848d-dc6834c46c2a",
+            "name": "Spent",
+            "containerId": "",
+            "created": "2024-05-17T19:26:50.970Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "Construction",
+            "containerId": "",
+            "created": "2024-05-17T19:34:18.374Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "54291a51-60fe-4c69-8a16-692854d1f88c",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "/category/list",
+            "url": "http://localhost:3333/category/list",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-17T19:23:59.257Z",
+            "modified": "2024-05-17T19:23:59.257Z",
+            "headers": []
+        },
+        {
+            "_id": "d5ce985f-456b-460b-8662-01a06b3c6686",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "/category/{id}",
+            "url": "http://localhost:3333/category/{id}",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-17T19:25:04.424Z",
+            "modified": "2024-05-17T19:29:31.722Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "633e3a6e-9fcf-4b1a-83cb-9b1f45c09033",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "/category/create",
+            "url": "http://localhost:3333/category/create",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-05-17T19:25:27.872Z",
+            "modified": "2024-05-17T19:25:27.872Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Teste\",\n  \"balance\": 200\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "8a07f5ab-16be-4ce2-a972-5abda5445491",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "/category/edit/{id}",
+            "url": "http://localhost:3333/category/edit/{id}",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-05-17T19:25:50.336Z",
+            "modified": "2024-05-17T19:25:50.336Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "3a0dfcd8-a9ad-47ba-881e-ff9caa3759aa",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Alimentação\",\n  \"balance\": 250\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "f353511e-0c1b-4d55-b89e-1ca039c43b50",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "/category/add/balance/{id}",
+            "url": "http://localhost:3333/category/add/balance/{id}",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-05-17T19:26:00.787Z",
+            "modified": "2024-05-17T19:26:00.787Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1fbb1363-e5ab-463f-a339-308af0d9115e",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"balance\": \"5\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "db117818-6b31-4a00-a52c-e2e7e8656e17",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "89477220-5c75-4ee3-9efd-d8d19179fc84",
+            "name": "/category/remove/{id}",
+            "url": "http://localhost:3333/category/remove/{id}",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-05-17T19:26:25.148Z",
+            "modified": "2024-05-17T19:26:25.148Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "44ed06ee-4cc4-4c62-a9d5-8c36c37710b1",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "6ff42ef7-fed5-4401-a163-654a4f6806c5",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "e67ba1e3-daa5-4474-848d-dc6834c46c2a",
+            "name": "/spent/all",
+            "url": "http://localhost:3333/spent/all",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-05-17T19:28:04.267Z",
+            "modified": "2024-05-17T19:28:04.267Z",
+            "headers": []
+        },
+        {
+            "_id": "7458ce7d-12b3-4a9b-ac56-430ab7b8172a",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "e67ba1e3-daa5-4474-848d-dc6834c46c2a",
+            "name": "/spent/{id}",
+            "url": "http://localhost:3333/spent/{id}",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-17T19:33:42.535Z",
+            "modified": "2024-05-17T19:33:42.535Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "ccab6d00-2acf-4052-b617-d15980f80ce2",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "e67ba1e3-daa5-4474-848d-dc6834c46c2a",
+            "name": "/spent/create",
+            "url": "http://localhost:3333/spent/create",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2024-05-17T19:33:55.975Z",
+            "modified": "2024-05-17T19:33:55.975Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"value\": 5,\n  \"description\": \"Remédio para dor de cabeça\", \n  \"categoryId\": \"1fbb1363-e5ab-463f-a339-308af0d9115e\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5a02c062-8789-4eb0-9db5-43b1ef0fb741",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "/construction/all",
+            "url": "http://localhost:3333/construction/all",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-05-17T19:34:49.252Z",
+            "modified": "2024-05-17T19:34:49.252Z",
+            "headers": []
+        },
+        {
+            "_id": "410dcf15-2597-422c-8eeb-0c25a8f9de94",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "e67ba1e3-daa5-4474-848d-dc6834c46c2a",
+            "name": "/spent/update/{id}",
+            "url": "http://localhost:3333/spent/update/{id}",
+            "method": "PUT",
+            "sortNum": 100000,
+            "created": "2024-05-17T19:36:27.017Z",
+            "modified": "2024-05-17T19:37:06.571Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"value\": 5,\n  \"description\": \"Remédio para dor de cabeça\", \n  \"categoryId\": \"1fbb1363-e5ab-463f-a339-308af0d9115e\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "b38856d6-46f0-4171-8408-441ec80faea3",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "/construction/{id}",
+            "url": "http://localhost:3333/construction/all",
+            "method": "GET",
+            "sortNum": 105000,
+            "created": "2024-05-17T19:38:33.462Z",
+            "modified": "2024-05-17T19:38:33.462Z",
+            "headers": []
+        },
+        {
+            "_id": "2a79f121-d2af-4c65-b899-483e0a9996b0",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "/construction/amount",
+            "url": "http://localhost:3333/construction/amount",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-05-17T19:35:17.840Z",
+            "modified": "2024-05-17T19:35:17.840Z",
+            "headers": []
+        },
+        {
+            "_id": "8d3238b0-a121-42f2-99c0-f3a97f0f7fbb",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "e67ba1e3-daa5-4474-848d-dc6834c46c2a",
+            "name": "/spent/remove/{id}",
+            "url": "http://localhost:3333/spent/remove/{id}",
+            "method": "DELETE",
+            "sortNum": 110000,
+            "created": "2024-05-17T19:37:11.123Z",
+            "modified": "2024-05-17T19:37:44.633Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"value\": 5,\n  \"description\": \"Remédio para dor de cabeça\", \n  \"categoryId\": \"1fbb1363-e5ab-463f-a339-308af0d9115e\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "c401496c-f84b-48b6-a69b-a2bf7d7f38e0",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "/construction/create",
+            "url": "http://localhost:3333/construction/create",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2024-05-17T19:35:27.666Z",
+            "modified": "2024-05-17T19:35:27.666Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Teste para remoção\",\n  \"quantity\": 2,\n  \"unitaryValue\": 15\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "b753547b-30a3-49aa-8d53-62392ecff541",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "/construction/edit/{id}",
+            "url": "http://localhost:3333/construction/edit/{id}",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2024-05-17T19:35:34.882Z",
+            "modified": "2024-05-17T19:35:34.882Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "8be167ad-a178-4fed-afe1-3946e938865c",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"argamassa\",\n  \"quantity\": 6,\n  \"unitaryValue\": 23\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "a03ede0c-aa1f-4fee-9c44-67061ab06e66",
+            "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
+            "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
+            "name": "/construction/remove/{id}",
+            "url": "http://localhost:3333/construction/remove/{id}",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2024-05-17T19:35:42.054Z",
+            "modified": "2024-05-17T19:35:42.054Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "4b4d0b86-c12d-460c-a46b-83e7cb950f44",
+                    "isPath": true
+                }
+            ]
+        }
+    ],
+    "ref": "EO3JA_Tb2sRk7b4bz9B80Jux84phTOHj5JJ_GB5d7IK0ZhMsOkMSHe2J0xCnaxJQBBZ70sc3fmuh8PIgMRngEA"
+}
