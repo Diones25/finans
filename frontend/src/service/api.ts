@@ -9,12 +9,13 @@ export const getAllSpents = async (): Promise<Spent[]> => {
   return json;
 }
 
-export const getAllCategories = async (): Promise<Category[]> => {
-  const res = await fetch(`${baseUrl}/category/list`);
-  const json = res.json();    
-  return json;
+export const addSpent = async () => {
+
 }
 
+export const editSpent = async () => {
+
+}
 
 export const deleteSpent = async (id: string) => {
   const res = await fetch(`${baseUrl}/spent/remove/${id}`, {
@@ -28,6 +29,12 @@ export const deleteSpent = async (id: string) => {
   return json;
 }
 
+export const getAllCategories = async (): Promise<Category[]> => {
+  const res = await fetch(`${baseUrl}/category/list`);
+  const json = res.json();    
+  return json;
+}
+
 export const addCategory = async (name: string, balance: number) => {
   const res = await fetch(`${baseUrl}/category/create`, {
     method: "POST",
@@ -36,6 +43,21 @@ export const addCategory = async (name: string, balance: number) => {
     },
     body: JSON.stringify({
       name,
+      balance
+    })
+  });
+
+  const json = res.json();
+  return json;
+}
+
+export const addBalanceCategory = async (id: string | undefined, balance: number) => {
+  const res = await fetch(`${baseUrl}/category/add/balance/${id}`, {
+    method: "PUT",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
       balance
     })
   });

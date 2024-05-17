@@ -112,7 +112,7 @@ function Home() {
                       <TableCell>{formatCurrency(Number(cat.balance)) }</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">
-                          <Link to={"/add/balance"}>
+                          <Link to={`/add/balance/${cat.id}`}>
                             <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
                           </Link>
                           <Link to={`/edit/category/${cat.id}`}>

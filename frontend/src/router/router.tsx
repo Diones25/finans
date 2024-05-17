@@ -5,7 +5,6 @@ import Construction from '@/components/Construction';
 import EditCategory from '@/components/EditCategory';
 import EditSpent from '@/components/EditSpent';
 import Home from '@/components/Home';
-import RemoveCategory from '@/components/RemoveCategory';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const Router = createBrowserRouter([
@@ -58,7 +57,7 @@ export const Router = createBrowserRouter([
     }
   },
   {
-    path: '/add/balance',
+    path: '/add/balance/:id',
     Component() {
       return (
         <AddBalance />
