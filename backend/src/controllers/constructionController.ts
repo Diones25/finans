@@ -13,6 +13,20 @@ const list = async (req: Request, res: Response) => {
   } 
 }
 
+const listOne = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const construction = await prisma.construction.findUnique({
+      where: {
+        id
+      }
+    });
+    return res.status(200).json(construction);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+}
+
 const create = async (req: Request, res: Response) => {
   const { name, quantity, unitaryValue } = req.body;
 
@@ -115,6 +129,7 @@ const remove = async (req: Request, res: Response) => {
 
 export default {
   list,
+  listOne,
   create,
   getAmount,
   edit,
