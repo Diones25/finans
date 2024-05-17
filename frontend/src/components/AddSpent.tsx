@@ -1,11 +1,4 @@
 import InputCompoment from "./InputCompoment";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { FormEvent, useEffect, useState } from "react";
