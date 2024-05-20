@@ -1,13 +1,13 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge";
-import moment from "moment";
+import dayjs from "dayjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export const formateDate = (date: string) => {
-  return moment(date).locale("pt-br").format('L');
+  return dayjs(date).format('DD/MM/YYYY');
 }
 
 export const formatCurrency = (value: number) => {
