@@ -9,7 +9,7 @@ export const getAllSpents = async (): Promise<Spent[]> => {
   return json;
 }
 
-export const getOneSpent = async (id: string) => {
+export const getOneSpent = async (id: string | undefined) => {
   const res = await fetch(`${baseUrl}/spent/${id}`);
   const json = res.json();
   return json;
@@ -54,7 +54,7 @@ export const getAllCategories = async (): Promise<Category[]> => {
   return json;
 }
 
-export const getOneCategory = async (id: string) => {
+export const getOneCategory = async (id: string | undefined) => {
   const res = await fetch(`${baseUrl}/category/${id}`);
   const json = res.json();
   return json;
@@ -91,7 +91,7 @@ export const addBalanceCategory = async (id: string | undefined, balance: number
   return json;
 }
 
-export const editCategory = async (id: string, name: string, balance: string) => {
+export const editCategory = async (id: string | undefined, name: string, balance: string) => {
   const res = await fetch(`${baseUrl}/category/edit/${id}`, {
     method: "PUT",
     headers: {
