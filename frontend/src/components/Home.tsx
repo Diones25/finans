@@ -75,10 +75,11 @@ function Home() {
                       <TableCell>{ spt.category.name }</TableCell>
                       <TableCell>{formateDate(spt.createdAt) }</TableCell>
                       <TableCell className="text-left">
-                        <div className="text-white space-x-2">
-                          <Link to={`/edit/spent/${spt.id}`}>
+                        <div className="text-white space-x-2 flex justify-end">
+                          {/*Não faz sentido por enquanto ter uma edição de gasto*/}
+                          {/* <Link to={`/edit/spent/${spt.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
-                          </Link>
+                          </Link> */}
                           <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteSpent(spt.id)}>Excluir</Button>
                         </div>
                       </TableCell>
