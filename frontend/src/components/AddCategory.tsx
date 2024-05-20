@@ -51,10 +51,10 @@ function AddCategory() {
             <InputCompoment
               label="Saldo"
               htmlFor="balance"
-              type="text"
+              type="number"
               id="balance"
               name="balance"
-              value={Number(formData.balance)}
+              value={formData.balance}
               onChange={handleChange}
             />
 
