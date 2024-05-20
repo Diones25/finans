@@ -66,7 +66,7 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {spents ? (
+              {spents.length > 0 ? (
                 <>
                   {spents.map((spt) => (
                     <TableRow key={spt.id}>
@@ -87,7 +87,7 @@ function Home() {
                   ))}
                 </>
               ): (
-                  <p>Sem gastos para exibição</p>
+                  <p className="bg-orange-300 border border-orange-400 rounded-xl w-70 text-center text-white py-2 m-2">Sem gastos para exibição</p>
               )}              
             </TableBody>
           </Table>
@@ -109,7 +109,7 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories ? (
+              {categories.length > 0 ? (
                 <>
                   {categories.map((cat) => (
                     <TableRow key={cat.id}>
@@ -130,7 +130,7 @@ function Home() {
                     ))}
                 </>
               ) : (
-                <p>Sem categorias para exibição</p>
+                <p className="bg-orange-300 border border-orange-400 rounded-xl w-70 text-center text-white py-2 m-2">Sem categorias para exibição</p>
               )}
               
             </TableBody>
