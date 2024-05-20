@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Finans",
     "collectionId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
-    "dateExported": "2024-05-17T19:44:53.973Z",
+    "dateExported": "2024-05-20T19:39:29.029Z",
     "version": "1.2",
     "folders": [
         {
@@ -49,12 +49,12 @@
             "method": "GET",
             "sortNum": 20000,
             "created": "2024-05-17T19:25:04.424Z",
-            "modified": "2024-05-17T19:29:31.722Z",
+            "modified": "2024-05-17T19:46:36.274Z",
             "headers": [],
             "params": [
                 {
                     "name": "id",
-                    "value": "",
+                    "value": "1fbb1363-e5ab-463f-a339-308af0d9115e",
                     "isPath": true
                 }
             ]
@@ -164,12 +164,12 @@
             "method": "GET",
             "sortNum": 80000,
             "created": "2024-05-17T19:33:42.535Z",
-            "modified": "2024-05-17T19:33:42.535Z",
+            "modified": "2024-05-19T13:34:22.206Z",
             "headers": [],
             "params": [
                 {
                     "name": "id",
-                    "value": "",
+                    "value": "dd74946d-335e-425d-8194-81652310bbe3",
                     "isPath": true
                 }
             ]
@@ -232,23 +232,30 @@
             "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
             "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
             "name": "/construction/{id}",
-            "url": "http://localhost:3333/construction/all",
+            "url": "http://localhost:3333/construction/{id}",
             "method": "GET",
             "sortNum": 105000,
             "created": "2024-05-17T19:38:33.462Z",
-            "modified": "2024-05-17T19:38:33.462Z",
-            "headers": []
+            "modified": "2024-05-20T19:15:35.438Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "bee8ed40-815c-43d7-82ab-db7c542e01f4",
+                    "isPath": true
+                }
+            ]
         },
         {
             "_id": "2a79f121-d2af-4c65-b899-483e0a9996b0",
             "colId": "a5ce4ec6-5d25-43bd-a01c-523a05ac92b5",
             "containerId": "38f88c15-e5cf-445d-a892-c678ac37f0ad",
-            "name": "/construction/amount",
-            "url": "http://localhost:3333/construction/amount",
+            "name": "/construction/list/amount",
+            "url": "http://localhost:3333/construction/list/amount",
             "method": "GET",
             "sortNum": 110000,
             "created": "2024-05-17T19:35:17.840Z",
-            "modified": "2024-05-17T19:35:17.840Z",
+            "modified": "2024-05-20T19:37:50.724Z",
             "headers": []
         },
         {
@@ -336,5 +343,5 @@
             ]
         }
     ],
-    "ref": "EO3JA_Tb2sRk7b4bz9B80Jux84phTOHj5JJ_GB5d7IK0ZhMsOkMSHe2J0xCnaxJQBBZ70sc3fmuh8PIgMRngEA"
+    "ref": "EO3JA_Tb2sRk7b4bz9B80L3-JC1MeVXjL_o2MVrW13Q7cPKza75Z3DE-696C6aFBqXhCM0HgmF_bgCF7Tqb3MQ"
 }

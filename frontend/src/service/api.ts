@@ -1,4 +1,5 @@
 import { Category } from "@/components/types/Category";
+import { Construction } from "@/components/types/Construction";
 import { Spent } from "@/components/types/Spent";
 
 const baseUrl = "http://localhost:3333"
@@ -128,6 +129,18 @@ export const deleteCategory = async (id: string) => {
     }
   });
 
+  const json = res.json();
+  return json;
+}
+
+export const getAllConstruction = async (): Promise<Construction[]> => {
+  const res = await fetch(`${baseUrl}/construction/all`);
+  const json = res.json();
+  return json;
+}
+
+export const getListAmount = async () => {
+  const res = await fetch(`${baseUrl}/construction/list/amount`);
   const json = res.json();
   return json;
 }
