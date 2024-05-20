@@ -33,7 +33,7 @@ export const Router = createBrowserRouter([
     }
   },
   {
-    path: '/edit/spent',
+    path: '/edit/spent/:id',
     Component() {
       return (
         <EditSpent />

@@ -76,7 +76,7 @@ function Home() {
                       <TableCell>{formateDate(spt.createdAt) }</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">
-                          <Link to={"/edit/spent"}>
+                          <Link to={`/edit/spent/${spt.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
                           <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteSpent(spt.id)}>Excluir</Button>

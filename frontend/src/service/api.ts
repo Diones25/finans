@@ -32,8 +32,21 @@ export const addSpent = async (value: number, description: string, categoryId: s
   return json;
 }
 
-export const editSpent = async () => {
+export const editSpent = async (id: string | undefined, description: string, value: number, categoryId: string) => {
+  const res = await fetch(`${baseUrl}/spent/update/${id}`, {
+    method: "PUT",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
+      description,
+      value,
+      categoryId
+    })
+  });
 
+  const json = res.json();
+  return json;
 }
 
 export const deleteSpent = async (id: string) => {
