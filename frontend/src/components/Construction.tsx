@@ -78,8 +78,8 @@ function Home() {
             </TableBody>
           </Table>
           <div className="flex justify-end pt-3">
-            <Link to={"/add/spent"}>
-              <Button className="bg-green-600 text-white hover:bg-green-600">Cadastrar</Button>
+            <Link to={"/add/construction"}>
+              <Button className="bg-green-600 text-white hover:bg-green-600">Adicionar gasto</Button>
             </Link>
           </div>
         </div>

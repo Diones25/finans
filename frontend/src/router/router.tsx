@@ -1,5 +1,6 @@
 import AddBalance from '@/components/AddBalance';
 import AddCategory from '@/components/AddCategory';
+import AddConstruction from '@/components/AddConstruction';
 import AddSpent from '@/components/AddSpent';
 import Construction from '@/components/Construction';
 import EditCategory from '@/components/EditCategory';
@@ -61,6 +62,14 @@ export const Router = createBrowserRouter([
     Component() {
       return (
         <AddBalance />
+      )
+    }
+  },
+  {
+    path: '/add/construction',
+    Component() {
+      return (
+        <AddConstruction />
       )
     }
   }

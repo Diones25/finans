@@ -144,3 +144,20 @@ export const getListAmount = async () => {
   const json = res.json();
   return json;
 }
+
+export const addConstruction = async (name: string, quantity: number, unitaryValue: number) => {
+  const res = await fetch(`${baseUrl}/construction/create`, {
+    method: "POST",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
+      name,
+      quantity,
+      unitaryValue
+    })
+  });
+
+  const json = res.json();
+  return json;
+}
