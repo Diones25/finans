@@ -4,6 +4,7 @@ import AddConstruction from '@/components/AddConstruction';
 import AddSpent from '@/components/AddSpent';
 import Construction from '@/components/Construction';
 import EditCategory from '@/components/EditCategory';
+import EditConstruction from '@/components/EditConstruction';
 import EditSpent from '@/components/EditSpent';
 import Home from '@/components/Home';
 import { createBrowserRouter } from 'react-router-dom';
@@ -70,6 +71,14 @@ export const Router = createBrowserRouter([
     Component() {
       return (
         <AddConstruction />
+      )
+    }
+  },
+  {
+    path: `/construction/edit/:id`,
+    Component() {
+      return (
+        <EditConstruction />
       )
     }
   }

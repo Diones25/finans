@@ -70,7 +70,7 @@ function Home() {
                       <TableCell>{formateDate(item.createdAt)}</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">                          
-                          <Link to={`/edit/category/${item.id}`}>
+                          <Link to={`/construction/edit/${item.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
                           <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteCategory(item.id)}>Excluir</Button>
@@ -80,7 +80,7 @@ function Home() {
                   ))}
                 </>
               ) : (
-                <p className="bg-orange-300 border border-orange-400 rounded-xl w-70 text-center text-white py-2 m-2">Sem categorias para exibição</p>
+                <p className="bg-orange-300 border border-orange-400 rounded-xl w-70 text-center text-white py-2 m-2">Sem gastos de construção para exibição</p>
               )}
             </TableBody>
           </Table>

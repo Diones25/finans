@@ -139,6 +139,12 @@ export const getAllConstruction = async (): Promise<Construction[]> => {
   return json;
 }
 
+export const getOneConstruction = async (id: string | undefined) => {
+  const res = await fetch(`${baseUrl}/construction/${id}`);
+  const json = res.json();
+  return json;
+}
+
 export const getListAmount = async () => {
   const res = await fetch(`${baseUrl}/construction/list/amount`);
   const json = res.json();
@@ -161,6 +167,24 @@ export const addConstruction = async (name: string, quantity: number, unitaryVal
   const json = res.json();
   return json;
 }
+
+export const editConstruction = async (id: string | undefined, name: string, quantity: number, unitaryValue: number) => {
+  const res = await fetch(`${baseUrl}/construction/edit/${id}`, {
+    method: "PUT",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({
+      name,
+      quantity,
+      unitaryValue
+    })
+  });
+
+  const json = res.json();
+  return json;
+}
+
 export const deleteConstruction = async (id: string) => {
   const res = await fetch(`${baseUrl}/construction/remove/${id}`, {
     method: "DELETE",
