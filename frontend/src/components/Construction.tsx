@@ -9,7 +9,7 @@ import {
 import { Button } from "./ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { getAllConstruction, getListAmount } from "@/service/api";
+import { deleteConstruction, getAllConstruction, getListAmount } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
 import { Construction } from "./types/Construction";
 
@@ -29,6 +29,13 @@ function Home() {
       setAmount(data)
     })();
   }, []);
+
+  const handleDeleteCategory = async (id: string) => {
+    (async () => {
+      await deleteConstruction(id);
+      navigate(0);
+    })();
+  }
 
   return (
     <>
@@ -66,7 +73,7 @@ function Home() {
                           <Link to={`/edit/category/${item.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
-                          <Button className="bg-red-500 hover:bg-red-500">Excluir</Button>
+                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteCategory(item.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>

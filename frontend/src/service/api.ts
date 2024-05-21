@@ -161,3 +161,14 @@ export const addConstruction = async (name: string, quantity: number, unitaryVal
   const json = res.json();
   return json;
 }
+export const deleteConstruction = async (id: string) => {
+  const res = await fetch(`${baseUrl}/construction/remove/${id}`, {
+    method: "DELETE",
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  });
+
+  const json = res.json();
+  return json;
+}
