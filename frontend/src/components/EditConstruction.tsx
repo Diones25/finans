@@ -67,7 +67,7 @@ function EditConstruction() {
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
               <Button className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-600">Cadastrar</Button>
+              <Button type="submit" className="bg-green-600 hover:bg-green-600">Atualizar</Button>
             </div>
           </form>
 
