@@ -21,7 +21,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       const data = await getAllConstruction();
-      setConstructions(data)
+      setConstructions(data.constructions)
     })();
 
     (async () => {
@@ -62,7 +62,7 @@ function Home() {
               {constructions.length > 0 ? (
                 <>
                   {constructions.map((item) => (
-                    <TableRow key={item.id}>
+                    <TableRow key={item}>
                       <TableCell className="font-medium">{item.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>{formatCurrency(item.unitaryValue)}</TableCell>

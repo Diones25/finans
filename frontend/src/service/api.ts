@@ -133,7 +133,7 @@ export const deleteCategory = async (id: string) => {
   return json;
 }
 
-export const getAllConstruction = async (): Promise<Construction[]> => {
+export const getAllConstruction = async () => {
   const res = await fetch(`${baseUrl}/construction/all`);
   const json = res.json();
   return json;
