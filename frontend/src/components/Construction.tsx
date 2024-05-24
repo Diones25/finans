@@ -17,18 +17,22 @@ function Home() {
   const navigate = useNavigate();
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [amount, setAmount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     (async () => {
-      const data = await getAllConstruction();
-      setConstructions(data.constructions)
+      const response = await getAllConstruction(page, totalPages);
+      setConstructions(response.data.constructions)
+      setTotalPages(response.data.totalPages);
     })();
 
     (async () => {
       const data = await getListAmount();
       setAmount(data)
     })();
-  }, []);
+  }, [page, pageSize]);
 
   const handleDeleteCategory = async (id: string) => {
     (async () => {
@@ -36,6 +40,14 @@ function Home() {
       navigate(0);
     })();
   }
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage);
+    }
+  };
+
+  
 
   return (
     <>
@@ -90,7 +102,22 @@ function Home() {
             </Link>
           </div>
         </div>
-
+              
+        <div className="flex justify-around items-center pb-3">
+          <Button
+            className="bg-blue-500 px-4 py-2 text-white hover:bg-blue-500"
+            onClick={() => handlePageChange(page - 1)} disabled={page === 1}
+          >
+            Anterior
+          </Button>
+          <span>Página {page} de {totalPages}</span>
+          <Button
+            className="bg-blue-500 px-4 py-2 text-white hover:bg-blue-500" onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+          >
+            Próximo
+          </Button>
+        </div>
       </div>
     </>
   )

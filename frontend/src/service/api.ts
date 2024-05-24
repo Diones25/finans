@@ -1,8 +1,12 @@
+import axios from "axios";
 import { Category } from "@/components/types/Category";
-import { Construction } from "@/components/types/Construction";
 import { Spent } from "@/components/types/Spent";
 
 const baseUrl = "http://localhost:3333"
+
+const instance = axios.create({
+  baseURL: baseUrl
+});
 
 export const getAllSpents = async (): Promise<Spent[]> => {
   const res = await fetch(`${baseUrl}/spent/all`);
@@ -133,10 +137,15 @@ export const deleteCategory = async (id: string) => {
   return json;
 }
 
-export const getAllConstruction = async () => {
-  const res = await fetch(`${baseUrl}/construction/all`);
-  const json = res.json();
-  return json;
+export const getAllConstruction = async (page: any, totalPages: any) => {
+  const response = instance.get("/construction/all", {
+    params: {
+      page,
+      totalPages
+    }
+  })
+
+  return response
 }
 
 export const getOneConstruction = async (id: string | undefined) => {
