@@ -24,8 +24,8 @@ function Home() {
   useEffect(() => {
     (async () => {
       const response = await getAllConstruction(page, totalPages);
-      setConstructions(response.data.constructions)
-      setTotalPages(response.data.totalPages);
+      setConstructions(response.constructions)
+      setTotalPages(response.totalPages);
     })();
 
     (async () => {
