@@ -58,10 +58,10 @@ function AddSpent() {
           <InputCompoment
             label="Valor"
             htmlFor="value"
-            type="text"
+            type="number"
             id="value"
             name="value"
-            value={Number(formData.value)}
+            value={formData.value}
             onChange={handleChange}
           />
 
