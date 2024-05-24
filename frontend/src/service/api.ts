@@ -9,199 +9,122 @@ const instance = axios.create({
 });
 
 export const getAllSpents = async (): Promise<Spent[]> => {
-  const res = await fetch(`${baseUrl}/spent/all`);
-  const json = res.json();
-  return json;
+  const response = await instance.get('/spent/all');
+  return response.data;
 }
 
 export const getOneSpent = async (id: string | undefined) => {
-  const res = await fetch(`${baseUrl}/spent/${id}`);
-  const json = res.json();
-  return json;
+  const response = await instance.get(`/spent/${id}`);
+  return response.data;
 }
 
 export const addSpent = async (value: number, description: string, categoryId: string) => {
-  const res = await fetch(`${baseUrl}/spent/create`, {
-    method: "POST",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      value,
-      description,
-      categoryId
-    })
+  const response = await instance.post('/spent/create', {
+    value,
+    description,
+    categoryId
   });
-
-  const json = res.json();
-  return json;
+  
+  return response.data;
 }
 
 export const editSpent = async (id: string | undefined, description: string, value: number, categoryId: string) => {
-  const res = await fetch(`${baseUrl}/spent/update/${id}`, {
-    method: "PUT",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      description,
-      value,
-      categoryId
-    })
+  const response = await instance.put(`/spent/update/${id}`, {
+    description,
+    value,
+    categoryId
   });
 
-  const json = res.json();
-  return json;
+  return response.data;
 }
 
 export const deleteSpent = async (id: string) => {
-  const res = await fetch(`${baseUrl}/spent/remove/${id}`, {
-    method: "DELETE",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    }
-  });
-
-  const json = res.json();
-  return json;
+  const response = await instance.delete(`/spent/remove/${id}`);
+  return response.data;
 }
 
 export const getAllCategories = async (): Promise<Category[]> => {
-  const res = await fetch(`${baseUrl}/category/list`);
-  const json = res.json();    
-  return json;
+  const response = await instance.get('/category/list');   
+  return response.data;
 }
 
 export const getOneCategory = async (id: string | undefined) => {
-  const res = await fetch(`${baseUrl}/category/${id}`);
-  const json = res.json();
-  return json;
+  const response = await instance.get(`/category/${id}`);
+  return response.data;
 }
 
 export const addCategory = async (name: string, balance: number) => {
-  const res = await fetch(`${baseUrl}/category/create`, {
-    method: "POST",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      name,
-      balance
-    })
+  const response = await instance.post('/category/create', {
+    name,
+    balance
   });
 
-  const json = res.json();
-  return json;
+  return response.data;
 }
 
 export const addBalanceCategory = async (id: string | undefined, balance: number) => {
-  const res = await fetch(`${baseUrl}/category/add/balance/${id}`, {
-    method: "PUT",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      balance
-    })
+  const response = await instance.put(`/category/add/balance/${id}`, {
+    balance
   });
 
-  const json = res.json();
-  return json;
+  return response.data;
 }
 
 export const editCategory = async (id: string | undefined, name: string, balance: string) => {
-  const res = await fetch(`${baseUrl}/category/edit/${id}`, {
-    method: "PUT",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      name,
-      balance
-    })
+  const response = await instance.put(`/category/edit/${id}`, {
+    name,
+    balance
   });
-
-  const json = res.json();
-  return json;
+  return response.data;
 }
 
 export const deleteCategory = async (id: string) => {
-  const res = await fetch(`${baseUrl}/category/remove/${id}`, {
-    method: "DELETE",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    }
-  });
-
-  const json = res.json();
-  return json;
+  const response = await instance.delete(`/category/remove/${id}`);
+  return response.data;
 }
 
 export const getAllConstruction = async (page: any, totalPages: any) => {
-  const response = instance.get("/construction/all", {
+  const response = await instance.get("/construction/all", {
     params: {
       page,
       totalPages
     }
   })
 
-  return response
+  return response.data;
 }
 
 export const getOneConstruction = async (id: string | undefined) => {
-  const res = await fetch(`${baseUrl}/construction/${id}`);
-  const json = res.json();
-  return json;
+  const response = await instance(`/construction/${id}`);
+  return response.data;
 }
 
 export const getListAmount = async () => {
-  const res = await fetch(`${baseUrl}/construction/list/amount`);
-  const json = res.json();
-  return json;
+  const response = await instance.get('/construction/list/amount')
+  return response.data;
 }
 
 export const addConstruction = async (name: string, quantity: number, unitaryValue: number) => {
-  const res = await fetch(`${baseUrl}/construction/create`, {
-    method: "POST",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      name,
-      quantity,
-      unitaryValue
-    })
+  const response = await instance.post('/construction/create', {
+    name,
+    quantity,
+    unitaryValue
   });
 
-  const json = res.json();
-  return json;
+  return response.data;
 }
 
 export const editConstruction = async (id: string | undefined, name: string, quantity: number, unitaryValue: number) => {
-  const res = await fetch(`${baseUrl}/construction/edit/${id}`, {
-    method: "PUT",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify({
-      name,
-      quantity,
-      unitaryValue
-    })
+  const response = await instance.put(`/construction/edit/${id}`, {
+    name,
+    quantity,
+    unitaryValue
   });
 
-  const json = res.json();
-  return json;
+  return response.data;
 }
 
 export const deleteConstruction = async (id: string) => {
-  const res = await fetch(`${baseUrl}/construction/remove/${id}`, {
-    method: "DELETE",
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    }
-  });
-
-  const json = res.json();
-  return json;
+  const response = await instance.delete(`/construction/remove/${id}`);  
+  return response.data;
 }
