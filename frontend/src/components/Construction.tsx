@@ -19,9 +19,9 @@ function Home() {
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, _] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
-  const [maxButtons, setMaxButtons] = useState(10);
+  const [maxButtons, __] = useState(10);
 
   useEffect(() => {
     (async () => {
@@ -68,7 +68,7 @@ function Home() {
               {constructions.length > 0 ? (
                 <>
                   {constructions.map((item) => (
-                    <TableRow key={item}>
+                    <TableRow key={item.id}>
                       <TableCell className="font-medium">{item.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>{formatCurrency(item.unitaryValue)}</TableCell>
