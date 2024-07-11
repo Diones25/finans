@@ -2,7 +2,7 @@ import axios from "axios";
 import { Category } from "@/components/types/Category";
 import { Spent } from "@/components/types/Spent";
 
-const baseUrl = "http://localhost:3333"
+const baseUrl = "http://localhost:3000"
 
 const instance = axios.create({
   baseURL: baseUrl
