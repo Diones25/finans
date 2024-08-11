@@ -49,18 +49,17 @@ const list = async (req: Request, res: Response) => {
     const skip = (page - 1) * pageSize;
     const take = pageSize;
 
-    const [constructions, totalConstructions] = await prisma.$transaction([
-      prisma.construction.findMany({
-        orderBy: [
-          {
-            name: 'asc'
-          }
-        ],
-        skip: skip,
-        take: take
-      }),
-      prisma.construction.count()
-    ])
+    const constructions = await prisma.construction.findMany({
+      orderBy: [
+        {
+          name: 'asc'
+        }
+      ],
+      skip: skip,
+      take: take
+    });
+
+    const totalConstructions = await prisma.construction.count();
 
     const totalPages = Math.ceil(totalConstructions / pageSize);
 
