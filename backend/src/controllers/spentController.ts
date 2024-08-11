@@ -7,6 +7,16 @@ const prisma = new PrismaClient();
 const list = async (req: Request, res: Response) => {
   
   try {
+    let page = Number(req?.query?.page) || 1;
+    let pageSize = Number(req?.query?.pageSize) || 5;
+
+    if (page < 0) {
+      page = 1;
+    }
+
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+
     const spents = await prisma.spent.findMany({
       orderBy: [
         {
@@ -19,7 +29,9 @@ const list = async (req: Request, res: Response) => {
             name: true
           }
         }
-      }
+      },
+      skip: skip,
+      take: take
     });
 
     return res.status(200).json(spents);
