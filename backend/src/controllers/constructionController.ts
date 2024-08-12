@@ -63,13 +63,15 @@ const list = async (req: Request, res: Response) => {
 
     const totalPages = Math.ceil(totalConstructions / pageSize);
 
-    return res.status(200).json({
+    const data = {
       constructions,
       totalConstructions,
       totalPages,
       pageSize: pageSize,
       page: page
-    }); 
+    }
+
+    return res.status(200).json(data); 
   } catch (error) {
     return res.status(500).json({ message: error });
   } 
