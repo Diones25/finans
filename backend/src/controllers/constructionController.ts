@@ -52,7 +52,7 @@ const list = async (req: Request, res: Response) => {
     const constructions = await prisma.construction.findMany({
       orderBy: [
         {
-          name: 'asc'
+          createdAt: 'desc'
         }
       ],
       skip: skip,
