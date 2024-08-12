@@ -13,11 +13,16 @@ import { Category } from "./types/Category";
 import { deleteCategory, deleteSpent, getAllCategories, getAllSpents } from "@/service/api";
 import { Spent } from "./types/Spent";
 import { formatCurrency, formateDate } from "@/lib/utils";
+import Pagination from "./Pagination";
 
 function Home() {
   const navigate = useNavigate(); 
   const [categories, setCategories] = useState<Category[]>([]);
-  const [spents, setSpents] = useState<Spent[]>([]);
+  const [data, setData] = useState<Spent>();
+  const [page, setPage] = useState(1);
+  const [pageSize, _] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [maxButtons, __] = useState(10);
 
   //Usar os states categories e spents dentro do array [] do useEffect faz com que
   //o fect ou axios fiquem dando multiplas requisições pendentes no back-end
@@ -29,10 +34,11 @@ function Home() {
     })();
 
     (async () => {
-      const spents = await getAllSpents();
-      setSpents(spents);
+      const response = await getAllSpents(page, totalPages);
+      setData(response);
+      setTotalPages(response.totalPages);
     })();
-  }, []);
+  }, [page, pageSize]);
 
   //O navigate(0) faz com que o React Router navegue para a rota atual, forçando um reload na tela, uma
   //atualização do componente associado a essa rota.
@@ -66,9 +72,9 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {spents.length > 0 ? (
+              {data?.spents?.length as number > 0 ? (
                 <>
-                  {spents.map((spt) => (
+                  {data?.spents.map((spt) => (
                     <TableRow key={spt.id}>
                       <TableCell className="font-medium">{ spt.description }</TableCell>
                       <TableCell>{ formatCurrency(Number(spt.value)) }</TableCell>
@@ -97,6 +103,13 @@ function Home() {
             </Link>
           </div>
         </div>
+
+        <Pagination
+          page={page}
+          maxButtons={maxButtons}
+          totalPages={totalPages}
+          setPage={setPage}
+        />
 
         <div className="pt-5">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Categorias</h1>
