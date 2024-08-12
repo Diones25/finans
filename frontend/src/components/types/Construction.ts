@@ -1,8 +1,16 @@
-export type Construction = {
-  id: string;
-  name: string;
+export interface Construction {
+  constructions: ConstructionItem[]
+  totalConstructions: number
+  totalPages: number
+  pageSize: number
+  page: number
+}
+
+export interface ConstructionItem {
+  id: string
+  name: string
   quantity: number
-  unitaryValue: number
-  amount: number
+  unitaryValue: string
+  amount: string
   createdAt: string
 }

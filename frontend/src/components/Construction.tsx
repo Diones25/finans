@@ -16,7 +16,7 @@ import Pagination from "./Pagination";
 
 function Home() {
   const navigate = useNavigate();
-  const [constructions, setConstructions] = useState<Construction[]>([]);
+  const [data, setData] = useState<Construction>();
   const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize, _] = useState(10);
@@ -26,7 +26,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       const response = await getAllConstruction(page, totalPages);
-      setConstructions(response.constructions)
+      setData(response)
       setTotalPages(response.totalPages);
     })();
 
@@ -65,14 +65,14 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {constructions.length > 0 ? (
+              {data?.constructions.length as number > 0 ? (
                 <>
-                  {constructions.map((item) => (
+                  {data?.constructions.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell className="font-medium">{item.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
-                      <TableCell>{formatCurrency(item.unitaryValue)}</TableCell>
-                      <TableCell>{formatCurrency(item.amount)}</TableCell>
+                      <TableCell>{formatCurrency(Number(item.unitaryValue))}</TableCell>
+                      <TableCell>{formatCurrency(Number(item.amount))}</TableCell>
                       <TableCell>{formateDate(item.createdAt)}</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">                          
