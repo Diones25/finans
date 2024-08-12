@@ -20,7 +20,7 @@ const list = async (req: Request, res: Response) => {
     const spents = await prisma.spent.findMany({
       orderBy: [
         {
-          description: 'asc'
+          createdAt: 'desc'
         }
       ],
       select: {
