@@ -20,7 +20,7 @@ function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [data, setData] = useState<Spent>();
   const [page, setPage] = useState(1);
-  const [pageSize, _] = useState(10);
+  const [pageSize, _] = useState(4);
   const [totalPages, setTotalPages] = useState(1);
   const [maxButtons, __] = useState(10);
 

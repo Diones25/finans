@@ -8,7 +8,7 @@ const list = async (req: Request, res: Response) => {
   
   try {
     let page = Number(req?.query?.page) || 1;
-    let pageSize = Number(req?.query?.pageSize) || 5;
+    let pageSize = Number(req?.query?.pageSize) || 4;
 
     if (page < 0) {
       page = 1;
