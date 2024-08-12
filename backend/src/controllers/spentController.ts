@@ -23,7 +23,11 @@ const list = async (req: Request, res: Response) => {
           description: 'asc'
         }
       ],
-      include: {
+      select: {
+        id: true,
+        value: true,
+        description: true,
+        createdAt: true,
         category: {
           select: {
             name: true
@@ -34,7 +38,18 @@ const list = async (req: Request, res: Response) => {
       take: take
     });
 
-    return res.status(200).json(spents);
+    const totalSpents = await prisma.spent.count();
+    const totalPages = Math.ceil(totalSpents / pageSize);
+
+    const data = {
+      spents,
+      totalSpents,
+      totalPages,
+      pageSize: pageSize,
+      page: page
+    }
+
+    return res.status(200).json(data);
 
   } catch (error) {
     return res.status(500).json({ message: error });
