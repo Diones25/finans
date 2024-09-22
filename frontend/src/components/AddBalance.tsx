@@ -45,7 +45,7 @@ function AddBalance() {
             />
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
+              <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
               <Button type="submit" className="bg-green-600 hover:bg-green-600">Adicionar</Button>
             </div>
           </form>
