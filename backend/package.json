@@ -4,7 +4,7 @@
   "description": "Projeto pessoal para controle fianceiro de gastos",
   "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon",
+    "dev": "nodemon",
     "start": "node public/server.js",
     "build": "tsc",
     "db": "npx prisma db push",
