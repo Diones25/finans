@@ -40,7 +40,7 @@ function AddBalance() {
               type='text'
               id="balance"
               name='balance'
-              value={Number(formData.balance)}
+              value={formData.balance}
               onChange={handleChange}
             />
 
