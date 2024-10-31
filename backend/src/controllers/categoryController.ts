@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi from 'joi';
+import { addBalanceCat } from '../schemas/add-balance-category';
 
 const prisma = new PrismaClient();
 
@@ -80,7 +81,8 @@ const create = async (req: Request, res: Response) => {
 
 const addBalanceCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { balance } = req.body;
+  
+  const safeData = addBalanceCat.safeParse(req.body);
 
   try {
     const balanceBD = await prisma.category.findUnique({
@@ -92,17 +94,10 @@ const addBalanceCategory = async (req: Request, res: Response) => {
       }
     })
 
-    const newBalance = Number(balanceBD?.balance) + Number(balance);
+    const newBalance = Number(balanceBD?.balance) + Number(safeData.data?.balance);
 
-    const schemaValidator = joi.object({
-      balance: joi.number().required()
-    });
-
-    const validation = schemaValidator.validate(req.body, { abortEarly: false });
-
-    if (validation.error) {
-      const errors = validation.error.details.map(detail => detail.message);
-      return res.status(400).json({ message: errors });
+    if (!safeData.success) {
+      return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
     }
 
     const newBalanceCategory = await prisma.category.update({
