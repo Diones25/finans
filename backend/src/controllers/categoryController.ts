@@ -31,6 +31,10 @@ const listOne = async (req: Request, res: Response) => {
       }
     });
 
+    if (!category) {
+      return res.status(404).json({ message: "Categoria não encontrada" });
+    }
+
     return res.status(200).json(category);
 
   } catch (error) {
