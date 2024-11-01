@@ -71,6 +71,20 @@ export const findBalance = async (id: string) => {
   return balanceBD;
 }
 
+export const updateCategory = async (id: string, name: string, balance: number) => {
+  const updateCategory = await prisma.category.update({
+    where: {
+      id
+    },
+    data: {
+      name,
+      balance
+    }
+  });
+
+  return updateCategory;
+}
+
 export const removeCategory = async (id: string) => {
   return await prisma.category.delete({
     where: {

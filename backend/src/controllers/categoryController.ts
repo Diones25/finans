@@ -1,9 +1,16 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import joi from 'joi';
 import { addBalanceCat } from '../schemas/add-balance-category';
-import { addBalance, createCategory, findAllCategories, findBalance, findCategoryByName, findOneCategory, removeCategory } from '../service/category';
-import { z } from 'zod';
+import {
+  addBalance,
+  createCategory,
+  findAllCategories,
+  findBalance,
+  findCategoryByName,
+  findOneCategory,
+  removeCategory,
+  updateCategory
+} from '../service/category';
 import { addCategory } from '../schemas/add-category';
 
 const prisma = new PrismaClient();
@@ -84,32 +91,16 @@ const addBalanceCategory = async (req: Request, res: Response) => {
 const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const { name, balance } = req.body
+  const safeData = addCategory.safeParse(req.body);
+
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
 
   try {
-    const schemaValidator = joi.object({
-      name: joi.string().required(),
-      balance: joi.number().required()
-    });
 
-    const validation = schemaValidator.validate(req.body, { abortEarly: false });
-
-    if (validation.error) {
-      const errors = validation.error.details.map(detail => detail.message);
-      return res.status(400).json({ message: errors });
-    }
-
-    const updateCategory = await prisma.category.update({
-      where: {
-        id
-      },
-      data: {
-        name,
-        balance
-      }
-    });
-
-    res.status(201).json(updateCategory);
+    const updatedCategory = await updateCategory(id, safeData.data.name, safeData.data.balance);
+    res.status(201).json(updatedCategory);
         
   } catch (error) {
     return res.status(500).json({ message: error });
