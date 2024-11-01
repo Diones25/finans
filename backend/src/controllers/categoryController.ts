@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi from 'joi';
 import { addBalanceCat } from '../schemas/add-balance-category';
-import { createCategory, findAllCategories, findCategoryByName, findOneCategory, removeCategory } from '../service/category';
+import { addBalance, createCategory, findAllCategories, findBalance, findCategoryByName, findOneCategory, removeCategory } from '../service/category';
 import { z } from 'zod';
 import { addCategory } from '../schemas/add-category';
 
@@ -65,30 +65,14 @@ const addBalanceCategory = async (req: Request, res: Response) => {
   
   const safeData = addBalanceCat.safeParse(req.body);
 
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
+
   try {
-    const balanceBD = await prisma.category.findUnique({
-      where: {
-        id
-      },
-      select: {
-        balance: true
-      }
-    })
-
+    const balanceBD = await findBalance(id);
     const newBalance = Number(balanceBD?.balance) + Number(safeData.data?.balance);
-
-    if (!safeData.success) {
-      return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
-    }
-
-    const newBalanceCategory = await prisma.category.update({
-      data: {
-        balance: newBalance
-      },
-      where: {
-        id
-      }
-    });
+    const newBalanceCategory = await addBalance(id, newBalance);
 
     res.status(200).json(newBalanceCategory);
         
