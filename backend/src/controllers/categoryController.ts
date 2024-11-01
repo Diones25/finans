@@ -2,7 +2,9 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi from 'joi';
 import { addBalanceCat } from '../schemas/add-balance-category';
-import { findAllCategories, findOneCategory, removeCategory } from '../service/category';
+import { createCategory, findAllCategories, findCategoryByName, findOneCategory, removeCategory } from '../service/category';
+import { z } from 'zod';
+import { addCategory } from '../schemas/add-category';
 
 const prisma = new PrismaClient();
 
@@ -34,45 +36,29 @@ const listOne = async (req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
-  const { name, balance } = req.body
 
-  try {    
-    const existingCategory = await prisma.category.findFirst({
-      where: {
-        name
-      }
-    });
+  const safeData = addCategory.safeParse(req.body);
 
-    if (existingCategory) { 
-      res.json({ message: "Categoria já existe" })
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
+
+  try {
+    const existingCategory = await findCategoryByName(safeData.data.name);
+
+    if (existingCategory) {
+      return res.json({ message: "Categoria já existe" });
     }
-    else {      
-      const schemaValidator = joi.object({
-        name: joi.string().required(),
-        balance: joi.number().required()
-      });
 
-      const validation = schemaValidator.validate(req.body, { abortEarly: false });
+    const newCategory = await createCategory(safeData.data.name, safeData.data.balance);
 
-      if (validation.error) {
-        const errors = validation.error.details.map(detail => detail.message);        
-        return res.status(400).json({ message: errors });
-      }
-
-      const newCategory = await prisma.category.create({
-        data: {
-          name,
-          balance
-        }
-      });
-
-      res.status(201).json(newCategory);
-    }
+    res.status(201).json(newCategory);
 
   } catch (error) {
-    return res.status(500).json({ message: error });
+    return res.status(500).json({ message: "Erro no servidor", error });
   }
-}
+};
+
 
 const addBalanceCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
