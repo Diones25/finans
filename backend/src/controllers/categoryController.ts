@@ -98,7 +98,6 @@ const edit = async (req: Request, res: Response) => {
   }
 
   try {
-
     const updatedCategory = await updateCategory(id, safeData.data.name, safeData.data.balance);
     res.status(201).json(updatedCategory);
         
