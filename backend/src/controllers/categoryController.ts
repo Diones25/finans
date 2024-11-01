@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi from 'joi';
 import { addBalanceCat } from '../schemas/add-balance-category';
-import { findAllCategories, findOneCategory } from '../service/category';
+import { findAllCategories, findOneCategory, removeCategory } from '../service/category';
 
 const prisma = new PrismaClient();
 
@@ -150,11 +150,7 @@ const remove = async(req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    await prisma.category.delete({
-      where: {
-        id
-      }
-    });
+    await removeCategory(id);
     return res.status(200).json({ message: "Categoria deletada com sucesso" });
   } catch (error) {
     return res.status(500).json({ message: error });
