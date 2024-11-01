@@ -2,19 +2,14 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi from 'joi';
 import { addBalanceCat } from '../schemas/add-balance-category';
+import { findAllCategories, findOneCategory } from '../service/category';
 
 const prisma = new PrismaClient();
 
 const list = async (req: Request, res: Response) => {
   
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: [
-        {
-          name: 'asc'
-        }
-      ]
-    });
+    const categories = await findAllCategories();
     return res.json(categories);
 
   } catch (error) {
@@ -25,11 +20,7 @@ const list = async (req: Request, res: Response) => {
 const listOne = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const category = await prisma.category.findUnique({
-      where: {
-        id
-      }
-    });
+    const category = await findOneCategory(id);
 
     if (!category) {
       return res.status(404).json({ message: "Categoria não encontrada" });
