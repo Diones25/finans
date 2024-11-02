@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import { addBalanceCat } from '../schemas/add-balance-category';
+import { addBalanceCategoryShema } from '../schemas/add-balance-category';
 import {
   addBalance,
   createCategory,
@@ -11,9 +10,7 @@ import {
   removeCategory,
   updateCategory
 } from '../service/category';
-import { addCategory } from '../schemas/add-category';
-
-const prisma = new PrismaClient();
+import { addCategorySchema } from '../schemas/add-category';
 
 const list = async (req: Request, res: Response) => {
   
@@ -44,7 +41,7 @@ const listOne = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
 
-  const safeData = addCategory.safeParse(req.body);
+  const safeData = addCategorySchema.safeParse(req.body);
 
   if (!safeData.success) {
     return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
@@ -70,7 +67,7 @@ const create = async (req: Request, res: Response) => {
 const addBalanceCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
   
-  const safeData = addBalanceCat.safeParse(req.body);
+  const safeData = addBalanceCategoryShema.safeParse(req.body);
 
   if (!safeData.success) {
     return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
@@ -91,7 +88,7 @@ const addBalanceCategory = async (req: Request, res: Response) => {
 const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const safeData = addCategory.safeParse(req.body);
+  const safeData = addCategorySchema.safeParse(req.body);
 
   if (!safeData.success) {
     return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
