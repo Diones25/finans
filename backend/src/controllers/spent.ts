@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import joi, { string } from 'joi';
-import { listOneSpent } from '../service/spent';
+import { createNewSpent, listOneSpent } from '../service/spent';
+import { addSpentSchema } from '../schemas/add-spent';
+import { findCategoryById, updateCategoryBalance } from '../service/category';
 
 const prisma = new PrismaClient();
 
@@ -75,53 +76,23 @@ const listOne = async (req: Request, res: Response) => {
 }
 
 const addSpent = async (req: Request, res: Response) => {
-  const { value, description, categoryId } = req.body;
+  const safeData = addSpentSchema.safeParse(req.body);
 
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
+  
   try {
-    const addSpentSchema = joi.object({
-      value: joi.number().required(),
-      description: joi.string().required(),
-      categoryId: joi.string().required()
-    });
+    const category = await findCategoryById(safeData.data.categoryId);     
 
-    const validation = addSpentSchema.validate(req.body, { abortEarly: false });
-
-    if (validation.error) {
-      const errors = validation.error.details.map(detail => detail.message);
-      return res.status(400).json({ message: errors });
-    }
-
-    const category = await prisma.category.findUnique({
-      where: {
-        id: categoryId
-      },
-      select: {
-        balance: true
-      }
-    });      
-
-    if (Number(category?.balance) < value) {
+    if (Number(category?.balance) < safeData.data.value) {
       return res.status(400).json({ message: 'Saldo insuficiente' });
     }
 
-    const newBalance = Number(category?.balance) - Number(value);
+    const newBalance = Number(category?.balance) - Number(safeData.data.value);
+    await updateCategoryBalance(safeData.data.categoryId, newBalance);
 
-    await prisma.category.update({
-      where: {
-        id: categoryId
-      },
-      data: {
-        balance: newBalance
-      }
-    })
-
-    const newSpent = await prisma.spent.create({
-      data: {
-        value,
-        description,
-        categoryId
-      }
-    });
+    const newSpent = await createNewSpent(safeData.data.value, safeData.data.description, safeData.data.categoryId);
 
     return res.status(200).json(newSpent)
 

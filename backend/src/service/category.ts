@@ -35,6 +35,18 @@ export const findCategoryByName = async (name: string) => {
   return category;
 }
 
+export const findCategoryById = async (id: string) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      id: id
+    },
+    select: {
+      balance: true
+    }
+  });
+  return category
+}
+
 export const createCategory = async (name: string, balance: number) => {
   const newCategory = await prisma.category.create({
     data: {
@@ -82,6 +94,17 @@ export const updateCategory = async (id: string, name: string, balance: number) 
   });
 
   return updateCategory;
+}
+
+export const updateCategoryBalance = async (id: string, balance: number) => {
+  return await prisma.category.update({
+    where: {
+      id: id
+    },
+    data: {
+      balance: balance
+    }
+  })
 }
 
 export const removeCategory = async (id: string) => {

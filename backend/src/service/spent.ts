@@ -9,3 +9,15 @@ export const listOneSpent = async (id: string) => {
 
   return spent
 }
+
+export const createNewSpent = async (value: number, description: string, categoryId: string ) => {
+  const newSpent = await prisma.spent.create({
+    data: {
+      value: value,
+      description: description,
+      categoryId: categoryId
+    }
+  });
+
+  return newSpent;
+}
