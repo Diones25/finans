@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import { createNewSpent, listOneSpent, updateNewSpent } from '../service/spent';
+import {
+  createNewSpent,
+  listOneSpent,
+  removeSpent,
+  updateNewSpent
+} from '../service/spent';
 import { addSpentSchema } from '../schemas/add-spent';
 import { findCategoryById, updateCategoryBalance } from '../service/category';
 
@@ -121,12 +126,7 @@ const remove = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    await prisma.spent.delete({
-      where: {
-        id
-      }
-    });
-
+    await removeSpent(id);
     return res.status(200).json({ message: 'Gasto deletado com sucesso' });
 
   } catch (error) {

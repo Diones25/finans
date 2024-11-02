@@ -36,3 +36,11 @@ export const updateNewSpent = async (id: string, value: number, description: str
 
   return updateSpent;
 }
+
+export const removeSpent = async (id: string) => {
+  return await prisma.spent.delete({
+    where: {
+      id
+    }
+  });
+}
