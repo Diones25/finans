@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import joi, { string } from 'joi';
+import { listOneSpent } from '../service/spent';
 
 const prisma = new PrismaClient();
 
@@ -60,11 +61,11 @@ const listOne = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const spent = await prisma.spent.findUnique({
-      where: {
-        id
-      }
-    });
+    const spent = await listOneSpent(id);
+
+    if (!spent) {
+      return res.status(404).json({ message: "Gasto não encontrado" });
+    }
 
     return res.status(200).json(spent);
 
