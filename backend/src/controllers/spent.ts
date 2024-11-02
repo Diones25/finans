@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import { createNewSpent, listOneSpent } from '../service/spent';
+import { createNewSpent, listOneSpent, updateNewSpent } from '../service/spent';
 import { addSpentSchema } from '../schemas/add-spent';
 import { findCategoryById, updateCategoryBalance } from '../service/category';
 
@@ -103,22 +103,15 @@ const addSpent = async (req: Request, res: Response) => {
 
 const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { value, description, categoryId } = req.body;
+  const safeData = addSpentSchema.safeParse(req.body);
+
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
 
   try {
-    const updateSpent = await prisma.spent.update({
-      where: {
-        id
-      },
-      data: {
-        value,
-        description,
-        categoryId
-      }
-    });
-
+    const updateSpent = await updateNewSpent(id, safeData.data.value, safeData.data.description, safeData.data.categoryId);
     return res.status(200).json(updateSpent);
-
   } catch (error) {
     return res.status(500).json({ message: error });
   }
