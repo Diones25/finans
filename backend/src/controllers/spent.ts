@@ -93,6 +93,9 @@ const addSpent = async (req: Request, res: Response) => {
 
 const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
+  if (id === ":id") {
+    return res.status(400).json({ message: "Id é obrigatório" });
+  }
   const safeData = addSpentSchema.safeParse(req.body);
 
   if (!safeData.success) {
