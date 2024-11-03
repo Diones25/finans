@@ -1,5 +1,30 @@
 import { prisma } from "../utils/prisma";
 
+export const listAllSpents = async (skip: number, take: number) => {
+  const spents = await prisma.spent.findMany({
+    orderBy: [
+      {
+        createdAt: 'desc'
+      }
+    ],
+    select: {
+      id: true,
+      value: true,
+      description: true,
+      createdAt: true,
+      category: {
+        select: {
+          name: true
+        }
+      }
+    },
+    skip: skip,
+    take: take
+  });
+
+  return spents;
+}
+
 export const listOneSpent = async (id: string) => {
   const spent = await prisma.spent.findUnique({
     where: {
@@ -43,4 +68,8 @@ export const removeSpent = async (id: string) => {
       id
     }
   });
+}
+
+export const totalSpentsCount = async () => {
+  return await prisma.spent.count();
 }

@@ -1,21 +1,25 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
   createNewSpent,
+  listAllSpents,
   listOneSpent,
   removeSpent,
+  totalSpentsCount,
   updateNewSpent
 } from '../service/spent';
 import { addSpentSchema } from '../schemas/add-spent';
 import { findCategoryById, updateCategoryBalance } from '../service/category';
-
-const prisma = new PrismaClient();
+import { listSpentSchema } from '../schemas/list-spent';
 
 const list = async (req: Request, res: Response) => {
-  
+  const safeData = listSpentSchema.safeParse(req.query);
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
+
   try {
-    let page = Number(req?.query?.page) || 1;
-    let pageSize = Number(req?.query?.pageSize) || 4;
+    let page = Number(safeData.data.page) || 1;
+    let pageSize = Number(safeData.data.pageSize) || 4;
 
     if (page < 0) {
       page = 1;
@@ -24,28 +28,9 @@ const list = async (req: Request, res: Response) => {
     const skip = (page - 1) * pageSize;
     const take = pageSize;
 
-    const spents = await prisma.spent.findMany({
-      orderBy: [
-        {
-          createdAt: 'desc'
-        }
-      ],
-      select: {
-        id: true,
-        value: true,
-        description: true,
-        createdAt: true,
-        category: {
-          select: {
-            name: true
-          }
-        }
-      },
-      skip: skip,
-      take: take
-    });
+    const spents = await listAllSpents(skip, take);
 
-    const totalSpents = await prisma.spent.count();
+    const totalSpents = await totalSpentsCount()
     const totalPages = Math.ceil(totalSpents / pageSize);
 
     const data = {
