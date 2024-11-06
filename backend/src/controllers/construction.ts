@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
+import {listAllConstruction} from "../service/construction";
 
 const prisma = new PrismaClient();
 
@@ -48,15 +49,7 @@ const list = async (req: Request, res: Response) => {
     const skip = (page - 1) * pageSize;
     const take = pageSize;
 
-    const constructions = await prisma.construction.findMany({
-      orderBy: [
-        {
-          createdAt: 'desc'
-        }
-      ],
-      skip: skip,
-      take: take
-    });
+    const constructions = await listAllConstruction(skip, take);
 
     const totalConstructions = await prisma.construction.count();
 
