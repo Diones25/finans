@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import {listAllConstruction, totalConstructionsCount} from "../service/construction";
+import {listAllConstruction, listOneConstruction, totalConstructionsCount} from "../service/construction";
 import { listConstructionSchema } from '../schemas/list-construction';
 
 const prisma = new PrismaClient();
@@ -78,11 +78,12 @@ const list = async (req: Request, res: Response) => {
 const listOne = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const construction = await prisma.construction.findUnique({
-      where: {
-        id
-      }
-    });
+    const construction = await listOneConstruction(id);
+
+    if (!construction) {
+      return res.status(404).json({ message: "Gasto não encontrado" });
+    }
+  
     return res.status(200).json(construction);
   } catch (error) {
     return res.status(500).json({ message: error });

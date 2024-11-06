@@ -17,3 +17,12 @@ export const listAllConstruction = async (skip: number, take: number) => {
 export const totalConstructionsCount = async () => {
     return await prisma.construction.count();
 }
+
+export const listOneConstruction = async (id: string) => {
+    const construction = await prisma.construction.findUnique({
+        where: {
+            id
+        }
+    });
+    return construction;
+}
