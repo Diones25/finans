@@ -13,3 +13,7 @@ export const listAllConstruction = async (skip: number, take: number) => {
 
     return constructions;
 }
+
+export const totalConstructionsCount = async () => {
+    return await prisma.construction.count();
+}

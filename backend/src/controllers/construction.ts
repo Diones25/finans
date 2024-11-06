@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import {listAllConstruction} from "../service/construction";
+import {listAllConstruction, totalConstructionsCount} from "../service/construction";
+import { listConstructionSchema } from '../schemas/list-construction';
 
 const prisma = new PrismaClient();
 
@@ -37,6 +38,11 @@ const list = async (req: Request, res: Response) => {
     Finalidade
     A finalidade dessa linha é garantir que cada página de resultados contenha o número correto de registros, e que ao navegar para a próxima página, os registros anteriores sejam ignorados adequadamente para exibir os novos registros correspondentes àquela página.
   */
+  
+  const safeData = listConstructionSchema.safeParse(req.query);
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
 
   try {
     let page = Number(req?.query?.page) || 1;
@@ -51,7 +57,7 @@ const list = async (req: Request, res: Response) => {
 
     const constructions = await listAllConstruction(skip, take);
 
-    const totalConstructions = await prisma.construction.count();
+    const totalConstructions = await totalConstructionsCount();
 
     const totalPages = Math.ceil(totalConstructions / pageSize);
 
