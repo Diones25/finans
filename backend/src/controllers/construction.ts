@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import {listAllConstruction, listOneConstruction, totalConstructionsCount} from "../service/construction";
+import {createConstruction, listAllConstruction, listOneConstruction, totalConstructionsCount} from "../service/construction";
 import { listConstructionSchema } from '../schemas/list-construction';
+import { addConstructionSchema } from '../schemas/add-construction';
 
 const prisma = new PrismaClient();
 
@@ -91,20 +92,16 @@ const listOne = async (req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
-  const { name, quantity, unitaryValue } = req.body;
+  const safeData = addConstructionSchema.safeParse(req.body);
+
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
 
   try {
 
-    const newAmount = quantity * unitaryValue;
-
-    const newConstruction = await prisma.construction.create({
-      data: {
-        name,
-        quantity,
-        unitaryValue,
-        amount: newAmount
-      }
-    });
+    const amount = safeData.data.quantity * safeData.data.unitaryValue;
+    const newConstruction = await createConstruction(safeData.data.name, safeData.data.quantity, safeData.data.unitaryValue, amount)
 
     return res.status(201).json(newConstruction);
     

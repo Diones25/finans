@@ -26,3 +26,15 @@ export const listOneConstruction = async (id: string) => {
     });
     return construction;
 }
+
+export const createConstruction = async (name: string, quantity: number, unitaryValue: number, amount: number) => {
+    const newConstruction = await prisma.construction.create({
+        data: {
+            name: name,
+            quantity: quantity,
+            unitaryValue: unitaryValue,
+            amount: amount
+        }
+    });
+    return newConstruction;
+}
