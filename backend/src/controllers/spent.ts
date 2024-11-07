@@ -113,6 +113,10 @@ const edit = async (req: Request, res: Response) => {
 const remove = async (req: Request, res: Response) => {
   const { id } = req.params;
 
+  if (id === ":id") {
+    return res.status(400).json({ message: "Id é obrigatório" });
+  }
+
   try {
     await removeSpent(id);
     return res.status(200).json({ message: 'Gasto deletado com sucesso' });

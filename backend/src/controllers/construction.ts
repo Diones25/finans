@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import {createConstruction, listAllConstruction, listOneConstruction, totalConstructionsCount} from "../service/construction";
+import {constructionAmount, createConstruction, deleteConstrcution, listAllConstruction, listOneConstruction, totalConstructionsCount, update} from "../service/construction";
 import { listConstructionSchema } from '../schemas/list-construction';
 import { addConstructionSchema } from '../schemas/add-construction';
 
@@ -112,11 +112,7 @@ const create = async (req: Request, res: Response) => {
 
 const getAmount = async (req: Request, res: Response) => {
   try {
-    const constructions = await prisma.construction.findMany({
-      select: {
-        amount: true
-      }
-    });
+    const constructions = await constructionAmount();
 
     const nums = constructions.map((item) => {
       return item.amount
@@ -133,23 +129,21 @@ const getAmount = async (req: Request, res: Response) => {
 
 const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, quantity, unitaryValue } = req.body;
+
+  if (id === ":id") {
+    return res.status(400).json({ message: "Id é obrigatório" });
+  }
+  
+  const safeData = addConstructionSchema.safeParse(req.body);
+
+  if (!safeData.success) {
+    return res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+  }
 
   try {
-    const newAmount = quantity * unitaryValue;
+    const newAmount = safeData.data.quantity * safeData.data.unitaryValue;
 
-    const updateConstruction = await prisma.construction.update({
-      where: {
-        id
-      },
-      data: {
-        name,
-        quantity,
-        unitaryValue,
-        amount: newAmount
-      }
-    });
-
+    const updateConstruction = await update(id, safeData.data.name, safeData.data.quantity, safeData.data.unitaryValue, newAmount);
     return res.status(200).json(updateConstruction);
     
   } catch (error) {
@@ -160,13 +154,12 @@ const edit = async (req: Request, res: Response) => {
 const remove = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  try {
-    await prisma.construction.delete({
-      where: {
-        id
-      }
-    });
+  if (id === ":id") {
+    return res.status(400).json({ message: "Id é obrigatório" });
+  }
 
+  try {
+    await deleteConstrcution(id);
     return res.status(200).json({ message: 'Gasto deletado com sucesso' });
     
   } catch (error) {

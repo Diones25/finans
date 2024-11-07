@@ -38,3 +38,35 @@ export const createConstruction = async (name: string, quantity: number, unitary
     });
     return newConstruction;
 }
+
+export const constructionAmount = () => {
+    return prisma.construction.findMany({
+        select: {
+            amount: true
+        }
+    });
+}
+
+export const update = async (id: string, name: string, quantity: number, unitaryValue: number, amount: number) => {
+    const updateConstruction = await prisma.construction.update({
+        where: {
+            id
+        },
+        data: {
+            name: name,
+            quantity: quantity,
+            unitaryValue: unitaryValue,
+            amount: amount
+        }
+    });
+
+    return updateConstruction;
+}
+
+export const deleteConstrcution = async (id: string) => {
+    return await prisma.construction.delete({
+        where: {
+            id
+        }
+    });
+}
