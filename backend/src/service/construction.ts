@@ -47,7 +47,7 @@ export const constructionAmount = () => {
     });
 }
 
-export const update = async (id: string, name: string, quantity: number, unitaryValue: number, amount: number) => {
+export const updateConstruction = async (id: string, name: string, quantity: number, unitaryValue: number, amount: number) => {
     const updateConstruction = await prisma.construction.update({
         where: {
             id

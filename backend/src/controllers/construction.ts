@@ -1,10 +1,15 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import {constructionAmount, createConstruction, deleteConstrcution, listAllConstruction, listOneConstruction, totalConstructionsCount, update} from "../service/construction";
+import {
+  constructionAmount,
+  createConstruction,
+  deleteConstrcution,
+  listAllConstruction,
+  listOneConstruction,
+  totalConstructionsCount,
+  updateConstruction
+} from "../service/construction";
 import { listConstructionSchema } from '../schemas/list-construction';
 import { addConstructionSchema } from '../schemas/add-construction';
-
-const prisma = new PrismaClient();
 
 const list = async (req: Request, res: Response) => {
 
@@ -133,7 +138,7 @@ const edit = async (req: Request, res: Response) => {
   if (id === ":id") {
     return res.status(400).json({ message: "Id é obrigatório" });
   }
-  
+
   const safeData = addConstructionSchema.safeParse(req.body);
 
   if (!safeData.success) {
@@ -142,9 +147,8 @@ const edit = async (req: Request, res: Response) => {
 
   try {
     const newAmount = safeData.data.quantity * safeData.data.unitaryValue;
-
-    const updateConstruction = await update(id, safeData.data.name, safeData.data.quantity, safeData.data.unitaryValue, newAmount);
-    return res.status(200).json(updateConstruction);
+    const update = await updateConstruction(id, safeData.data.name, safeData.data.quantity, safeData.data.unitaryValue, newAmount);
+    return res.status(200).json(update);
     
   } catch (error) {
     return res.status(500).json({ message: error });
