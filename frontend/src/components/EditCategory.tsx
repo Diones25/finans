@@ -22,7 +22,7 @@ function EditCategory() {
     event.preventDefault();
 
     (async () => {
-      await editCategory(id, name, balance);
+      await editCategory(id, name, Number(balance));
       navigate("/");
     })()
   }

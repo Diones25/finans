@@ -76,7 +76,7 @@ export const addBalanceCategory = async (id: string | undefined, balance: number
   return response.data;
 }
 
-export const editCategory = async (id: string | undefined, name: string, balance: string) => {
+export const editCategory = async (id: string | undefined, name: string, balance: number) => {
   const response = await instance.put(`/category/edit/${id}`, {
     name,
     balance
