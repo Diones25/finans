@@ -50,6 +50,7 @@ export class CategoryController {
   }
 
   @Get('all')
+  @UsePipes(new SanitizePipe())
   @ApiOperation({
     summary: 'Buscando todas as categorias',
     description: 'Endpoint responsável por listar todas as categorias'

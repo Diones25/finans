@@ -66,6 +66,7 @@ export class SpentController {
   }
 
   @Get('all')
+  @UsePipes(new SanitizePipe())
   @ApiOperation({
     summary: 'Listando todos os gastos',
     description: 'Endpoint responsável por listar todos os gastos com paginação'
