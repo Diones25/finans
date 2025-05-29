@@ -21,7 +21,7 @@ function Home() {
   const [data, setData] = useState<Spent>();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number | any>(null);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState<number | any>(null);
   const [maxButtons, __] = useState(10);
 
   //Usar os states categories e spents dentro do array [] do useEffect faz com que
