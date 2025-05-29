@@ -1,12 +1,12 @@
 export interface Construction {
-  constructions: ConstructionItem[]
+  spents: SpentsItem[]
   totalConstructions: number
   totalPages: number
   pageSize: number
   page: number
 }
 
-export interface ConstructionItem {
+export interface SpentsItem {
   id: string
   name: string
   quantity: number
