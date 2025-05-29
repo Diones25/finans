@@ -10,6 +10,8 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log', 'debug', 'verbose'],
   });
 
+  app.enableCors();
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // Remove propriedades não decoradas
     forbidNonWhitelisted: true, // Rejeita requisições com propriedades não decoradas
