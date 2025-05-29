@@ -56,11 +56,6 @@ export class ConstructionService {
         page: page
       }
 
-      if (!spents || spents.length === 0) {
-        this.logger.error('Nenhum gasto encontrado');
-        throw new NotFoundException('Nenhum gasto encontrado');
-      }
-
       this.logger.log('Buscando todos os gastos com paginação');
       return data;
     } catch (error) {
