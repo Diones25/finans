@@ -89,15 +89,15 @@ export const deleteCategory = async (id: string) => {
   return response.data;
 }
 
-export const getAllConstruction = async (page: any, totalPages: any): Promise<Construction> => {
+export const getAllConstruction = async (page: any, pageSize: any) => {
   const response = await instance.get("/construction/all", {
     params: {
       page,
-      totalPages
+      pageSize
     }
   })
 
-  return response.data;
+  return response;
 }
 
 export const getOneConstruction = async (id: string | undefined) => {
