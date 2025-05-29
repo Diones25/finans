@@ -27,9 +27,6 @@ async function bootstrap() {
     referrerPolicy: { policy: "no-referrer" }
   }));
 
-  // Apenas para formulários HTML tradicionais
-  app.use(csurf());
-
   const config = new DocumentBuilder()
     .setTitle('API de finanças pessoais')
     .setDescription('O Finans é uma api de controle de finanças pessoais, com gerenciamento de gastos, saldos e categorias.')
