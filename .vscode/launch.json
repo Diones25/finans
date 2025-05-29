@@ -5,14 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Node.js",
-      "processId": "${command:PickProcess}",
+      "name": "Debug NestJS",
+      "port": 9229,
       "request": "attach",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "node"
     }
-    
   ]
 }
