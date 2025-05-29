@@ -19,20 +19,21 @@ function Home() {
   const [data, setData] = useState<Construction>();
   const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
-  const [pageSize, _] = useState(10);
+  const [pageSize, setPageSize] = useState<number | any>(null);
   const [totalPages, setTotalPages] = useState(1);
   const [maxButtons, __] = useState(10);
 
   useEffect(() => {
     (async () => {
-      const response = await getAllConstruction(page, totalPages);
-      setData(response)
-      setTotalPages(response.totalPages);
+      const response = await getAllConstruction(page, pageSize);
+      setData(response.data)
+      setPageSize(response.data.pageSize);
+      setTotalPages(response.data.totalPages);
     })();
 
     (async () => {
-      const data = await getListAmount();
-      setAmount(data)
+      const amount = await getListAmount();
+      setAmount(amount.totalValue)
     })();
   }, [page, pageSize]);
 
@@ -50,7 +51,7 @@ function Home() {
           <div className="flex justify-between mb-4">
             <h1 className="text-3xl font-semibold text-gray-800">Lista de Gastos</h1>
             <div className="bg-green-400 px-3 py-2 rounded-xl">
-              <h5 className="text-3xl font-semibold text-white">Total: <span>{formatCurrency(amount) }</span></h5>
+              <h5 className="text-3xl font-semibold text-white">Total: <span>{ amount > 0 ? formatCurrency(amount) : 0 }</span></h5>
             </div>
           </div>
           <Table className="border text-gray-700">
@@ -65,9 +66,9 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.constructions.length as number > 0 ? (
+              {data?.spents.length as number > 0 ? (
                 <>
-                  {data?.constructions.map((item) => (
+                  {data?.spents.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell className="font-medium">{item.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
