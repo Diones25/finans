@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Category } from "@/components/types/Category";
 import { Spent } from "@/components/types/Spent";
-import { Construction } from "@/components/types/Construction";
 
 const baseUrl = "http://localhost:3003"
 
