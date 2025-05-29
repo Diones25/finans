@@ -9,11 +9,11 @@ const instance = axios.create({
   baseURL: baseUrl
 });
 
-export const getAllSpents = async (page: number, totalPages: number): Promise<Spent> => {
+export const getAllSpents = async (page: number, pageSize: number): Promise<Spent> => {
   const response = await instance.get('/spent/all', {
     params: {
       page,
-      totalPages
+      pageSize
     }
   });
   return response.data;
@@ -25,7 +25,7 @@ export const getOneSpent = async (id: string | undefined) => {
 }
 
 export const addSpent = async (value: number, description: string, categoryId: string) => {
-  const response = await instance.post('/spent/create', {
+  const response = await instance.post('/spent', {
     value,
     description,
     categoryId
@@ -35,7 +35,7 @@ export const addSpent = async (value: number, description: string, categoryId: s
 }
 
 export const editSpent = async (id: string | undefined, description: string, value: number, categoryId: string) => {
-  const response = await instance.put(`/spent/update/${id}`, {
+  const response = await instance.put(`/spent/${id}`, {
     description,
     value,
     categoryId
@@ -45,12 +45,12 @@ export const editSpent = async (id: string | undefined, description: string, val
 }
 
 export const deleteSpent = async (id: string) => {
-  const response = await instance.delete(`/spent/remove/${id}`);
+  const response = await instance.delete(`/spent/${id}`);
   return response.data;
 }
 
 export const getAllCategories = async (): Promise<Category[]> => {
-  const response = await instance.get('/category/list');   
+  const response = await instance.get('/category/all');   
   return response.data;
 }
 
@@ -69,7 +69,7 @@ export const addCategory = async (name: string, balance: number) => {
 }
 
 export const addBalanceCategory = async (id: string | undefined, balance: number) => {
-  const response = await instance.put(`/category/add/balance/${id}`, {
+  const response = await instance.put(`/category/balance/add/${id}`, {
     balance
   });
 
@@ -77,7 +77,7 @@ export const addBalanceCategory = async (id: string | undefined, balance: number
 }
 
 export const editCategory = async (id: string | undefined, name: string, balance: number) => {
-  const response = await instance.put(`/category/edit/${id}`, {
+  const response = await instance.put(`/category/${id}`, {
     name,
     balance
   });
@@ -85,7 +85,7 @@ export const editCategory = async (id: string | undefined, name: string, balance
 }
 
 export const deleteCategory = async (id: string) => {
-  const response = await instance.delete(`/category/remove/${id}`);
+  const response = await instance.delete(`/category/${id}`);
   return response.data;
 }
 
@@ -106,12 +106,12 @@ export const getOneConstruction = async (id: string | undefined) => {
 }
 
 export const getListAmount = async () => {
-  const response = await instance.get('/construction/list/amount')
+  const response = await instance.get('/construction/amount')
   return response.data;
 }
 
 export const addConstruction = async (name: string, quantity: number, unitaryValue: number) => {
-  const response = await instance.post('/construction/create', {
+  const response = await instance.post('/construction', {
     name,
     quantity,
     unitaryValue
@@ -121,7 +121,7 @@ export const addConstruction = async (name: string, quantity: number, unitaryVal
 }
 
 export const editConstruction = async (id: string | undefined, name: string, quantity: number, unitaryValue: number) => {
-  const response = await instance.put(`/construction/edit/${id}`, {
+  const response = await instance.put(`/construction/${id}`, {
     name,
     quantity,
     unitaryValue
@@ -131,6 +131,6 @@ export const editConstruction = async (id: string | undefined, name: string, qua
 }
 
 export const deleteConstruction = async (id: string) => {
-  const response = await instance.delete(`/construction/remove/${id}`);  
+  const response = await instance.delete(`/construction/${id}`);  
   return response.data;
 }
