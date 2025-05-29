@@ -87,7 +87,13 @@ function Home() {
                   ))}
                 </>
               ) : (
-                <p className="bg-orange-300 border border-orange-400 rounded-xl w-70 text-center text-white py-2 m-2">Sem gastos de construção para exibição</p>
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center">
+                    <p className="bg-orange-300 border border-orange-400 rounded-xl text-white py-2 m-2 inline-block">
+                      Sem gastos de construção para exibição
+                    </p>
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
