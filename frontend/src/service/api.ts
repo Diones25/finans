@@ -1,6 +1,7 @@
 import axios from "axios";
-import { Category } from "@/components/types/Category";
-import { Spent } from "@/components/types/Spent";
+import { Category } from "@/types/Category";
+import { Spent } from "@/types/Spent";
+import { CreateSpent } from "@/types/CreateSpent";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -23,12 +24,8 @@ export const getOneSpent = async (id: string | undefined) => {
   return response.data;
 }
 
-export const addSpent = async (value: number, description: string, categoryId: string) => {
-  const response = await instance.post('/spent', {
-    value,
-    description,
-    categoryId
-  });
+export const addSpent = async (data: CreateSpent) => {
+  const response = await instance.post('/spent', data);
   
   return response.data;
 }
@@ -49,7 +46,7 @@ export const deleteSpent = async (id: string) => {
 }
 
 export const getAllCategories = async (): Promise<Category[]> => {
-  const response = await instance.get('/category/all');   
+  const response = await instance.get('/category/all');
   return response.data;
 }
 
@@ -130,6 +127,6 @@ export const editConstruction = async (id: string | undefined, name: string, qua
 }
 
 export const deleteConstruction = async (id: string) => {
-  const response = await instance.delete(`/construction/${id}`);  
+  const response = await instance.delete(`/construction/${id}`);
   return response.data;
 }
