@@ -9,40 +9,32 @@ import {
 import { Button } from "./ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { Category } from "./types/Category";
-import { deleteCategory, deleteSpent, getAllCategories, getAllSpents } from "@/service/api";
-import { Spent } from "./types/Spent";
+import { deleteCategory, deleteSpent } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
 import Pagination from "./Pagination";
+import { useAllSpents, useCategories } from "@/utils/queries";
 
 function Home() {
   const navigate = useNavigate(); 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [data, setData] = useState<Spent>();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number | any>(null);
   const [totalPages, setTotalPages] = useState<number | any>(null);
   const [maxButtons, __] = useState(10);
 
-  //Usar os states categories e spents dentro do array [] do useEffect faz com que
-  //o fect ou axios fiquem dando multiplas requisições pendentes no back-end
-  //fazendo a aplicação consumir muito processamento e memória.
+  const { data, isLoading, isError } = useAllSpents(page, pageSize);
+  const {
+    data: categoriesData,
+    isLoading: isLoadingCategories,
+    isError: isErrorCategories
+  } = useCategories();
+
   useEffect(() => {
-    (async () => {
-      const categories = await getAllCategories();
-      setCategories(categories)
-    })();
+    if (data) {
+      setPageSize(data.pageSize);
+      setTotalPages(data.totalPages);
+    }
+  }, [data]);
 
-    (async () => {
-      const response = await getAllSpents(page, pageSize);
-      setData(response);
-      setPageSize(response.pageSize);
-      setTotalPages(response.totalPages);
-    })();
-  }, [page, pageSize]);
-
-  //O navigate(0) faz com que o React Router navegue para a rota atual, forçando um reload na tela, uma
-  //atualização do componente associado a essa rota.
   const handleDeleteCategory = async (id: string) => {
     (async () => {
       await deleteCategory(id);
@@ -129,9 +121,9 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories.length > 0 ? (
+              {categoriesData && categoriesData.length > 0 ? (
                 <>
-                  {categories.map((cat) => (
+                  {categoriesData.map((cat) => (
                     <TableRow key={cat.id}>
                       <TableCell className="font-medium">{ cat.name }</TableCell>
                       <TableCell>{formatCurrency(Number(cat.balance)) }</TableCell>
