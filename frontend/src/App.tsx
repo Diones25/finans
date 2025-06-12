@@ -1,12 +1,15 @@
 import { RouterProvider } from "react-router-dom";
 import Router from "./router/router";
 import BreadcrumbComponent from "./components/Breadcrumb";
+import { Providers } from "./utils/provider";
 
 function App() {
   return (
     <>
-      <BreadcrumbComponent />
-      <RouterProvider router={Router} />
+      <Providers>
+        <BreadcrumbComponent />
+          <RouterProvider router={Router} />
+      </Providers>
     </>
   )
 }
