@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { deleteConstruction, getAllConstruction, getListAmount } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
-import { Construction } from "./types/Construction";
+import { Construction } from "../types/Construction";
 import Pagination from "./Pagination";
 
 function Home() {
@@ -51,7 +51,7 @@ function Home() {
           <div className="flex justify-between mb-4">
             <h1 className="text-3xl font-semibold text-gray-800">Lista de Gastos</h1>
             <div className="bg-green-400 px-3 py-2 rounded-xl">
-              <h5 className="text-3xl font-semibold text-white">Total: <span>{ amount > 0 ? formatCurrency(amount) : 0 }</span></h5>
+              <h5 className="text-3xl font-semibold text-white">Total: <span>{amount > 0 ? formatCurrency(amount) : 0}</span></h5>
             </div>
           </div>
           <Table className="border text-gray-700">
@@ -76,7 +76,7 @@ function Home() {
                       <TableCell>{formatCurrency(Number(item.amount))}</TableCell>
                       <TableCell>{formateDate(item.createdAt)}</TableCell>
                       <TableCell className="text-left">
-                        <div className="text-white space-x-2">                          
+                        <div className="text-white space-x-2">
                           <Link to={`/construction/edit/${item.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
@@ -103,7 +103,7 @@ function Home() {
             </Link>
           </div>
         </div>
-              
+
         <Pagination
           page={page}
           maxButtons={maxButtons}

@@ -3,7 +3,7 @@ import InputCompoment from "./InputCompoment";
 import { Button } from "./ui/button";
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormEvent, useEffect, useState } from "react";
-import { Category } from "./types/Category";
+import { Category } from "../types/Category";
 import { editSpent, getAllCategories, getOneSpent } from "@/service/api";
 
 function EditSpent() {
