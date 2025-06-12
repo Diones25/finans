@@ -2,7 +2,7 @@ import axios from "axios";
 import { Category } from "@/components/types/Category";
 import { Spent } from "@/components/types/Spent";
 
-const baseUrl = "http://localhost:3003"
+const baseUrl = import.meta.env.VITE_API_URL;
 
 const instance = axios.create({
   baseURL: baseUrl
