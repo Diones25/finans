@@ -2,6 +2,7 @@ import axios from "axios";
 import { Category } from "@/types/Category";
 import { Spent } from "@/types/Spent";
 import { CreateSpent } from "@/types/CreateSpent";
+import { CreateCategory } from "@/types/CreateCategory";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -55,11 +56,8 @@ export const getOneCategory = async (id: string | undefined) => {
   return response.data;
 }
 
-export const addCategory = async (name: string, balance: number) => {
-  const response = await instance.post('/category/create', {
-    name,
-    balance
-  });
+export const addCategory = async (data: CreateCategory) => {
+  const response = await instance.post('/category/create', data);
 
   return response.data;
 }
