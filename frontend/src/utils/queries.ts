@@ -22,7 +22,7 @@ export const useCategories = () => {
 
 export const useCategory = (id: string) => {
   const query = useQuery({
-    queryKey: ['category'],
+    queryKey: ['category', id],
     queryFn: () => getOneCategory(id),
   });
 
