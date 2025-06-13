@@ -1,4 +1,4 @@
-import { addCategory, addSpent } from "@/service/api";
+import { addBalanceCategory, addCategory, addSpent } from "@/service/api";
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "./queryClient";
 import { toast } from 'react-toastify';
@@ -38,6 +38,26 @@ export const useAddCategory = () => {
     },
     onError: (error) => {
       toast.error(`Erro ao cadastrar categoria: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
+export const useAddBalanceCategory = (id: string, balance: number) => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: () => addBalanceCategory(id, balance),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['categories']
+      });
+      setTimeout(() => navigate('/'), 2000);
+      toast.success('Saldo adicionado com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao adicionar saldo: ${error.message}`);
     },
   });
 
