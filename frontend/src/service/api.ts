@@ -3,6 +3,7 @@ import { Category } from "@/types/Category";
 import { Spent } from "@/types/Spent";
 import { CreateSpent } from "@/types/CreateSpent";
 import { CreateCategory } from "@/types/CreateCategory";
+import { EditCategory } from "@/types/EditCategory";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -70,11 +71,8 @@ export const addBalanceCategory = async (id: string | undefined, balance: number
   return response.data;
 }
 
-export const editCategory = async (id: string | undefined, name: string, balance: number) => {
-  const response = await instance.put(`/category/${id}`, {
-    name,
-    balance
-  });
+export const editCategory = async (id: string, data: EditCategory) => {
+  const response = await instance.put(`/category/${id}`, data);
   return response.data;
 }
 
