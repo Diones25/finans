@@ -72,7 +72,7 @@ export const addBalanceCategory = async (id: string | undefined, balance: number
 }
 
 export const editCategory = async (id: string, data: EditCategory) => {
-  const response = await instance.put(`/category/${id}`, data);
+  const response = await instance.patch(`/category/${id}`, data);
   return response.data;
 }
 
