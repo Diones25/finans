@@ -31,7 +31,7 @@ export const useAddCategory = () => {
     mutationFn: addCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: []
+        queryKey: ['categories']
       });
       setTimeout(() => navigate('/'), 2000); 
       toast.success('Categoria cadastrada com sucesso!');
