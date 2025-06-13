@@ -1,8 +1,14 @@
-import { addBalanceCategory, addCategory, addSpent } from "@/service/api";
+import {
+  addBalanceCategory,
+  addCategory,
+  addSpent,
+  editCategory
+} from "@/service/api";
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "./queryClient";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { EditCategory } from "@/types/EditCategory";
 
 export const useAddSpent = () => {
   const navigate = useNavigate();
@@ -33,11 +39,31 @@ export const useAddCategory = () => {
       queryClient.invalidateQueries({
         queryKey: ['categories']
       });
-      setTimeout(() => navigate('/'), 2000); 
+      setTimeout(() => navigate('/'), 2000);
       toast.success('Categoria cadastrada com sucesso!');
     },
     onError: (error) => {
       toast.error(`Erro ao cadastrar categoria: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
+export const useEditCategory = () => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: EditCategory }) => editCategory(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['categories']
+      });
+      setTimeout(() => navigate('/'), 2000);
+      toast.success('Categoria editada com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao editar a categoria: ${error.message}`);
     },
   });
 
