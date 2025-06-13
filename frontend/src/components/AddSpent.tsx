@@ -10,7 +10,8 @@ import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../utils/queryClient";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AddSpent() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function AddSpent() {
       });
       //Reseta o formulário
       reset();
-      navigate('/'); //Remover o navigate se eu for utilizar o modal
+      setTimeout(() => navigate('/'), 2000); // Dá tempo para o toast aparecer //Remover o navigate se eu for utilizar o modal
       toast.success('Gasto cadastrado com sucesso!');
     },
     onError: (error) => {
@@ -104,7 +105,7 @@ function AddSpent() {
               </Button>
             </div>
           </form>
-
+          <ToastContainer position="bottom-right" autoClose={3000} />
         </div>
       </div>
     </>
