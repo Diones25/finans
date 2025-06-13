@@ -44,11 +44,11 @@ export const useAddCategory = () => {
   return mutation;
 }
 
-export const useAddBalanceCategory = (id: string, balance: number) => {
+export const useAddBalanceCategory = () => {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: () => addBalanceCategory(id, balance),
+    mutationFn: ({ id, balance }: { id: string; balance: number }) => addBalanceCategory(id, balance),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['categories']
