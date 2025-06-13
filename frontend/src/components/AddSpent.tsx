@@ -1,6 +1,5 @@
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { addSpent } from "@/service/api";
 import { useNavigate } from 'react-router-dom';
 import { useCategories } from "@/utils/queries";
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -8,13 +7,13 @@ import { Input } from "./ui/input";
 import { addSpentSchema } from "@/schemas/addSpentSchema";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../utils/queryClient";
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAddSpent } from "@/utils/mutations";
 
 function AddSpent() {
   const navigate = useNavigate();
+  const addSpent = useAddSpent();
 
   const {
     data: categories
@@ -29,24 +28,13 @@ function AddSpent() {
     resolver: zodResolver(addSpentSchema)
   })
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: addSpent,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['all-spents'],
-      });
-      //Reseta o formulário
-      reset();
-      setTimeout(() => navigate('/'), 2000); // Dá tempo para o toast aparecer //Remover o navigate se eu for utilizar o modal
-      toast.success('Gasto cadastrado com sucesso!');
-    },
-    onError: (error) => {
-      toast.error(`Erro ao cadastrar gasto: ${error.message}`);
-    },
-  });
-
   const handleFormSubmit: SubmitHandler<z.infer<typeof addSpentSchema>> = (data) => {
-    mutate(data);
+    addSpent.mutate(data, {
+      onSuccess: () => {
+        //Reseta o formulário
+        reset();
+      },
+    });
   }
 
   return (
@@ -101,7 +89,7 @@ function AddSpent() {
             <div className="text-white pt-2 space-x-2 flex justify-end">
               <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
               <Button type="submit" className="bg-green-600 hover:bg-green-600">
-                {isPending ? 'Cadastrando...' : 'Cadastrar Gasto'}
+                {addSpent.isPending ? 'Cadastrando...' : 'Cadastrar Gasto'}
               </Button>
             </div>
           </form>
