@@ -23,12 +23,13 @@ function AddSpent() {
   const { 
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof addSpentSchema>>({
     resolver: zodResolver(addSpentSchema)
   })
 
-  const { mutate, isPending, reset } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: addSpent,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -46,7 +47,6 @@ function AddSpent() {
 
   const handleFormSubmit: SubmitHandler<z.infer<typeof addSpentSchema>> = (data) => {
     mutate(data);
-    console.log(data)
   }
 
   return (
