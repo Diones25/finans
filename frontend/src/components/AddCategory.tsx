@@ -27,10 +27,6 @@ function AddCategory() {
       navigate("/");
     })()
   }
-
-  const goBack = () => {
-    navigate(-1);
-  }
   
   return (
     <>
@@ -59,7 +55,7 @@ function AddCategory() {
             />
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button onClick={goBack} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
+              <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
               <Button type="submit" className="bg-green-600 hover:bg-green-600">Cadastrar</Button>
             </div>
           </form>
