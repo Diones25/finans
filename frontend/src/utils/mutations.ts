@@ -4,13 +4,15 @@ import {
   addSpent,
   deleteCategory,
   deleteSpent,
-  editCategory
+  editCategory,
+  editConstruction
 } from "@/service/api";
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "./queryClient";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { EditCategory } from "@/types/EditCategory";
+import { EditConstruction } from "@/types/EditConstruction";
 
 export const useAddSpent = () => {
   const navigate = useNavigate();
@@ -122,6 +124,26 @@ export const useAddBalanceCategory = () => {
     },
     onError: (error) => {
       toast.error(`Erro ao adicionar saldo: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
+export const useEditConstruction = () => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: EditConstruction }) => editConstruction(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-constructions']
+      });
+      setTimeout(() => navigate('/'), 2000);
+      toast.success('Gasto editada com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao editar o gasto: ${error.message}`);
     },
   });
 
