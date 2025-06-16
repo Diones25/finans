@@ -2,6 +2,7 @@ import {
   addBalanceCategory,
   addCategory,
   addSpent,
+  deleteSpent,
   editCategory
 } from "@/service/api";
 import { useMutation } from "@tanstack/react-query"
@@ -24,6 +25,26 @@ export const useAddSpent = () => {
     },
     onError: (error) => {
       toast.error(`Erro ao cadastrar gasto: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
+export const useRemoveSpent = () => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteSpent(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-spents']
+      });
+      setTimeout(() => navigate('/'), 2000);
+      toast.success('Gasto removido com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao remover gasto: ${error.message}`);
     },
   });
 

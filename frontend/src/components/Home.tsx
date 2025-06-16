@@ -9,10 +9,13 @@ import {
 import { Button } from "./ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { deleteCategory, deleteSpent } from "@/service/api";
+import { deleteCategory } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
 import Pagination from "./Pagination";
 import { useAllSpents, useCategories } from "@/utils/queries";
+import { useRemoveSpent } from "@/utils/mutations";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
   const navigate = useNavigate(); 
@@ -27,6 +30,8 @@ function Home() {
     isLoading: isLoadingCategories,
     isError: isErrorCategories
   } = useCategories();
+
+  const removeSpent = useRemoveSpent();
 
   useEffect(() => {
     if (data) {
@@ -44,8 +49,7 @@ function Home() {
 
   const handleDeleteSpent = (id: string) => {
     (async () => {
-      await deleteSpent(id);      
-      navigate(0)      
+      removeSpent.mutate(id);           
     })();
   }
 
@@ -159,6 +163,7 @@ function Home() {
             </Link>
           </div>
         </div>
+        <ToastContainer position="bottom-right" autoClose={3000} />
       </div> 
     </>
   )
