@@ -4,6 +4,7 @@ import { Spent } from "@/types/Spent";
 import { CreateSpent } from "@/types/CreateSpent";
 import { CreateCategory } from "@/types/CreateCategory";
 import { EditCategory } from "@/types/EditCategory";
+import { Construction } from "@/types/Construction";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -81,7 +82,7 @@ export const deleteCategory = async (id: string) => {
   return response.data;
 }
 
-export const getAllConstruction = async (page: number, pageSize: number) => {
+export const getAllConstruction = async (page: number, pageSize: number): Promise<Construction> => {
   const response = await instance.get("/construction/all", {
     params: {
       page,
@@ -89,7 +90,7 @@ export const getAllConstruction = async (page: number, pageSize: number) => {
     }
   })
 
-  return response;
+  return response.data;
 }
 
 export const getOneConstruction = async (id: string | undefined) => {
