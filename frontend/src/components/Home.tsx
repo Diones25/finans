@@ -7,9 +7,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./ui/button"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { deleteCategory } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
 import Pagination from "./Pagination";
 import { useAllSpents, useCategories } from "@/utils/queries";
@@ -18,7 +17,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
-  const navigate = useNavigate(); 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number | any>(null);
   const [totalPages, setTotalPages] = useState<number | any>(null);
