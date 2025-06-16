@@ -22,7 +22,11 @@ function Home() {
   const [totalPages, setTotalPages] = useState(1);
   const [maxButtons, __] = useState(10);
 
-  const { data, isLoading, isError } = useAllConstructions(page, pageSize);
+  const {
+    data,
+    //isLoading,
+    //isError
+  } = useAllConstructions(page, pageSize);
   const { data: amount } = useListAmount();
   const removeConstruction = useRemoveconstruction();
 

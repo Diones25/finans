@@ -22,11 +22,11 @@ function Home() {
   const [totalPages, setTotalPages] = useState<number | any>(null);
   const [maxButtons, __] = useState(10);
 
-  const { data, isLoading, isError } = useAllSpents(page, pageSize);
+  const { data } = useAllSpents(page, pageSize);
   const {
     data: categoriesData,
-    isLoading: isLoadingCategories,
-    isError: isErrorCategories
+    //isLoading: isLoadingCategories,
+    //isError: isErrorCategories
   } = useCategories();
 
   const removeSpent = useRemoveSpent();
