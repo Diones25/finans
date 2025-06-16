@@ -10,8 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAddSpent } from "@/utils/mutations";
+import { NumericFormat } from 'react-number-format';
+import { useState } from "react";
 
 function AddSpent() {
+  const [formattedValue, setFormattedValue] = useState("");
   const navigate = useNavigate();
   const addSpent = useAddSpent();
 
@@ -23,16 +26,22 @@ function AddSpent() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<z.infer<typeof addSpentSchema>>({
     resolver: zodResolver(addSpentSchema)
   })
 
   const handleFormSubmit: SubmitHandler<z.infer<typeof addSpentSchema>> = (data) => {
-    addSpent.mutate(data, {
-      onSuccess: () => {
+    const convertedValue = parseFloat(formattedValue.replace(',', '.'));
+
+    addSpent.mutate(
+      { ...data, value: convertedValue },
+      {
+        onSuccess: () => {
         //Reseta o formulário
         reset();
+        setFormattedValue(""); //Limpa o campo de valor após o envio
       },
     });
   }
@@ -57,9 +66,19 @@ function AddSpent() {
 
             <div className="mb-2 space-y-2">
               <Label htmlFor="Valor">Valor</Label>
-              <Input
-                id="Valor"
-                {...register('value', { valueAsNumber: true })}
+              <NumericFormat
+                id="valor"
+                value={formattedValue}
+                decimalSeparator=","
+                thousandSeparator="."
+                allowNegative={false}
+                decimalScale={2}
+                fixedDecimalScale
+                customInput={Input}
+                onValueChange={(values) => {
+                  setFormattedValue(values.value);
+                  setValue("value", parseFloat(values.value.replace(',', '.')));
+                }}
                 className={`border ${errors.value ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
               />
               {errors.value &&
