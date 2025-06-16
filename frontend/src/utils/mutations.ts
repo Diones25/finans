@@ -139,7 +139,7 @@ export const useAddConstruction = () => {
     mutationFn: addConstruction,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['all-constructions']
+        queryKey: ['all-constructions', 'amount']
       });
       setTimeout(() => navigate('/construction'), 2000);
       toast.success('Gasto cadastrado com sucesso!');
@@ -159,7 +159,7 @@ export const useEditConstruction = () => {
     mutationFn: ({ id, data }: { id: string; data: EditConstruction }) => editConstruction(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['all-constructions']
+        queryKey: ['all-constructions', 'amount']
       });
       setTimeout(() => navigate('/construction'), 2000);
       toast.success('Gasto editada com sucesso!');
@@ -178,7 +178,7 @@ export const useRemoveconstruction = () => {
     mutationFn: (id: string) => deleteConstruction(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['all-constructions']
+        queryKey: ['all-constructions', 'amount']
       });
       toast.success('Gasto removido com sucesso!');
     },
