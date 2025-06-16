@@ -139,7 +139,7 @@ export const useEditConstruction = () => {
       queryClient.invalidateQueries({
         queryKey: ['all-constructions']
       });
-      setTimeout(() => navigate('/'), 2000);
+      setTimeout(() => navigate('/construction'), 2000);
       toast.success('Gasto editada com sucesso!');
     },
     onError: (error) => {
