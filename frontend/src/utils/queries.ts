@@ -1,4 +1,4 @@
-import { getAllCategories, getAllConstruction, getAllSpents, getListAmount, getOneCategory } from "@/service/api";
+import { getAllCategories, getAllConstruction, getAllSpents, getListAmount, getOneCategory, getOneConstruction } from "@/service/api";
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 
 export const useAllSpents = (page: number, pageSize: number) => {
@@ -34,6 +34,15 @@ export const useAllConstructions = (page: number, pageSize: number) => {
     queryKey: ['all-constructions', { page, pageSize }],
     queryFn: () => getAllConstruction(page, pageSize),
     placeholderData: keepPreviousData
+  });
+
+  return query;
+}
+
+export const useConstruction = (id: string) => {
+  const query = useQuery({
+    queryKey: ['construction', id],
+    queryFn: () => getOneConstruction(id),
   });
 
   return query;
