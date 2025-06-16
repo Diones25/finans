@@ -81,7 +81,7 @@ export const deleteCategory = async (id: string) => {
   return response.data;
 }
 
-export const getAllConstruction = async (page: any, pageSize: any) => {
+export const getAllConstruction = async (page: number, pageSize: number) => {
   const response = await instance.get("/construction/all", {
     params: {
       page,
