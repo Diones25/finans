@@ -7,15 +7,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./ui/button"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { deleteConstruction } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
 import Pagination from "./Pagination";
 import { useAllConstructions, useListAmount } from "@/utils/queries";
+import { useRemoveconstruction } from "@/utils/mutations";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number | any>(null);
   const [totalPages, setTotalPages] = useState(1);
@@ -23,6 +24,7 @@ function Home() {
 
   const { data, isLoading, isError } = useAllConstructions(page, pageSize);
   const { data: amount } = useListAmount();
+  const removeConstruction = useRemoveconstruction();
 
   useEffect(() => {
     if (data) {
@@ -31,10 +33,9 @@ function Home() {
     }
   }, [data]);
 
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteConstruction = async (id: string) => {
     (async () => {
-      await deleteConstruction(id);
-      navigate(0);
+      removeConstruction.mutate(id);
     })();
   }
 
@@ -74,7 +75,7 @@ function Home() {
                           <Link to={`/construction/edit/${item.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link>
-                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteCategory(item.id)}>Excluir</Button>
+                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteConstruction(item.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -104,6 +105,8 @@ function Home() {
           totalPages={totalPages}
           setPage={setPage}
         />
+
+        <ToastContainer position="bottom-right" autoClose={3000} />
       </div>
     </>
   )
