@@ -1,6 +1,6 @@
 export interface Construction {
   spents: SpentsItem[]
-  totalConstructions: number
+  totalSpents: number
   totalPages: number
   pageSize: number
   page: number
