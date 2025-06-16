@@ -1,76 +1,102 @@
-import { FormEvent, useEffect, useState } from "react";
-import InputCompoment from "./InputCompoment";
+import {  useEffect } from "react";
 import { Button } from "./ui/button";
 import { useParams, useNavigate } from "react-router-dom";
-import { editConstruction, getOneConstruction } from "@/service/api";
+import { editConstructionSchema } from "@/schemas/editConstructionSchema";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useConstruction } from "@/utils/queries";
+import { useEditConstruction } from "@/utils/mutations";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "./ui/input";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditConstruction() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [unitaryValue, setUnitaryValue] = useState('');
+  const construction = useConstruction(id as string);
+  const aditConstrcution = useEditConstruction();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof editConstructionSchema>>({
+    resolver: zodResolver(editConstructionSchema)
+  });
 
   useEffect(() => {
-    (async () => {
-      const res = await getOneConstruction(id);
-      setName(res.name);
-      setQuantity(res.quantity);
-      setUnitaryValue(res.unitaryValue);
-    })();
-  }, [id]);
+    if (construction.data) {
+      reset({
+        name: construction.data.name,
+        quantity: construction.data.quantity,
+        unitaryValue: construction.data.unitaryValue,
+      });
+    }
+  }, [construction.data, reset]);
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-
-    (async () => {
-      await editConstruction(id, name, Number(quantity), Number(unitaryValue));
-      navigate("/construction");
-    })()
-  }
+  const handleFormSubmit: SubmitHandler<z.infer<typeof editConstructionSchema>> = (data) => {
+      if (!id) return;
+  
+      aditConstrcution.mutate(
+        { id, data }, {
+        onSuccess: () => {
+          //Reseta o formulário
+          reset();
+        },
+      });
+    }
 
   return (
     <>
       <div className='container'>
         <div className="w-[730px]">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Adicionar gasto de construção</h1>
-          <form onSubmit={handleSubmit}>
-            <InputCompoment
-              label="Nome"
-              htmlFor="name"
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <div className="mb-2 space-y-2">
+              <Label htmlFor="description">Nome</Label>
+              <Input
+                id="description"
+                {...register('name')}
+                className={`border ${errors.name ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+              />
+              {errors.name &&
+                <p className='text-red-600 text-sm'>{errors.name.message}</p>
+              }
+            </div>
 
-            <InputCompoment
-              label="Quantidade"
-              htmlFor="quantity"
-              type="number"
-              id="quantity"
-              name="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
+            <div className="mb-2 space-y-2">
+              <Label htmlFor="description">Quantidade</Label>
+              <Input
+                id="description"
+                {...register('quantity', { valueAsNumber: true })}
+                className={`border ${errors.quantity ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+              />
+              {errors.quantity &&
+                <p className='text-red-600 text-sm'>{errors.quantity.message}</p>
+              }
+            </div>
 
-            <InputCompoment
-              label="Valor Unitário"
-              htmlFor="unitaryValue"
-              type="number"
-              id="unitaryValue"
-              name="unitaryValue"
-              value={unitaryValue}
-              onChange={(e) => setUnitaryValue(e.target.value)}
-            />
+            <div className="mb-2 space-y-2">
+              <Label htmlFor="description">Valor Unitário</Label>
+              <Input
+                id="description"
+                {...register('unitaryValue', { valueAsNumber: true })}
+                className={`border ${errors.unitaryValue ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+              />
+              {errors.unitaryValue &&
+                <p className='text-red-600 text-sm'>{errors.unitaryValue.message}</p>
+              }
+            </div>
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
+              <Button onClick={() => navigate("/construction")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
               <Button type="submit" className="bg-green-600 hover:bg-green-600">Atualizar</Button>
             </div>
           </form>
-
+          <ToastContainer position="bottom-right" autoClose={3000} />
         </div>
       </div>
     </>
