@@ -5,6 +5,7 @@ import { CreateSpent } from "@/types/CreateSpent";
 import { CreateCategory } from "@/types/CreateCategory";
 import { EditCategory } from "@/types/EditCategory";
 import { Construction } from "@/types/Construction";
+import { Amount } from "@/types/Amount";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -98,7 +99,7 @@ export const getOneConstruction = async (id: string | undefined) => {
   return response.data;
 }
 
-export const getListAmount = async () => {
+export const getListAmount = async (): Promise<Amount> => {
   const response = await instance.get('/construction/amount')
   return response.data;
 }
