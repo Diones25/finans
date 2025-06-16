@@ -1,6 +1,7 @@
 import {
   addBalanceCategory,
   addCategory,
+  addConstruction,
   addSpent,
   deleteCategory,
   deleteConstruction,
@@ -125,6 +126,26 @@ export const useAddBalanceCategory = () => {
     },
     onError: (error) => {
       toast.error(`Erro ao adicionar saldo: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
+export const useAddConstruction = () => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: addConstruction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-constructions']
+      });
+      setTimeout(() => navigate('/construction'), 2000);
+      toast.success('Gasto cadastrado com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao cadastrar gasto: ${error.message}`);
     },
   });
 
