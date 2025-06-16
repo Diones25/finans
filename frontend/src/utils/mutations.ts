@@ -90,6 +90,24 @@ export const useEditCategory = () => {
   return mutation;
 }
 
+export const useRemoveCategory = () => {
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteCategory(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['categories']
+      });
+      toast.success('Categoria removida com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao remover categoria: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
 export const useAddBalanceCategory = () => {
   const navigate = useNavigate();
 

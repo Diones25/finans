@@ -13,7 +13,7 @@ import { deleteCategory } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
 import Pagination from "./Pagination";
 import { useAllSpents, useCategories } from "@/utils/queries";
-import { useRemoveSpent } from "@/utils/mutations";
+import { useRemoveCategory, useRemoveSpent } from "@/utils/mutations";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,6 +32,7 @@ function Home() {
   } = useCategories();
 
   const removeSpent = useRemoveSpent();
+  const removeCategory = useRemoveCategory();
 
   useEffect(() => {
     if (data) {
@@ -42,8 +43,7 @@ function Home() {
 
   const handleDeleteCategory = async (id: string) => {
     (async () => {
-      await deleteCategory(id);
-      navigate(0);
+      removeCategory.mutate(id);
     })();
   }
 
