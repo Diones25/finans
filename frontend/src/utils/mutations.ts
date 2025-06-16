@@ -3,6 +3,7 @@ import {
   addCategory,
   addSpent,
   deleteCategory,
+  deleteConstruction,
   deleteSpent,
   editCategory,
   editConstruction
@@ -144,6 +145,24 @@ export const useEditConstruction = () => {
     },
     onError: (error) => {
       toast.error(`Erro ao editar o gasto: ${error.message}`);
+    },
+  });
+
+  return mutation;
+}
+
+export const useRemoveconstruction = () => {
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteConstruction(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-constructions']
+      });
+      toast.success('Gasto removido com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(`Erro ao remover gasto: ${error.message}`);
     },
   });
 
