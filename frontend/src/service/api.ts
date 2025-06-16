@@ -7,6 +7,7 @@ import { EditCategory } from "@/types/EditCategory";
 import { Construction } from "@/types/Construction";
 import { Amount } from "@/types/Amount";
 import { EditConstruction } from "@/types/EditConstruction";
+import { CreateConstruction } from "@/types/CreateConstruction";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -105,12 +106,8 @@ export const getListAmount = async (): Promise<Amount> => {
   return response.data;
 }
 
-export const addConstruction = async (name: string, quantity: number, unitaryValue: number) => {
-  const response = await instance.post('/construction', {
-    name,
-    quantity,
-    unitaryValue
-  });
+export const addConstruction = async (data: CreateConstruction) => {
+  const response = await instance.post('/construction', data);
 
   return response.data;
 }
