@@ -2,6 +2,7 @@ import {
   addBalanceCategory,
   addCategory,
   addSpent,
+  deleteCategory,
   deleteSpent,
   editCategory
 } from "@/service/api";
@@ -32,7 +33,6 @@ export const useAddSpent = () => {
 }
 
 export const useRemoveSpent = () => {
-  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: (id: string) => deleteSpent(id),
@@ -40,7 +40,6 @@ export const useRemoveSpent = () => {
       queryClient.invalidateQueries({
         queryKey: ['all-spents']
       });
-      setTimeout(() => navigate('/'), 2000);
       toast.success('Gasto removido com sucesso!');
     },
     onError: (error) => {
