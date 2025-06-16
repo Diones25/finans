@@ -9,33 +9,27 @@ import {
 import { Button } from "./ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { deleteConstruction, getAllConstruction, getListAmount } from "@/service/api";
+import { deleteConstruction } from "@/service/api";
 import { formatCurrency, formateDate } from "@/lib/utils";
-import { Construction } from "../types/Construction";
 import Pagination from "./Pagination";
+import { useAllConstructions, useListAmount } from "@/utils/queries";
 
 function Home() {
   const navigate = useNavigate();
-  const [data, setData] = useState<Construction>();
-  const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number | any>(null);
   const [totalPages, setTotalPages] = useState(1);
   const [maxButtons, __] = useState(10);
 
-  useEffect(() => {
-    (async () => {
-      const response = await getAllConstruction(page, pageSize);
-      setData(response.data)
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-    })();
+  const { data, isLoading, isError } = useAllConstructions(page, pageSize);
+  const { data: amount } = useListAmount();
 
-    (async () => {
-      const amount = await getListAmount();
-      setAmount(amount.totalValue)
-    })();
-  }, [page, pageSize]);
+  useEffect(() => {
+    if (data) {
+      setPageSize(data.pageSize);
+      setTotalPages(data.totalPages);
+    }
+  }, [data]);
 
   const handleDeleteCategory = async (id: string) => {
     (async () => {
@@ -51,7 +45,7 @@ function Home() {
           <div className="flex justify-between mb-4">
             <h1 className="text-3xl font-semibold text-gray-800">Lista de Gastos</h1>
             <div className="bg-green-400 px-3 py-2 rounded-xl">
-              <h5 className="text-3xl font-semibold text-white">Total: <span>{amount > 0 ? formatCurrency(amount) : 0}</span></h5>
+              <h5 className="text-3xl font-semibold text-white">Total: <span>{amount?.totalValue as number > 0 ? formatCurrency(amount?.totalValue as number) : 0}</span></h5>
             </div>
           </div>
           <Table className="border text-gray-700">
