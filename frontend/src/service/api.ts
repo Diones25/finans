@@ -116,7 +116,7 @@ export const addConstruction = async (name: string, quantity: number, unitaryVal
 }
 
 export const editConstruction = async (id: string | undefined, data: EditConstruction) => {
-  const response = await instance.put(`/construction/${id}`, data);
+  const response = await instance.patch(`/construction/${id}`, data);
 
   return response.data;
 }
