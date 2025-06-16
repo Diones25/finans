@@ -9,8 +9,11 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NumericFormat } from 'react-number-format';
+import { useState } from "react";
 
 function AddCategory() {
+  const [formattedValue, setFormattedValue] = useState("");
   const navigate = useNavigate();
   const addCategory = useAddCategory();
 
@@ -18,16 +21,22 @@ function AddCategory() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<z.infer<typeof addCategorySchema>>({
     resolver: zodResolver(addCategorySchema)
   })
 
   const handleFormSubmit: SubmitHandler<z.infer<typeof addCategorySchema>> = (data) => {
-    addCategory.mutate(data, {
+    const convertedValue = parseFloat(formattedValue.replace(',', '.'));
+
+    addCategory.mutate(
+      { ...data, balance: convertedValue },
+      {
       onSuccess: () => {
         //Reseta o formulário
         reset();
+        setFormattedValue("");
       },
     });
   }
@@ -52,9 +61,19 @@ function AddCategory() {
 
             <div className="mb-2 space-y-2">
               <Label htmlFor="balance">Saldo</Label>
-              <Input
+              <NumericFormat
                 id="balance"
-                {...register('balance', { valueAsNumber: true })}
+                value={formattedValue}
+                decimalSeparator=","
+                thousandSeparator="."
+                allowNegative={false}
+                decimalScale={2}
+                fixedDecimalScale
+                customInput={Input}
+                onValueChange={(values) => {
+                  setFormattedValue(values.value);
+                  setValue("balance", parseFloat(values.value.replace(',', '.')));
+                }}
                 className={`border ${errors.balance ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
               />
               {errors.balance &&
