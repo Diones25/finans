@@ -53,11 +53,11 @@ function Home() {
 
   return (
     <>
-      <div className="container">
+      <div className="container mx-auto">
         <div className="pb-5">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Lista de Gastos</h1>
           <Table className="border text-gray-700">
-            <TableHeader className="bg-green-50">
+            <TableHeader>
               <TableRow>
                 <TableHead>Descrição</TableHead>
                 <TableHead className="w-40">Valor</TableHead>
@@ -81,7 +81,7 @@ function Home() {
                           {/* <Link to={`/edit/spent/${spt.id}`}>
                             <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
                           </Link> */}
-                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteSpent(spt.id)}>Excluir</Button>
+                          <Button onClick={() => handleDeleteSpent(spt.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -100,7 +100,7 @@ function Home() {
           </Table>
           <div className="flex justify-end pt-3">
             <Link to={"/add/spent"}>
-              <Button className="bg-green-600 text-white hover:bg-green-600">Adicionar gasto</Button>            
+              <Button>Adicionar gasto</Button>            
             </Link>
           </div>
         </div>
@@ -115,7 +115,7 @@ function Home() {
         <div className="pt-5">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Categorias</h1>
           <Table className="border text-gray-700">
-            <TableHeader className="bg-green-50">
+            <TableHeader>
               <TableRow>
                 <TableHead>Categoria</TableHead>
                 <TableHead className="w-40">Saldo</TableHead>
@@ -132,12 +132,12 @@ function Home() {
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">
                           <Link to={`/add/balance/${cat.id}`}>
-                            <Button className="bg-green-600 hover:bg-green-600">Adicionar saldo</Button>
+                            <Button>Adicionar saldo</Button>
                           </Link>
                           <Link to={`/edit/category/${cat.id}`}>
-                            <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
+                            <Button>Editar</Button>
                           </Link>
-                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteCategory(cat.id)}>Excluir</Button>
+                          <Button onClick={() => handleDeleteCategory(cat.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -157,7 +157,7 @@ function Home() {
           </Table>
           <div className="flex justify-end py-3">
             <Link to={"/add/category"}>
-              <Button className="bg-green-600 text-white hover:bg-green-600">Adicionar categoria</Button>
+              <Button>Adicionar categoria</Button>
             </Link>
           </div>
         </div>

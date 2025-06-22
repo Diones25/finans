@@ -1,13 +1,14 @@
+import type { Amount } from "@/types/Amount";
+import type { Category } from "@/types/Category";
+import type { Construction } from "@/types/Construction";
+import type { CreateCategory } from "@/types/CreateCategory";
+import type { CreateConstruction } from "@/types/CreateConstruction";
+import type { CreateSpent } from "@/types/CreateSpent";
+import type { EditCategory } from "@/types/EditCategory";
+import type { EditConstruction } from "@/types/EditConstruction";
+import type { Spent } from "@/types/Spent";
 import axios from "axios";
-import { Category } from "@/types/Category";
-import { Spent } from "@/types/Spent";
-import { CreateSpent } from "@/types/CreateSpent";
-import { CreateCategory } from "@/types/CreateCategory";
-import { EditCategory } from "@/types/EditCategory";
-import { Construction } from "@/types/Construction";
-import { Amount } from "@/types/Amount";
-import { EditConstruction } from "@/types/EditConstruction";
-import { CreateConstruction } from "@/types/CreateConstruction";
+
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
