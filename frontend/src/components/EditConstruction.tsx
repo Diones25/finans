@@ -92,8 +92,8 @@ function EditConstruction() {
             </div>
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button onClick={() => navigate("/construction")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-600">Atualizar</Button>
+              <Button onClick={() => navigate("/construction")}>Voltar</Button>
+              <Button type="submit">Atualizar</Button>
             </div>
           </form>
           <ToastContainer position="bottom-right" autoClose={3000} />

@@ -52,7 +52,7 @@ function AddConstruction() {
               <Input
                 id="name"
                 {...register('name')}
-                className={`border ${errors.name ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.name ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.name &&
                 <p className='text-red-600 text-sm'>{errors.name.message}</p>
@@ -64,7 +64,7 @@ function AddConstruction() {
               <Input
                 id="quantity"
                 {...register('quantity', { valueAsNumber: true, })}
-                className={`border ${errors.quantity ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.quantity ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.quantity &&
                 <p className='text-red-600 text-sm'>{errors.quantity.message}</p>
@@ -86,7 +86,7 @@ function AddConstruction() {
                   setFormattedValue(values.value);
                   setValue("unitaryValue", parseFloat(values.value.replace(',', '.')));
                 }}
-                className={`border ${errors.unitaryValue ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.unitaryValue ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.unitaryValue &&
                 <p className='text-red-600 text-sm'>{errors.unitaryValue.message}</p>
@@ -94,8 +94,8 @@ function AddConstruction() {
             </div>
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button onClick={() => navigate("/construction")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-600">Cadastrar</Button>
+              <Button onClick={() => navigate("/construction")}>Voltar</Button>
+              <Button type="submit">Cadastrar</Button>
             </div>
           </form>
           <ToastContainer position="bottom-right" autoClose={3000} />
