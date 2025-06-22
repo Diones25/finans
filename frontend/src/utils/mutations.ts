@@ -13,8 +13,9 @@ import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "./queryClient";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import { EditCategory } from "@/types/EditCategory";
-import { EditConstruction } from "@/types/EditConstruction";
+import type { EditCategory } from "@/types/EditCategory";
+import type { EditConstruction } from "@/types/EditConstruction";
+
 
 export const useAddSpent = () => {
   const navigate = useNavigate();

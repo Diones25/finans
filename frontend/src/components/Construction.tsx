@@ -45,7 +45,7 @@ function Home() {
 
   return (
     <>
-      <div className="container">
+      <div className="container mx-auto">
         <div className="pb-5">
           <div className="flex justify-between mb-4">
             <h1 className="text-3xl font-semibold text-gray-800">Lista de Gastos</h1>
@@ -54,7 +54,7 @@ function Home() {
             </div>
           </div>
           <Table className="border text-gray-700">
-            <TableHeader className="bg-green-50">
+            <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
                 <TableHead className="w-36">Quantidade</TableHead>
@@ -77,9 +77,9 @@ function Home() {
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">
                           <Link to={`/construction/edit/${item.id}`}>
-                            <Button className="bg-orange-400 hover:bg-orange-400">Editar</Button>
+                            <Button>Editar</Button>
                           </Link>
-                          <Button className="bg-red-500 hover:bg-red-500" onClick={() => handleDeleteConstruction(item.id)}>Excluir</Button>
+                          <Button onClick={() => handleDeleteConstruction(item.id)}>Excluir</Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -98,7 +98,7 @@ function Home() {
           </Table>
           <div className="flex justify-end pt-3">
             <Link to={"/add/construction"}>
-              <Button className="bg-green-600 text-white hover:bg-green-600">Adicionar gasto</Button>
+              <Button>Adicionar gasto</Button>
             </Link>
           </div>
         </div>

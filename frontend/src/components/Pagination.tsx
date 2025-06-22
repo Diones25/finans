@@ -38,9 +38,9 @@ function Pagination({ page, maxButtons, totalPages, setPage }: Props) {
           style={{
             margin: '0 5px',
             padding: '5px 10px',
-            backgroundColor: i === page ? '#007bff' : '#ffffff',
-            color: i === page ? '#ffffff' : '#007bff',
-            border: '1px solid #007bff',
+            backgroundColor: i === page ? '#8e51ff' : '#ffffff',
+            color: i === page ? '#ffffff' : '#8e51ff',
+            border: '1px solid #8e51ff',
             cursor: 'pointer'
           }}
         >
@@ -57,7 +57,7 @@ function Pagination({ page, maxButtons, totalPages, setPage }: Props) {
       <div className="flex justify-center items-center pb-3">
         {page > 1 && (
           <Button
-            className="bg-blue-500 px-4 py-2 text-white hover:bg-blue-500"
+            className="bg-[#8e51ff] px-4 py-2 text-white hover:bg-[#8e51ff]"
             onClick={() => handlePageChange(page - 1)} disabled={page === 1}
           >
             Anterior
@@ -70,7 +70,7 @@ function Pagination({ page, maxButtons, totalPages, setPage }: Props) {
 
         {page < totalPages && (
           <Button
-            className="bg-blue-500 px-4 py-2 text-white hover:bg-blue-500" onClick={() => handlePageChange(page + 1)}
+            className="bg-[#8e51ff] px-4 py-2 text-white hover:bg-[#8e51ff]" onClick={() => handlePageChange(page + 1)}
             disabled={page === totalPages}
           >
             Próximo

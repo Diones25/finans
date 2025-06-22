@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEditCategory } from "@/utils/mutations";
 import { useCategory } from "@/utils/queries";
 import { editCategorySchema } from "@/schemas/editCategorySchema";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
@@ -51,7 +51,7 @@ function EditCategory() {
 
   return (
     <>
-      <div className='container'>
+      <div className='container mx-auto'>
         <div className="w-[730px]">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Editar categoria</h1>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -60,7 +60,7 @@ function EditCategory() {
               <Input
                 id="description"
                 {...register('name')}
-                className={`border ${errors.name ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.name ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.name &&
                 <p className='text-red-600 text-sm'>{errors.name.message}</p>
@@ -72,7 +72,7 @@ function EditCategory() {
               <Input
                 id="description"
                 {...register('balance', { valueAsNumber: true })}
-                className={`border ${errors.balance ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.balance ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.balance &&
                 <p className='text-red-600 text-sm'>{errors.balance.message}</p>
@@ -80,8 +80,8 @@ function EditCategory() {
             </div>
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-600">Atualizar</Button>
+              <Button onClick={() => navigate("/")}>Voltar</Button>
+              <Button type="submit">Atualizar</Button>
             </div>
           </form>
           <ToastContainer position="bottom-right" autoClose={3000} />

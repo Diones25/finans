@@ -3,7 +3,7 @@ import { Button } from './ui/button'
 import { useNavigate } from 'react-router-dom';
 import { useAddConstruction } from '@/utils/mutations';
 import { addConstructionSchema } from '@/schemas/addConstructionSchema';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-label';
@@ -43,7 +43,7 @@ function AddConstruction() {
   
   return (
     <>
-      <div className='container'>
+      <div className='container mx-auto'>
         <div className="w-[730px]">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Adicionar gasto de construção</h1>
           <form onSubmit={handleSubmit(handleFormSubmit)}>

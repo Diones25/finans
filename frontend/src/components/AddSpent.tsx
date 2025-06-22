@@ -2,7 +2,7 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { useNavigate } from 'react-router-dom';
 import { useCategories } from "@/utils/queries";
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Input } from "./ui/input";
 import { addSpentSchema } from "@/schemas/addSpentSchema";
 import { z } from 'zod'
@@ -48,7 +48,7 @@ function AddSpent() {
 
   return (
     <>
-      <div className='container'>
+      <div className='container mx-auto'>
         <div className="w-[730px]">
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Adicionar gasto do cartão</h1>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -57,7 +57,7 @@ function AddSpent() {
               <Input
                 id="description"
                 {...register('description')}
-                className={`border ${errors.description ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.description ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.description &&
                 <p className='text-red-600 text-sm'>{errors.description.message}</p>
@@ -79,7 +79,7 @@ function AddSpent() {
                   setFormattedValue(values.value);
                   setValue("value", parseFloat(values.value.replace(',', '.')));
                 }}
-                className={`border ${errors.value ? 'border-red-600' : 'border-black'} text-black focus:outline-none`}
+                className={`border ${errors.value ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.value &&
                 <p className='text-red-600 text-sm'>{errors.value.message}</p>
@@ -92,11 +92,11 @@ function AddSpent() {
                 className={`border ${errors.categoryId ? 'border-red-600' : 'border-gray-600'}  p-2 w-[50%] mt-2`}
                 {...register('categoryId')}
               >
-                <option value="">Selecione a categoria</option>
+                <option value="" className="text-black">Selecione a categoria</option>
                 {categories ? (
                   <>
                     {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      <option className="text-black" key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
                   </>
                 ) : (
@@ -106,8 +106,8 @@ function AddSpent() {
             </div>
 
             <div className="text-white pt-2 space-x-2 flex justify-end">
-              <Button onClick={() => navigate("/")} className="bg-blue-600 hover:bg-blue-600">Voltar</Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-600">
+              <Button onClick={() => navigate("/")} >Voltar</Button>
+              <Button type="submit">
                 {addSpent.isPending ? 'Cadastrando...' : 'Cadastrar Gasto'}
               </Button>
             </div>
