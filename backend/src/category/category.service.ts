@@ -2,7 +2,8 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  BadRequestException
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -63,7 +64,12 @@ export class CategoryService {
   
   async remove(id: string) {
     await this.categoryNotExistsById(id);
+    const hasSpents = await this.hasLinkedSpents(id);
+    if (hasSpents) {
+      throw new BadRequestException('Não é possível remover esta categoria pois existem gastos vinculados a ela');
+    }
     try {
+
       return this.prisma.category.delete({
         where: {
           id
@@ -73,6 +79,16 @@ export class CategoryService {
       this.logger.error('Erro ao remover uma categoria', error);
       throw new InternalServerErrorException('Erro ao remover uma categoria');
     }
+  }
+
+  async hasLinkedSpents(categoryId: string): Promise<boolean> {
+    const spents = await this.prisma.spent.findFirst({
+      where: {
+        categoryId: categoryId
+      }
+    });
+
+    return !!spents; // Retorna true se existir algum gasto vinculado
   }
   
   async categoryNotExistsById(id: string) {
