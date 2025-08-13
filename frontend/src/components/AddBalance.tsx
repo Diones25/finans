@@ -9,29 +9,34 @@ import { Label } from '@radix-ui/react-label';
 import { Input } from './ui/input';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NumericFormat } from 'react-number-format';
+import { useState } from 'react';
 
 function AddBalance() {
+  const [formattedValue, setFormattedValue] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const addBalanceCategory = useAddBalanceCategory();
 
   const {
-    register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<z.infer<typeof addBalanceCategorySchema>>({
     resolver: zodResolver(addBalanceCategorySchema)
   })
 
-  const handleFormSubmit: SubmitHandler<z.infer<typeof addBalanceCategorySchema>> = (data) => {
+  const handleFormSubmit: SubmitHandler<z.infer<typeof addBalanceCategorySchema>> = () => {
     if (!id) return;
+    const convertedValue = parseFloat(formattedValue.replace(',', '.'));
 
     addBalanceCategory.mutate(
-      { id, balance: data.balance },{
+      { id, balance: convertedValue },{
       onSuccess: () => {
         //Reseta o formulário
-        reset();
+          reset();
+          setFormattedValue("");
       },
     });
   }
@@ -43,10 +48,20 @@ function AddBalance() {
           <h1 className="text-3xl font-semibold text-gray-800 my-3">Adicionar saldo</h1>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             <div className="mb-2 space-y-2">
-              <Label htmlFor="description">Saldo</Label>
-              <Input
-                id="description"
-                {...register('balance', { valueAsNumber: true })}
+              <Label htmlFor="balance">Saldo</Label>
+              <NumericFormat
+                id="balance"
+                value={formattedValue}
+                decimalSeparator=","
+                thousandSeparator="."
+                allowNegative={false}
+                decimalScale={2}
+                fixedDecimalScale
+                customInput={Input}
+                onValueChange={(values) => {
+                  setFormattedValue(values.value);
+                  setValue("balance", parseFloat(values.value.replace(',', '.')));
+                }}
                 className={`border ${errors.balance ? 'border-red-600' : 'border-black'} focus:outline-none`}
               />
               {errors.balance &&
