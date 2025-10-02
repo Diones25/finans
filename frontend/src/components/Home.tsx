@@ -55,8 +55,8 @@ function Home() {
     <>
       <div className="container mx-auto">
         <div className="pb-5">
-          <h1 className="text-3xl font-semibold text-gray-800 my-3">Lista de Gastos</h1>
-          <Table className="border text-gray-700">
+          <h1 className="text-3xl font-semibold my-3">Lista de Gastos</h1>
+          <Table className="border">
             <TableHeader>
               <TableRow>
                 <TableHead>Descrição</TableHead>
@@ -113,8 +113,8 @@ function Home() {
         />
 
         <div className="pt-5">
-          <h1 className="text-3xl font-semibold text-gray-800 my-3">Categorias</h1>
-          <Table className="border text-gray-700">
+          <h1 className="text-3xl font-semibold my-3">Categorias</h1>
+          <Table className="border">
             <TableHeader>
               <TableRow>
                 <TableHead>Categoria</TableHead>
