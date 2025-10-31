@@ -48,12 +48,12 @@ function Home() {
       <div className="container mx-auto">
         <div className="pb-5">
           <div className="flex justify-between mb-4">
-            <h1 className="text-3xl font-semibold text-gray-800">Lista de Gastos</h1>
+            <h1 className="text-3xl font-semibold">Lista de Gastos</h1>
             <div className="bg-green-400 px-3 py-2 rounded-xl">
               <h5 className="text-3xl font-semibold text-white">Total: <span>{amount?.totalValue as number > 0 ? formatCurrency(amount?.totalValue as number) : 0}</span></h5>
             </div>
           </div>
-          <Table className="border text-gray-700">
+          <Table className="border">
             <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
