@@ -25,7 +25,7 @@ export class CategoryService {
       throw new InternalServerErrorException('Erro ao criar categoria');
     }
   }
-  
+
   async findAll() {
     this.logger.log("Buscando todas as categorias");
     const categories = await this.prisma.category.findMany();
@@ -61,7 +61,7 @@ export class CategoryService {
       throw new InternalServerErrorException('Erro ao atualizar uma categoria');
     }
   }
-  
+
   async remove(id: string) {
     await this.categoryNotExistsById(id);
     const hasSpents = await this.hasLinkedSpents(id);
@@ -90,7 +90,7 @@ export class CategoryService {
 
     return !!spents; // Retorna true se existir algum gasto vinculado
   }
-  
+
   async categoryNotExistsById(id: string) {
     const category = await this.prisma.category.findUnique({
       where: {
@@ -150,7 +150,7 @@ export class CategoryService {
     }
   }
 
-  async updateCategoryBalance (id: string, balance: number) {
+  async updateCategoryBalance(id: string, balance: number) {
     return await this.prisma.category.update({
       where: {
         id: id
