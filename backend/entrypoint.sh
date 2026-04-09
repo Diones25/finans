@@ -1,7 +1,5 @@
 #!/bin/sh
-
-echo "Instalando dependências..."
-npm install
+set -e # Para o script se houver erro
 
 echo "Aguardando o banco de dados em db:5432..."
 while ! nc -z db 5432; do
@@ -9,12 +7,8 @@ while ! nc -z db 5432; do
 done
 
 echo "Banco de dados pronto! Executando migrações..."
-npx prisma migrate deploy
+npx prisma migrate deploy || echo "Aviso: Falha ao aplicar migrações, mas continuando..."
 
-echo "Migrações aplicadas! Fazendo o build do projeto..."
-npm run build
-
-echo "Iniciando o servidor..."
-npm run start
-
-echo "Servidor iniciado!"
+echo "Iniciando o servidor em modo produção..."
+# Usamos o main.js compilado na pasta dist
+node dist/main.js
