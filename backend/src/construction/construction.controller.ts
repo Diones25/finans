@@ -4,7 +4,7 @@ import { CreateConstructionDto } from './dto/create-construction.dto';
 import { UpdateConstructionDto } from './dto/update-construction.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PaginationDto } from './dto/pagination.dto';
-import { SanitizePipe } from 'src/pipes/sanitize.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @Controller('construction')
 export class ConstructionController {

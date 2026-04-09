@@ -4,7 +4,7 @@ import { CreateSpentDto } from './dto/create-spent.dto';
 import { UpdateSpentDto } from './dto/update-spent.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PaginationDto } from './dto/pagination.dto';
-import { SanitizePipe } from 'src/pipes/sanitize.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @Controller('spent')
 export class SpentController {
