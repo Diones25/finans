@@ -6,7 +6,7 @@ services:
       - ./backend/.env
     restart: always
     ports:
-      - 5432:5432
+      - 5433:5432
     healthcheck:
       test:
         [
@@ -41,7 +41,7 @@ services:
     env_file:
       - ./frontend/.env
     ports:
-      - "8080:80"
+      - "8081:80"
     restart: always
     depends_on:
       - backend
