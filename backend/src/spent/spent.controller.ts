@@ -138,9 +138,7 @@ export class SpentController {
     }
   })
   findAll(@Query() pagination: PaginationDto) {
-    const page = pagination.page || 1;
-    const pageSize = pagination.pageSize || 5;
-    return this.spentService.findAll(page, pageSize);
+    return this.spentService.findAll(pagination);
   }
 
   @Get(':id')

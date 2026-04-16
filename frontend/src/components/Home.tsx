@@ -18,15 +18,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number | any>(null);
-  const [totalPages, setTotalPages] = useState<number | any>(null);
+  const [pageSize] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const [maxButtons, __] = useState(10);
 
-  const { data } = useAllSpents(page, pageSize);
+  const { data, isLoading, isError } = useAllSpents(page, pageSize);
   const {
     data: categoriesData,
-    //isLoading: isLoadingCategories,
-    //isError: isErrorCategories
+    isLoading: isLoadingCategories,
+    isError: isErrorCategories
   } = useCategories();
 
   const removeSpent = useRemoveSpent();
@@ -34,7 +34,6 @@ function Home() {
 
   useEffect(() => {
     if (data) {
-      setPageSize(data.pageSize);
       setTotalPages(data.totalPages);
     }
   }, [data]);
@@ -47,7 +46,7 @@ function Home() {
 
   const handleDeleteSpent = (id: string) => {
     (async () => {
-      removeSpent.mutate(id);           
+      removeSpent.mutate(id);
     })();
   }
 
@@ -67,14 +66,26 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.spents?.length as number > 0 ? (
+              {isLoading || isLoadingCategories ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-10">
+                    Carregando dados...
+                  </TableCell>
+                </TableRow>
+              ) : isError || isErrorCategories ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-10 text-red-500">
+                    Erro ao carregar dados. Verifique a conexão com o servidor.
+                  </TableCell>
+                </TableRow>
+              ) : Array.isArray(data?.spents) && data.spents.length > 0 ? (
                 <>
-                  {data?.spents.map((spt) => (
+                  {data.spents.map((spt) => (
                     <TableRow key={spt.id}>
-                      <TableCell className="font-medium">{ spt.description }</TableCell>
-                      <TableCell>{ formatCurrency(Number(spt.value)) }</TableCell>
-                      <TableCell>{ spt.category.name }</TableCell>
-                      <TableCell>{formateDate(spt.createdAt) }</TableCell>
+                      <TableCell className="font-medium">{spt.description}</TableCell>
+                      <TableCell>{formatCurrency(Number(spt.value))}</TableCell>
+                      <TableCell>{spt.category.name}</TableCell>
+                      <TableCell>{formateDate(spt.createdAt)}</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2 flex justify-end">
                           {/*Não faz sentido por enquanto ter uma edição de gasto*/}
@@ -87,7 +98,7 @@ function Home() {
                     </TableRow>
                   ))}
                 </>
-              ): (
+              ) : (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center">
                     <p className="bg-orange-300 border border-orange-400 rounded-xl text-white py-2 m-2 inline-block">
@@ -100,7 +111,7 @@ function Home() {
           </Table>
           <div className="flex justify-end pt-3">
             <Link to={"/add/spent"}>
-              <Button>Adicionar gasto</Button>            
+              <Button>Adicionar gasto</Button>
             </Link>
           </div>
         </div>
@@ -123,12 +134,12 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categoriesData && categoriesData.length > 0 ? (
+              {Array.isArray(categoriesData) && categoriesData.length > 0 ? (
                 <>
                   {categoriesData.map((cat) => (
                     <TableRow key={cat.id}>
-                      <TableCell className="font-medium">{ cat.name }</TableCell>
-                      <TableCell>{formatCurrency(Number(cat.balance)) }</TableCell>
+                      <TableCell className="font-medium">{cat.name}</TableCell>
+                      <TableCell>{formatCurrency(Number(cat.balance))}</TableCell>
                       <TableCell className="text-left">
                         <div className="text-white space-x-2">
                           <Link to={`/add/balance/${cat.id}`}>
@@ -141,7 +152,7 @@ function Home() {
                         </div>
                       </TableCell>
                     </TableRow>
-                    ))}
+                  ))}
                 </>
               ) : (
                 <TableRow>
@@ -152,7 +163,7 @@ function Home() {
                   </TableCell>
                 </TableRow>
               )}
-              
+
             </TableBody>
           </Table>
           <div className="flex justify-end py-3">
@@ -162,7 +173,7 @@ function Home() {
           </div>
         </div>
         <ToastContainer position="bottom-right" autoClose={3000} />
-      </div> 
+      </div>
     </>
   )
 }

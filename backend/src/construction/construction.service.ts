@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, Logger, 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateConstructionDto } from './dto/create-construction.dto';
 import { UpdateConstructionDto } from './dto/update-construction.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class ConstructionService {
@@ -30,11 +31,11 @@ export class ConstructionService {
     }
   }
 
-  async findAll(currentPage: number, itensPerPage: number) {
+  async findAll(paginationDto: PaginationDto) {
 
     try {
-      let page = Number(currentPage) || 1;
-      let pageSize = Number(itensPerPage) || 5;
+      let page = Number(paginationDto.page) || 1;
+      let pageSize = Number(paginationDto.pageSize) || 5;
 
       if (page < 0) {
         page = 1;

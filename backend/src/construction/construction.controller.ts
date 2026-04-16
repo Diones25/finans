@@ -108,9 +108,7 @@ export class ConstructionController {
     }
   })
   findAll(@Query() pagination: PaginationDto) {
-    const page = pagination.page || 1;
-    const pageSize = pagination.pageSize || 5;
-    return this.constructionService.findAll(page, pageSize);
+    return this.constructionService.findAll(pagination);
   }
 
   @ApiOperation({

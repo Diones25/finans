@@ -36,6 +36,8 @@ async function bootstrap() {
   const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
+  app.setGlobalPrefix('api');
+
   await app.listen(process.env.PORT ?? 3004);
   Logger.log(`Servidor rodando em http://localhost:${process.env.PORT ?? 3004}`);
 }

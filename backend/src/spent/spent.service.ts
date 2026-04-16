@@ -9,6 +9,7 @@ import { CategoryService } from '../category/category.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSpentDto } from './dto/create-spent.dto';
 import { UpdateSpentDto } from './dto/update-spent.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class SpentService {
@@ -18,7 +19,7 @@ export class SpentService {
   ) { }
 
   private readonly logger = new Logger(SpentService.name);
-  
+
   async create(createSpentDto: CreateSpentDto) {
 
     await this.categoryService.categoryNotExistsById(createSpentDto.categoryId);
@@ -43,11 +44,11 @@ export class SpentService {
     }
   }
 
-  async findAll(currentPage: number, itensPerPage: number) {
+  async findAll(paginationDto: PaginationDto) {
 
     try {
-      let page = Number(currentPage) || 1;
-      let pageSize = Number(itensPerPage) || 5;
+      let page = Number(paginationDto.page) || 1;
+      let pageSize = Number(paginationDto.pageSize) || 5;
 
       if (page < 0) {
         page = 1;
