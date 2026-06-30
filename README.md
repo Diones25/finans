@@ -1,20 +1,20 @@
 # Finans
 
-**Sistema completo de gerenciamento financeiro pessoal** com controle de gastos, categorias com saldo, e acompanhamento de obras. Arquitetura fullstack conteinerizada com NestJS, React, PostgreSQL e Nginx.
+**Complete personal financial management system** with expense tracking, categorized balances, and construction project monitoring. Fullstack containerized architecture with NestJS, React, PostgreSQL and Nginx.
 
 ---
 
 ## Stack
 
-| Camada | Tecnologia |
+| Layer | Technology |
 |---|---|
 | Frontend | React 19, Vite 6, Tailwind CSS 4, Shadcn UI, TanStack Query 5, React Router 7, React Hook Form + Zod |
 | Backend | NestJS 11, TypeScript, Prisma 7, PostgreSQL 16, Swagger, Helmet |
-| Infraestrutura | Docker, Docker Compose, Nginx, PostgreSQL 16 |
+| Infrastructure | Docker, Docker Compose, Nginx, PostgreSQL 16 |
 
 ---
 
-## Arquitetura
+## Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -32,39 +32,39 @@
 └──────────────────────────────────────────────────────────┘
 ```
 
-### Fluxo de requisição
+### Request flow
 
 ```
 Browser ──► localhost:8081 ──► Nginx
-                                  │
-                                  ├── /api/* ──► proxy_pass ──► backend:3004 ──► Prisma ──► db:5432
-                                  │
-                                  └── /* ──► serve index.html (SPA)
+                                   │
+                                   ├── /api/* ──► proxy_pass ──► backend:3004 ──► Prisma ──► db:5432
+                                   │
+                                   └── /* ──► serve index.html (SPA)
 ```
 
 ---
 
-## Containerização
+## Containerization
 
-O projeto utiliza **Docker Compose** para orquestrar 3 serviços que rodam em paralelo em uma rede isolada, garantindo que se comuniquem via DNS interno.
+The project uses **Docker Compose** to orchestrate 3 services running in parallel on an isolated network, ensuring they communicate via internal DNS.
 
-### Serviços
+### Services
 
-| Serviço | Imagem | Porta (Host:Container) | Depende de |
+| Service | Image | Port (Host:Container) | Depends on |
 |---|---|---|---|
 | `db` | `postgres:16` | `5433:5432` | — |
-| `backend` | build local (`./backend/Dockerfile`) | `3000:3004` | `db` (healthcheck) |
-| `frontend` | build local (`./frontend/Dockerfile`) | `8081:80` | `backend` |
+| `backend` | local build (`./backend/Dockerfile`) | `3000:3004` | `db` (healthcheck) |
+| `frontend` | local build (`./frontend/Dockerfile`) | `8081:80` | `backend` |
 
-### Orchestação e inicialização paralela
+### Orchestration and parallel startup
 
-O Docker Compose gerencia o ciclo de vida completo dos containers:
+Docker Compose manages the full container lifecycle:
 
-1. **Rede compartilhada** — Todos os serviços são criados na mesma rede padrão do Compose, permitindo que se descubram pelo nome do serviço (ex.: `db`, `backend`).
+1. **Shared network** — All services are created on the same default Compose network, allowing them to discover each other by service name (e.g., `db`, `backend`).
 
-2. **Ordem de inicialização** — Embora o Compose inicie os serviços em paralelo, as dependências garantem a ordem correta:
-   - `db` sobe primeiro (sem depências).
-   - O Compose aguarda o **healthcheck** do `db` antes de liberar os dependentes:
+2. **Startup order** — Although Compose starts services in parallel, dependencies ensure correct ordering:
+   - `db` starts first (no dependencies).
+   - Compose waits for the **healthcheck** on `db` before releasing dependents:
      ```yaml
      healthcheck:
        test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -72,73 +72,73 @@ O Docker Compose gerencia o ciclo de vida completo dos containers:
        timeout: 5s
        retries: 5
      ```
-   - `backend` e `frontend` só começam a ser criados após o `db` estar saudável.
+   - `backend` and `frontend` only begin building after `db` is healthy.
 
-3. **Entrypoint do backend** (`entrypoint.sh`) — Script que executa dentro do container:
+3. **Backend entrypoint** (`entrypoint.sh`) — Script that runs inside the container:
    ```bash
-   # 1. Aguarda o PostgreSQL aceitar conexões
+   # 1. Wait for PostgreSQL to accept connections
    while ! nc -z db 5432; do sleep 1; done
-   # 2. Aplica migrations pendentes
+   # 2. Apply pending migrations
    npx prisma migrate deploy
-   # 3. Inicia a aplicação
+   # 3. Start the application
    node dist/main.js
    ```
 
-4. **Paralelismo real** — Após o `db` estar pronto, `backend` e `frontend` constroem e sobem **simultaneamente**, cada um em seu próprio container.
+4. **True parallelism** — Once `db` is ready, `backend` and `frontend` build and start **simultaneously**, each in its own container.
 
 ### Dockerfiles
 
 **Backend** (`backend/Dockerfile`):
-- Stage único baseado em `node:22`
-- Instala dependências com `npm install`
-- Gera Prisma Client, compila TypeScript
-- Instala `netcat-openbsd` para o healthcheck do entrypoint
-- Expõe porta 3004
+- Single stage based on `node:22`
+- Installs dependencies with `npm install`
+- Generates Prisma Client, compiles TypeScript
+- Installs `netcat-openbsd` for entrypoint healthcheck
+- Exposes port 3004
 
 **Frontend** (`frontend/Dockerfile`):
-- **Multi-stage** para imagem final enxuta:
-  - **Stage 1 (builder):** `node:22-alpine` — instala dependências e executa `npm run build` (Vite)
-  - **Stage 2 (runtime):** `nginx:alpine` — copia o build para `/usr/share/nginx/html` e aplica configuração personalizada
-- Expõe porta 80
+- **Multi-stage** for a lean final image:
+  - **Stage 1 (builder):** `node:22-alpine` — installs dependencies and runs `npm run build` (Vite)
+  - **Stage 2 (runtime):** `nginx:alpine` — copies the build to `/usr/share/nginx/html` and applies custom configuration
+- Exposes port 80
 
 ### Volumes
 
 ```yaml
 volumes:
-  banco_data:       # Volume nomeado para persistência do PostgreSQL
+  banco_data:       # Named volume for PostgreSQL persistence
 ```
 
-O volume `banco_data` monta em `/var/lib/postgresql/data` dentro do container `db`, garantindo que os dados sobrevivam a `docker compose down`.
+The `banco_data` volume mounts to `/var/lib/postgresql/data` inside the `db` container, ensuring data survives `docker compose down`.
 
-### Rede e descoberta de serviços
+### Network and service discovery
 
 ```yaml
-# Backend conecta ao banco via nome do serviço
+# Backend connects to the database via service name
 DATABASE_URL="postgresql://postgres:123@db:5432/finans?schema=public"
 
-# Nginx no frontend faz proxy reverso para o backend
+# Nginx in the frontend reverse proxies to the backend
 location /api {
-    proxy_pass http://backend:3004/api;   # ← DNS interno do Compose
+    proxy_pass http://backend:3004/api;   # ← Internal Compose DNS
 }
 ```
 
-### Comando para iniciar
+### Startup command
 
 ```bash
 docker compose up -d --build
 ```
 
-O Compose então:
-1. Cria a rede e o volume
-2. Faz pull da imagem `postgres:16`
-3. Constrói as imagens `backend` e `frontend`
-4. Inicia `db`, aguarda healthcheck
-5. Inicia `backend` e `frontend` em paralelo
-6. Expõe as portas para o host
+Compose will then:
+1. Create the network and volume
+2. Pull the `postgres:16` image
+3. Build the `backend` and `frontend` images
+4. Start `db`, wait for healthcheck
+5. Start `backend` and `frontend` in parallel
+6. Expose ports to the host
 
 ---
 
-## Banco de Dados
+## Database
 
 ### Schema (Prisma)
 
@@ -174,65 +174,65 @@ model Construction {
 
 ## API (Endpoints)
 
-Todos os endpoints são prefixados com `/api` e documentados via Swagger em `http://localhost:3000/api`.
+All endpoints are prefixed with `/api` and documented via Swagger at `http://localhost:3000/api`.
 
 ### Category
 
-| Método | Rota | Descrição |
+| Method | Route | Description |
 |---|---|---|
-| `POST` | `/api/category/create` | Criar categoria (valida nome único) |
-| `GET` | `/api/category/all` | Listar todas as categorias |
-| `GET` | `/api/category/:id` | Obter categoria por ID |
-| `PATCH` | `/api/category/:id` | Atualizar categoria |
-| `PUT` | `/api/category/balance/add/:id` | Adicionar saldo à categoria |
-| `DELETE` | `/api/category/:id` | Excluir categoria (bloqueia se houver gastos vinculados) |
+| `POST` | `/api/category/create` | Create category (validates unique name) |
+| `GET` | `/api/category/all` | List all categories |
+| `GET` | `/api/category/:id` | Get category by ID |
+| `PATCH` | `/api/category/:id` | Update category |
+| `PUT` | `/api/category/balance/add/:id` | Add balance to category |
+| `DELETE` | `/api/category/:id` | Delete category (blocks if linked expenses exist) |
 
 ### Spent
 
-| Método | Rota | Descrição |
+| Method | Route | Description |
 |---|---|---|
-| `POST` | `/api/spent` | Criar gasto (deduz do saldo da categoria) |
-| `GET` | `/api/spent/all` | Listar gastos (paginado) |
-| `GET` | `/api/spent/:id` | Obter gasto por ID |
-| `PATCH` | `/api/spent/:id` | Atualizar gasto |
-| `DELETE` | `/api/spent/:id` | Excluir gasto |
+| `POST` | `/api/spent` | Create expense (deducts from category balance) |
+| `GET` | `/api/spent/all` | List expenses (paginated) |
+| `GET` | `/api/spent/:id` | Get expense by ID |
+| `PATCH` | `/api/spent/:id` | Update expense |
+| `DELETE` | `/api/spent/:id` | Delete expense |
 
 ### Construction
 
-| Método | Rota | Descrição |
+| Method | Route | Description |
 |---|---|---|
-| `POST` | `/api/construction` | Criar item (calcula `amount = quantity × unitaryValue`) |
-| `GET` | `/api/construction/all` | Listar itens (paginado) |
-| `GET` | `/api/construction/amount` | Obter soma total de todos os itens |
-| `GET` | `/api/construction/:id` | Obter item por ID |
-| `PATCH` | `/api/construction/:id` | Atualizar item (recalcula `amount`) |
-| `DELETE` | `/api/construction/:id` | Excluir item |
+| `POST` | `/api/construction` | Create item (calculates `amount = quantity × unitaryValue`) |
+| `GET` | `/api/construction/all` | List items (paginated) |
+| `GET` | `/api/construction/amount` | Get total sum of all items |
+| `GET` | `/api/construction/:id` | Get item by ID |
+| `PATCH` | `/api/construction/:id` | Update item (recalculates `amount`) |
+| `DELETE` | `/api/construction/:id` | Delete item |
 
 ---
 
-## Como executar
+## How to run
 
-### Produção (Docker)
+### Production (Docker)
 
 ```bash
-# Clonar o repositório
+# Clone the repository
 git clone <repo-url>
 cd finans
 
-# Configurar variáveis de ambiente
+# Configure environment variables
 cp backend/.env.example backend/.env
-# Editar backend/.env se necessário
+# Edit backend/.env if needed
 
-# Iniciar todos os serviços
+# Start all services
 docker compose up -d --build
 ```
 
-Acessar:
+Access:
 - **Frontend:** http://localhost:8081
 - **API:** http://localhost:3000/api
 - **Swagger:** http://localhost:3000/api
 
-### Desenvolvimento (sem Docker)
+### Development (without Docker)
 
 ```bash
 # Backend
@@ -242,73 +242,73 @@ npm install
 npx prisma migrate dev
 npm run start:dev
 
-# Frontend (outro terminal)
+# Frontend (another terminal)
 cd frontend
 cp .env.example .env
-# Editar VITE_API_URL=http://localhost:3004
+# Edit VITE_API_URL=http://localhost:3004
 npm install
 npm run dev
 ```
 
 ---
 
-## Telas do Sistema
+## System Screens
 
-> *Adicione aqui capturas de tela das principais interfaces do sistema.*
+> *Add screenshots of the main system interfaces here.*
 
-### Dashboard — Gastos e Categorias
+### Dashboard — Expenses and Categories
 
 ![Dashboard](./frontend/src/assets/docs/dasboard.png)
 
-Tela inicial com duas tabelas lado a lado: lançamentos de gastos (com paginação) e categorias cadastradas com saldo disponível e ações rápidas.
+Home screen with two side-by-side tables: expense entries (with pagination) and registered categories with available balance and quick actions.
 
-### Módulo de Construção
+### Construction Module
 
-![Construção](./frontend/src/assets/docs/construction.png)
+![Construction](./frontend/src/assets/docs/construction.png)
 
-Lista de itens de obra com quantidade, valor unitário, subtotal calculado automaticamente e total geral destacado em verde.
+List of construction items with quantity, unit value, automatically calculated subtotal, and overall total highlighted in green.
 
-### Cadastro de Gastos
+### Add Expense
 
-![Adicionar Gasto](./frontend/src/assets/docs/cadastro_gasto.png)
+![Add Expense](./frontend/src/assets/docs/cadastro_gasto.png)
 
-Formulário para registrar um novo gasto com descrição, valor (formatação monetária BRL) e seleção de categoria.
+Form to register a new expense with description, value (BRL currency formatting), and category selection.
 
-### Cadastro de Categorias
+### Add Category
 
-![Adicionar Categoria](./frontend/src/assets/docs/cadastro_categoria.png)
+![Add Category](./frontend/src/assets/docs/cadastro_categoria.png)
 
-Formulário para criar categoria com nome e saldo inicial.
+Form to create a category with name and initial balance.
 
-### Adicionar Saldo
+### Add Balance
 
-![Adicionar Saldo](./frontend/src/assets/docs/adicionar_saldo.png)
+![Add Balance](./frontend/src/assets/docs/adicionar_saldo.png)
 
-Formulário para incrementar o saldo de uma categoria existente.
+Form to increment the balance of an existing category.
 
-### Cadastro de Itens de Construção
+### Add Construction Item
 
-![Adicionar Item de Construção](./frontend/src/assets/docs/gasto_construcao.png)
+![Add Construction Item](./frontend/src/assets/docs/gasto_construcao.png)
 
-Formulário para adicionar item de construção com nome, quantidade e valor unitário — o subtotal é calculado automaticamente.
+Form to add a construction item with name, quantity, and unit value — the subtotal is calculated automatically.
 
 ---
 
-## Variáveis de Ambiente
+## Environment Variables
 
 ### Backend (`backend/.env`)
 
-| Variável | Descrição | Exemplo |
+| Variable | Description | Example |
 |---|---|---|
-| `DATABASE_URL` | String de conexão com PostgreSQL | `postgresql://postgres:123@db:5432/finans` |
-| `POSTGRES_USER` | Usuário do banco | `postgres` |
-| `POSTGRES_PASSWORD` | Senha do banco | `123` |
-| `POSTGRES_DB` | Nome do banco | `finans` |
-| `PORT` | Porta do servidor NestJS | `3004` |
-| `NODE_ENV` | Ambiente de execução | `development` |
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://postgres:123@db:5432/finans` |
+| `POSTGRES_USER` | Database user | `postgres` |
+| `POSTGRES_PASSWORD` | Database password | `123` |
+| `POSTGRES_DB` | Database name | `finans` |
+| `PORT` | NestJS server port | `3004` |
+| `NODE_ENV` | Runtime environment | `development` |
 
 ### Frontend (`frontend/.env`)
 
-| Variável | Descrição | Exemplo |
+| Variable | Description | Example |
 |---|---|---|
-| `VITE_API_URL` | URL base da API (vazio = proxy Nginx) | `/api` |
+| `VITE_API_URL` | API base URL (empty = Nginx proxy) | `/api` |
