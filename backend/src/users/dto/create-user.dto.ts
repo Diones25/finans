@@ -5,7 +5,7 @@ import {
   MaxLength,
   IsNotEmpty,
   Length,
-  Matches
+  Matches,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -15,7 +15,9 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty({ message: 'Nome é obrigatório' })
   @Length(3, 100, { message: 'Nome deve ter entre 3 e 100 caracteres' })
-  @Matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, { message: 'Nome contém caracteres inválidos' })
+  @Matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, {
+    message: 'Nome contém caracteres inválidos',
+  })
   name: string;
 
   @ApiProperty({ example: 'joao@email.com' })
@@ -31,7 +33,8 @@ export class CreateUserDto {
   @MinLength(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
   @MaxLength(50, { message: 'Senha deve ter no máximo 50 caracteres' })
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/, {
-    message: 'Senha deve conter letra maiúscula, minúscula, número e caractere especial',
+    message:
+      'Senha deve conter letra maiúscula, minúscula, número e caractere especial',
   })
   password: string;
 }

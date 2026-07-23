@@ -1,4 +1,11 @@
-import { IsString, IsEmail, IsNotEmpty, MaxLength, MinLength, Matches } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  MaxLength,
+  MinLength,
+  Matches,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
@@ -16,7 +23,8 @@ export class LoginDto {
   @MinLength(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
   @MaxLength(50, { message: 'Senha deve ter no máximo 50 caracteres' })
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/, {
-    message: 'Senha deve conter letra maiúscula, minúscula, número e caractere especial',
+    message:
+      'Senha deve conter letra maiúscula, minúscula, número e caractere especial',
   })
   password: string;
 }
