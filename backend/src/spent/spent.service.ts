@@ -3,7 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { CategoryService } from '../category/category.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -15,25 +15,30 @@ import { PaginationDto } from './dto/pagination.dto';
 export class SpentService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly categoryService: CategoryService
-  ) { }
+    private readonly categoryService: CategoryService,
+  ) {}
 
   private readonly logger = new Logger(SpentService.name);
 
   async create(createSpentDto: CreateSpentDto) {
-
     await this.categoryService.categoryNotExistsById(createSpentDto.categoryId);
 
     this.logger.log('Buscando saldo da categoria');
-    const categoryBalance = await this.categoryService.findBalance(createSpentDto.categoryId);
+    const categoryBalance = await this.categoryService.findBalance(
+      createSpentDto.categoryId,
+    );
 
     if (Number(categoryBalance?.balance) < Number(createSpentDto.value)) {
       this.logger.error('Saldo insuficiente');
       throw new BadRequestException('Saldo insuficiente');
     }
 
-    const newBalance = Number(categoryBalance?.balance) - Number(createSpentDto.value);
-    await this.categoryService.updateCategoryBalance(createSpentDto.categoryId, newBalance);
+    const newBalance =
+      Number(categoryBalance?.balance) - Number(createSpentDto.value);
+    await this.categoryService.updateCategoryBalance(
+      createSpentDto.categoryId,
+      newBalance,
+    );
 
     try {
       this.logger.log('Criando gasto');
@@ -45,10 +50,9 @@ export class SpentService {
   }
 
   async findAll(paginationDto: PaginationDto) {
-
     try {
       let page = Number(paginationDto.page) || 1;
-      let pageSize = Number(paginationDto.pageSize) || 5;
+      const pageSize = Number(paginationDto.pageSize) || 5;
 
       if (page < 0) {
         page = 1;
@@ -59,7 +63,7 @@ export class SpentService {
 
       const spents = await this.listAllSpents(skip, take);
 
-      const totalSpents = await this.totalSpentsCount()
+      const totalSpents = await this.totalSpentsCount();
       const totalPages = Math.ceil(totalSpents / pageSize);
 
       const data = {
@@ -67,8 +71,8 @@ export class SpentService {
         totalSpents,
         totalPages,
         pageSize: pageSize,
-        page: page
-      }
+        page: page,
+      };
 
       this.logger.log('Buscando todos os gastos com paginação');
       return data;
@@ -86,13 +90,16 @@ export class SpentService {
 
   async update(id: string, updateSpentDto: UpdateSpentDto) {
     await this.spentNotFound(id);
-    await this.categoryService.categoryNotExistsById(updateSpentDto.categoryId as string);
+    await this.categoryService.categoryNotExistsById(updateSpentDto.categoryId);
     try {
       this.logger.log(`Atualizando gasto com id ${id}`);
       return this.prisma.spent.update({ where: { id }, data: updateSpentDto });
     } catch (error) {
       this.logger.error(`Erro ao atualizando gasto com id ${id}`, error);
-      throw new InternalServerErrorException(`Erro ao atualizando gasto com id ${id}`, error);
+      throw new InternalServerErrorException(
+        `Erro ao atualizando gasto com id ${id}`,
+        error,
+      );
     }
   }
 
@@ -105,8 +112,8 @@ export class SpentService {
     const spents = await this.prisma.spent.findMany({
       orderBy: [
         {
-          createdAt: 'desc'
-        }
+          createdAt: 'desc',
+        },
       ],
       select: {
         id: true,
@@ -115,12 +122,12 @@ export class SpentService {
         createdAt: true,
         category: {
           select: {
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
       },
       skip: skip,
-      take: take
+      take: take,
     });
 
     this.logger.log('Buscando todos os gastos com paginação');

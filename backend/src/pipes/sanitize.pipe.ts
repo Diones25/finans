@@ -1,4 +1,4 @@
-import { ArgumentMetadata, Injectable, PipeTransform } from "@nestjs/common";
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import * as sanitizeHtml from 'sanitize-html';
 
 @Injectable()
@@ -7,7 +7,7 @@ export class SanitizePipe implements PipeTransform {
     if (typeof value === 'string') {
       return sanitizeHtml(value, {
         allowedTags: [], // Remove todas as tags HTML
-        allowedAttributes: {} // Remove todos os atributos
+        allowedAttributes: {}, // Remove todos os atributos
       });
     }
 

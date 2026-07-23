@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateConstructionDto } from './dto/create-construction.dto';
 import { UpdateConstructionDto } from './dto/update-construction.dto';
@@ -6,24 +11,23 @@ import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class ConstructionService {
-
-  constructor(
-    private readonly prisma: PrismaService
-  ) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   private readonly logger = new Logger(ConstructionService.name);
 
   async create(createConstructionDto: CreateConstructionDto) {
     try {
-      const amount = Number(createConstructionDto.quantity) * Number(createConstructionDto.unitaryValue);
+      const amount =
+        Number(createConstructionDto.quantity) *
+        Number(createConstructionDto.unitaryValue);
       this.logger.log('Criando gasto');
       return this.prisma.construction.create({
         data: {
           name: createConstructionDto.name,
           quantity: createConstructionDto.quantity,
           unitaryValue: createConstructionDto.unitaryValue,
-          amount
-        }
+          amount,
+        },
       });
     } catch (error) {
       this.logger.error('Erro ao criar gasto', error);
@@ -32,10 +36,9 @@ export class ConstructionService {
   }
 
   async findAll(paginationDto: PaginationDto) {
-
     try {
       let page = Number(paginationDto.page) || 1;
-      let pageSize = Number(paginationDto.pageSize) || 5;
+      const pageSize = Number(paginationDto.pageSize) || 5;
 
       if (page < 0) {
         page = 1;
@@ -46,7 +49,7 @@ export class ConstructionService {
 
       const spents = await this.listAllConstruction(skip, take);
 
-      const totalSpents = await this.totalConstructionsCount()
+      const totalSpents = await this.totalConstructionsCount();
       const totalPages = Math.ceil(totalSpents / pageSize);
 
       const data = {
@@ -54,8 +57,8 @@ export class ConstructionService {
         totalSpents,
         totalPages,
         pageSize: pageSize,
-        page: page
-      }
+        page: page,
+      };
 
       this.logger.log('Buscando todos os gastos com paginação');
       return data;
@@ -73,26 +76,34 @@ export class ConstructionService {
 
   async update(id: string, updateConstructionDto: UpdateConstructionDto) {
     await this.constructionNotFound(id);
-    await this.validateQuantityAndUnitaryValue(Number(updateConstructionDto.quantity), Number(updateConstructionDto.unitaryValue));
+    await this.validateQuantityAndUnitaryValue(
+      Number(updateConstructionDto.quantity),
+      Number(updateConstructionDto.unitaryValue),
+    );
 
-    const newAmount = Number(updateConstructionDto.quantity) * Number(updateConstructionDto.unitaryValue);
+    const newAmount =
+      Number(updateConstructionDto.quantity) *
+      Number(updateConstructionDto.unitaryValue);
 
     try {
       this.logger.log(`Atualizando gasto com id ${id}`);
       return this.prisma.construction.update({
         where: {
-          id
+          id,
         },
         data: {
           name: updateConstructionDto.name,
           quantity: updateConstructionDto.quantity,
           unitaryValue: updateConstructionDto.unitaryValue,
-          amount: newAmount
-        }
+          amount: newAmount,
+        },
       });
     } catch (error) {
       this.logger.error(`Erro ao atualizando gasto com id ${id}`, error);
-      throw new InternalServerErrorException(`Erro ao atualizando gasto com id ${id}`, error);
+      throw new InternalServerErrorException(
+        `Erro ao atualizando gasto com id ${id}`,
+        error,
+      );
     }
   }
 
@@ -107,18 +118,23 @@ export class ConstructionService {
       const constructions = await this.constructionAmount();
 
       const nums = constructions.map((item) => {
-        return item.amount
+        return item.amount;
       });
 
-      const amount = nums.reduce((acumulator, element) => Number(acumulator) + Number(element), 0);
+      const amount = nums.reduce(
+        (acumulator, element) => Number(acumulator) + Number(element),
+        0,
+      );
 
       return {
-        totalValue: amount
-      }
-
+        totalValue: amount,
+      };
     } catch (error) {
       this.logger.error(`Erro ao retornar o total de gastos`, error);
-      throw new InternalServerErrorException(`Erro ao retornar o total de gastos`, error);
+      throw new InternalServerErrorException(
+        `Erro ao retornar o total de gastos`,
+        error,
+      );
     }
   }
 
@@ -126,11 +142,11 @@ export class ConstructionService {
     const constructions = await this.prisma.construction.findMany({
       orderBy: [
         {
-          createdAt: 'desc'
-        }
+          createdAt: 'desc',
+        },
       ],
       skip: skip,
-      take: take
+      take: take,
     });
 
     return constructions;
@@ -141,7 +157,9 @@ export class ConstructionService {
   }
 
   async constructionNotFound(id: string) {
-    const construction = await this.prisma.construction.findUnique({ where: { id } });
+    const construction = await this.prisma.construction.findUnique({
+      where: { id },
+    });
     if (!construction) {
       this.logger.error(`Gasto com id ${id} não encontrado`);
       throw new BadRequestException(`Gasto com id ${id} não encontrado`);
@@ -152,12 +170,15 @@ export class ConstructionService {
   async constructionAmount() {
     return this.prisma.construction.findMany({
       select: {
-        amount: true
-      }
+        amount: true,
+      },
     });
   }
 
-  async validateQuantityAndUnitaryValue(quantity: number, unitaryValue: number) {
+  async validateQuantityAndUnitaryValue(
+    quantity: number,
+    unitaryValue: number,
+  ) {
     if (!quantity || !unitaryValue) {
       this.logger.error('Quantidade ou valor unitário inválidos');
       throw new BadRequestException('Quantidade ou valor unitário inválidos');

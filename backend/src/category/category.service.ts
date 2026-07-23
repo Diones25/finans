@@ -3,7 +3,7 @@ import {
   Logger,
   NotFoundException,
   InternalServerErrorException,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -11,7 +11,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   private readonly logger = new Logger(CategoryService.name);
 
@@ -27,7 +27,7 @@ export class CategoryService {
   }
 
   async findAll() {
-    this.logger.log("Buscando todas as categorias");
+    this.logger.log('Buscando todas as categorias');
     const categories = await this.prisma.category.findMany();
     if (!categories || categories.length === 0) {
       this.logger.error('Nenhuma categoria encontrada');
@@ -42,8 +42,8 @@ export class CategoryService {
     this.logger.log(`Buscando categoria com id ${id}`);
     return this.prisma.category.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
   }
 
@@ -52,9 +52,9 @@ export class CategoryService {
     try {
       return this.prisma.category.update({
         where: {
-          id
+          id,
         },
-        data: updateCategoryDto
+        data: updateCategoryDto,
       });
     } catch (error) {
       this.logger.error('Erro ao atualizar uma categoria', error);
@@ -66,14 +66,15 @@ export class CategoryService {
     await this.categoryNotExistsById(id);
     const hasSpents = await this.hasLinkedSpents(id);
     if (hasSpents) {
-      throw new BadRequestException('Não é possível remover esta categoria pois existem gastos vinculados a ela');
+      throw new BadRequestException(
+        'Não é possível remover esta categoria pois existem gastos vinculados a ela',
+      );
     }
     try {
-
       return this.prisma.category.delete({
         where: {
-          id
-        }
+          id,
+        },
       });
     } catch (error) {
       this.logger.error('Erro ao remover uma categoria', error);
@@ -84,8 +85,8 @@ export class CategoryService {
   async hasLinkedSpents(categoryId: string): Promise<boolean> {
     const spents = await this.prisma.spent.findFirst({
       where: {
-        categoryId: categoryId
-      }
+        categoryId: categoryId,
+      },
     });
 
     return !!spents; // Retorna true se existir algum gasto vinculado
@@ -94,8 +95,8 @@ export class CategoryService {
   async categoryNotExistsById(id: string) {
     const category = await this.prisma.category.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
     if (!category) {
       this.logger.error(`Categoria com id ${id} não existe`);
@@ -109,7 +110,7 @@ export class CategoryService {
         name: true,
       },
       where: {
-        name
+        name,
       },
     });
     if (category) {
@@ -122,11 +123,11 @@ export class CategoryService {
     await this.categoryNotExistsById(id);
     return await this.prisma.category.findUnique({
       where: {
-        id
+        id,
       },
       select: {
         balance: true,
-      }
+      },
     });
   }
 
@@ -135,14 +136,16 @@ export class CategoryService {
       const balanceBD = await this.findBalance(id);
       const newBalance = Number(balanceBD?.balance) + Number(balance);
 
-      this.logger.log(`Adicionando ${balance} ao saldo da categoria com id ${id}`);
+      this.logger.log(
+        `Adicionando ${balance} ao saldo da categoria com id ${id}`,
+      );
       return await this.prisma.category.update({
         where: {
-          id
+          id,
         },
         data: {
-          balance: newBalance
-        }
+          balance: newBalance,
+        },
       });
     } catch (error) {
       this.logger.error('Erro ao adicionar saldo', error);
@@ -153,11 +156,11 @@ export class CategoryService {
   async updateCategoryBalance(id: string, balance: number) {
     return await this.prisma.category.update({
       where: {
-        id: id
+        id: id,
       },
       data: {
-        balance: balance
-      }
-    })
+        balance: balance,
+      },
+    });
   }
 }

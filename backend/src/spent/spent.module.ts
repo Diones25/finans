@@ -7,6 +7,6 @@ import { CategoryModule } from '../category/category.module';
 @Module({
   imports: [PrismaModule, CategoryModule],
   providers: [SpentService],
-  controllers: [SpentController]
+  controllers: [SpentController],
 })
 export class SpentModule {}
