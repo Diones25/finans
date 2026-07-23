@@ -6,9 +6,8 @@ while ! nc -z db 5432; do
   sleep 1
 done
 
-echo "Banco de dados pronto! Executando migrações..."
-npx prisma migrate deploy || echo "Aviso: Falha ao aplicar migrações, mas continuando..."
+echo "Banco de dados pronto! Executando migracoes..."
+npx prisma migrate deploy || echo "Aviso: Falha ao aplicar migracoes, mas continuando..."
 
-echo "Iniciando o servidor em modo produção..."
-# Usamos o main.js compilado na pasta dist
+echo "Iniciando o servidor em modo producao..."
 node dist/main.js
