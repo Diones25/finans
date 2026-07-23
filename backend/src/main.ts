@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
@@ -11,34 +12,44 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // Remove propriedades não decoradas
-    forbidNonWhitelisted: true, // Rejeita requisições com propriedades não decoradas
-    transform: true, // Transforma tipos automaticamente
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        frameSrc: ["'none'"], // Bloqueia todos os iframes
-        objectSrc: ["'none'"], // Bloqueia objetos (Flash, etc.)
-        frameAncestors: ["'none'"] // Prevenção contra clickjacking
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          frameSrc: ["'none'"],
+          objectSrc: ["'none'"],
+          frameAncestors: ["'none'"],
+        },
       },
-    },
-    referrerPolicy: { policy: "no-referrer" }
-  }));
+      referrerPolicy: { policy: 'no-referrer' },
+    }),
+  );
 
   const config = new DocumentBuilder()
-    .setTitle('API de finanças pessoais')
-    .setDescription('O Finans é uma api de controle de finanças pessoais, com gerenciamento de gastos, saldos e categorias.')
+    .setTitle('API de financas pessoais')
+    .setDescription(
+      'O Finans e uma api de controle de financas pessoais, com gerenciamento de gastos, saldos e categorias.',
+    )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const documentFactory = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
 
   app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT ?? 3004);
-  Logger.log(`Servidor rodando em http://localhost:${process.env.PORT ?? 3004}`);
+  Logger.log(
+    `Servidor rodando em http://localhost:${process.env.PORT ?? 3004}`,
+  );
 }
-bootstrap();
+
+void bootstrap();
