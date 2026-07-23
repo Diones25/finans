@@ -4,6 +4,7 @@ import { CategoryModule } from './category/category.module';
 import { SpentModule } from './spent/spent.module';
 import { ConstructionModule } from './construction/construction.module';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { ConfigModule } from '@nestjs/config';
     PrismaModule,
     CategoryModule,
     SpentModule,
-    ConstructionModule
+    ConstructionModule,
+    UsersModule
   ],
   controllers: [],
   providers: [],
