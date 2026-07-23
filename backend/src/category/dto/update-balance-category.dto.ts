@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, Min, MinLength } from 'class-validator';
+import { IsNumber, Min } from 'class-validator';
 
 export class UpdateBalanceCategoryDto {
 
