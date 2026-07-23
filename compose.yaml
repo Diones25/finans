@@ -1,0 +1,50 @@
+services:
+  db:
+    container_name: db
+    image: postgres:16
+    env_file:
+      - ./backend/.env
+    restart: always
+    ports:
+      - 5433:5432
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-postgres}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - banco_data:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "8081:80"
+    restart: always
+    depends_on:
+      - backend
+
+volumes:
+  banco_data:

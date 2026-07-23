@@ -50,7 +50,7 @@ function AddSpent() {
     <>
       <div className='container mx-auto'>
         <div className="w-[730px]">
-          <h1 className="text-3xl font-semibold text-gray-800 my-3">Adicionar gasto do cartão</h1>
+          <h1 className="text-3xl font-semibold my-3">Adicionar gasto do cartão</h1>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             <div className="mb-2 space-y-2">
               <Label htmlFor="description">Descrição</Label>

@@ -4,7 +4,7 @@ import { CreateConstructionDto } from './dto/create-construction.dto';
 import { UpdateConstructionDto } from './dto/update-construction.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PaginationDto } from './dto/pagination.dto';
-import { SanitizePipe } from 'src/pipes/sanitize.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @Controller('construction')
 export class ConstructionController {
@@ -108,9 +108,7 @@ export class ConstructionController {
     }
   })
   findAll(@Query() pagination: PaginationDto) {
-    const page = pagination.page || 1;
-    const pageSize = pagination.pageSize || 5;
-    return this.constructionService.findAll(page, pageSize);
+    return this.constructionService.findAll(pagination);
   }
 
   @ApiOperation({

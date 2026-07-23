@@ -1,11 +1,9 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Spent {
@@ -26,10 +24,10 @@ model Category {
 }
 
 model Construction {
-  id           String @id @default (uuid())
+  id           String   @id @default(uuid())
   name         String
   quantity     Int
-  unitaryValue Decimal @db.Decimal(10, 2)
-  amount       Decimal @db.Decimal(10, 2)
-  createdAt    DateTime @default (now())
+  unitaryValue Decimal  @db.Decimal(10, 2)
+  amount       Decimal  @db.Decimal(10, 2)
+  createdAt    DateTime @default(now())
 }

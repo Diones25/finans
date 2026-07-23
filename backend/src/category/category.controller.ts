@@ -4,7 +4,7 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdateBalanceCategoryDto } from './dto/update-balance-category.dto';
-import { SanitizePipe } from 'src/pipes/sanitize.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @Controller('category')
 export class CategoryController {

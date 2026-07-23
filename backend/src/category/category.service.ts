@@ -2,9 +2,10 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  BadRequestException
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
@@ -24,7 +25,7 @@ export class CategoryService {
       throw new InternalServerErrorException('Erro ao criar categoria');
     }
   }
-  
+
   async findAll() {
     this.logger.log("Buscando todas as categorias");
     const categories = await this.prisma.category.findMany();
@@ -60,10 +61,15 @@ export class CategoryService {
       throw new InternalServerErrorException('Erro ao atualizar uma categoria');
     }
   }
-  
+
   async remove(id: string) {
     await this.categoryNotExistsById(id);
+    const hasSpents = await this.hasLinkedSpents(id);
+    if (hasSpents) {
+      throw new BadRequestException('Não é possível remover esta categoria pois existem gastos vinculados a ela');
+    }
     try {
+
       return this.prisma.category.delete({
         where: {
           id
@@ -74,7 +80,17 @@ export class CategoryService {
       throw new InternalServerErrorException('Erro ao remover uma categoria');
     }
   }
-  
+
+  async hasLinkedSpents(categoryId: string): Promise<boolean> {
+    const spents = await this.prisma.spent.findFirst({
+      where: {
+        categoryId: categoryId
+      }
+    });
+
+    return !!spents; // Retorna true se existir algum gasto vinculado
+  }
+
   async categoryNotExistsById(id: string) {
     const category = await this.prisma.category.findUnique({
       where: {
@@ -134,7 +150,7 @@ export class CategoryService {
     }
   }
 
-  async updateCategoryBalance (id: string, balance: number) {
+  async updateCategoryBalance(id: string, balance: number) {
     return await this.prisma.category.update({
       where: {
         id: id

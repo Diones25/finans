@@ -4,7 +4,7 @@ import { CreateSpentDto } from './dto/create-spent.dto';
 import { UpdateSpentDto } from './dto/update-spent.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PaginationDto } from './dto/pagination.dto';
-import { SanitizePipe } from 'src/pipes/sanitize.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @Controller('spent')
 export class SpentController {
@@ -138,9 +138,7 @@ export class SpentController {
     }
   })
   findAll(@Query() pagination: PaginationDto) {
-    const page = pagination.page || 1;
-    const pageSize = pagination.pageSize || 5;
-    return this.spentService.findAll(page, pageSize);
+    return this.spentService.findAll(pagination);
   }
 
   @Get(':id')

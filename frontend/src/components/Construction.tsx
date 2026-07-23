@@ -16,23 +16,22 @@ import { useRemoveconstruction } from "@/utils/mutations";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Home() {
+function Construction() {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number | any>(null);
+  const [pageSize] = useState<number>(5);
   const [totalPages, setTotalPages] = useState(1);
   const [maxButtons, __] = useState(10);
 
   const {
     data,
-    //isLoading,
-    //isError
+    isLoading,
+    isError
   } = useAllConstructions(page, pageSize);
-  const { data: amount } = useListAmount();
+  const { data: amount, isLoading: isLoadingAmount } = useListAmount();
   const removeConstruction = useRemoveconstruction();
 
   useEffect(() => {
     if (data) {
-      setPageSize(data.pageSize);
       setTotalPages(data.totalPages);
     }
   }, [data]);
@@ -48,12 +47,12 @@ function Home() {
       <div className="container mx-auto">
         <div className="pb-5">
           <div className="flex justify-between mb-4">
-            <h1 className="text-3xl font-semibold text-gray-800">Lista de Gastos</h1>
+            <h1 className="text-3xl font-semibold">Lista de Gastos</h1>
             <div className="bg-green-400 px-3 py-2 rounded-xl">
               <h5 className="text-3xl font-semibold text-white">Total: <span>{amount?.totalValue as number > 0 ? formatCurrency(amount?.totalValue as number) : 0}</span></h5>
             </div>
           </div>
-          <Table className="border text-gray-700">
+          <Table className="border">
             <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
@@ -65,9 +64,21 @@ function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.spents.length as number > 0 ? (
+              {isLoading || isLoadingAmount ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-10">
+                    Carregando dados...
+                  </TableCell>
+                </TableRow>
+              ) : isError ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-10 text-red-500">
+                    Erro ao carregar dados. Verifique a conexão com o servidor.
+                  </TableCell>
+                </TableRow>
+              ) : Array.isArray(data?.spents) && data.spents.length > 0 ? (
                 <>
-                  {data?.spents.map((item) => (
+                  {data.spents.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell className="font-medium">{item.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
@@ -116,4 +127,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Construction

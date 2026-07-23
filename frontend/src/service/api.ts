@@ -17,7 +17,7 @@ const instance = axios.create({
 });
 
 export const getAllSpents = async (page: number, pageSize: number): Promise<Spent> => {
-  const response = await instance.get('/spent/all', {
+  const response = await instance.get('spent/all', {
     params: {
       page,
       pageSize
@@ -27,18 +27,18 @@ export const getAllSpents = async (page: number, pageSize: number): Promise<Spen
 }
 
 export const getOneSpent = async (id: string | undefined) => {
-  const response = await instance.get(`/spent/${id}`);
+  const response = await instance.get(`spent/${id}`);
   return response.data;
 }
 
 export const addSpent = async (data: CreateSpent) => {
-  const response = await instance.post('/spent', data);
+  const response = await instance.post('spent', data);
   
   return response.data;
 }
 
 export const editSpent = async (id: string | undefined, description: string, value: number, categoryId: string) => {
-  const response = await instance.put(`/spent/${id}`, {
+  const response = await instance.put(`spent/${id}`, {
     description,
     value,
     categoryId
@@ -48,28 +48,28 @@ export const editSpent = async (id: string | undefined, description: string, val
 }
 
 export const deleteSpent = async (id: string) => {
-  const response = await instance.delete(`/spent/${id}`);
+  const response = await instance.delete(`spent/${id}`);
   return response.data;
 }
 
 export const getAllCategories = async (): Promise<Category[]> => {
-  const response = await instance.get('/category/all');
+  const response = await instance.get('category/all');
   return response.data;
 }
 
 export const getOneCategory = async (id: string | undefined) => {
-  const response = await instance.get(`/category/${id}`);
+  const response = await instance.get(`category/${id}`);
   return response.data;
 }
 
 export const addCategory = async (data: CreateCategory) => {
-  const response = await instance.post('/category/create', data);
+  const response = await instance.post('category/create', data);
 
   return response.data;
 }
 
 export const addBalanceCategory = async (id: string | undefined, balance: number) => {
-  const response = await instance.put(`/category/balance/add/${id}`, {
+  const response = await instance.put(`category/balance/add/${id}`, {
     balance
   });
 
@@ -77,17 +77,17 @@ export const addBalanceCategory = async (id: string | undefined, balance: number
 }
 
 export const editCategory = async (id: string, data: EditCategory) => {
-  const response = await instance.patch(`/category/${id}`, data);
+  const response = await instance.patch(`category/${id}`, data);
   return response.data;
 }
 
 export const deleteCategory = async (id: string) => {
-  const response = await instance.delete(`/category/${id}`);
+  const response = await instance.delete(`category/${id}`);
   return response.data;
 }
 
 export const getAllConstruction = async (page: number, pageSize: number): Promise<Construction> => {
-  const response = await instance.get("/construction/all", {
+  const response = await instance.get("construction/all", {
     params: {
       page,
       pageSize
@@ -98,28 +98,28 @@ export const getAllConstruction = async (page: number, pageSize: number): Promis
 }
 
 export const getOneConstruction = async (id: string | undefined) => {
-  const response = await instance(`/construction/${id}`);
+  const response = await instance(`construction/${id}`);
   return response.data;
 }
 
 export const getListAmount = async (): Promise<Amount> => {
-  const response = await instance.get('/construction/amount')
+  const response = await instance.get('construction/amount')
   return response.data;
 }
 
 export const addConstruction = async (data: CreateConstruction) => {
-  const response = await instance.post('/construction', data);
+  const response = await instance.post('construction', data);
 
   return response.data;
 }
 
 export const editConstruction = async (id: string | undefined, data: EditConstruction) => {
-  const response = await instance.patch(`/construction/${id}`, data);
+  const response = await instance.patch(`construction/${id}`, data);
 
   return response.data;
 }
 
 export const deleteConstruction = async (id: string) => {
-  const response = await instance.delete(`/construction/${id}`);
+  const response = await instance.delete(`construction/${id}`);
   return response.data;
 }
