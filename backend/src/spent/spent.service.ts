@@ -21,11 +21,12 @@ export class SpentService {
   private readonly logger = new Logger(SpentService.name);
 
   async create(createSpentDto: CreateSpentDto, userId: string) {
-    await this.categoryService.categoryNotExistsById(createSpentDto.categoryId);
+    await this.categoryService.categoryNotExistsById(createSpentDto.categoryId, userId);
 
     this.logger.log('Buscando saldo da categoria');
     const categoryBalance = await this.categoryService.findBalance(
       createSpentDto.categoryId,
+      userId,
     );
 
     if (Number(categoryBalance?.balance) < Number(createSpentDto.value)) {
@@ -33,11 +34,11 @@ export class SpentService {
       throw new BadRequestException('Saldo insuficiente');
     }
 
-    const newBalance =
-      Number(categoryBalance?.balance) - Number(createSpentDto.value);
+    const newBalance = Number(categoryBalance?.balance) - Number(createSpentDto.value);
     await this.categoryService.updateCategoryBalance(
       createSpentDto.categoryId,
       newBalance,
+      userId,
     );
 
     try {
@@ -92,16 +93,13 @@ export class SpentService {
 
   async update(id: string, updateSpentDto: UpdateSpentDto, userId: string) {
     await this.spentNotFound(id, userId);
-    await this.categoryService.categoryNotExistsById(updateSpentDto.categoryId);
+    await this.categoryService.categoryNotExistsById(updateSpentDto.categoryId, userId);
     try {
       this.logger.log(`Atualizando gasto com id ${id}`);
       return this.prisma.spent.update({ where: { id }, data: updateSpentDto });
     } catch (error) {
       this.logger.error(`Erro ao atualizando gasto com id ${id}`, error);
-      throw new InternalServerErrorException(
-        `Erro ao atualizando gasto com id ${id}`,
-        error,
-      );
+      throw new InternalServerErrorException(`Erro ao atualizando gasto com id ${id}`, error);
     }
   }
 
