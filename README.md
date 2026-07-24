@@ -143,10 +143,22 @@ Compose will then:
 ### Schema (Prisma)
 
 ```prisma
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  password  String
+  spent     Spent[]
+  category  Category[]
+  createdAt DateTime   @default(now())
+}
+
 model Category {
   id        String   @id @default(uuid())
   name      String
   balance   Decimal  @db.Decimal(10, 2)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   spent     Spent[]
   createdAt DateTime @default(now())
 }
@@ -157,6 +169,8 @@ model Spent {
   description String
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
 }
 
@@ -176,12 +190,24 @@ model Construction {
 
 All endpoints are prefixed with `/api` and documented via Swagger at `http://localhost:3000/api`.
 
-### Category
+> **Authentication:** Category and Spent endpoints require a valid JWT token. Include the header `Authorization: Bearer <token>` in all requests to these resources. Obtain a token via the Auth endpoints below.
+
+### Auth
 
 | Method | Route | Description |
 |---|---|---|
-| `POST` | `/api/category/create` | Create category (validates unique name) |
-| `GET` | `/api/category/all` | List all categories |
+| `POST` | `/api/auth/register` | Register a new user (returns JWT token) |
+| `POST` | `/api/auth/login` | Authenticate with email and password (returns JWT token) |
+
+### Category
+
+All requests must include `Authorization: Bearer <token>`. Data is scoped to the authenticated user.
+
+| Method | Route | Description |
+|---|---|---|
+| `POST` | `/api/category/create` | Create category (validates unique name per user) |
+| `GET` | `/api/category/all` | List all categories for the authenticated user |
+| `GET` | `/api/category/balance/:id` | Get balance of a specific category |
 | `GET` | `/api/category/:id` | Get category by ID |
 | `PATCH` | `/api/category/:id` | Update category |
 | `PUT` | `/api/category/balance/add/:id` | Add balance to category |
@@ -189,10 +215,12 @@ All endpoints are prefixed with `/api` and documented via Swagger at `http://loc
 
 ### Spent
 
+All requests must include `Authorization: Bearer <token>`. Data is scoped to the authenticated user.
+
 | Method | Route | Description |
 |---|---|---|
-| `POST` | `/api/spent` | Create expense (deducts from category balance) |
-| `GET` | `/api/spent/all` | List expenses (paginated) |
+| `POST` | `/api/spent` | Create expense (deducts from category balance, validates category ownership) |
+| `GET` | `/api/spent/all` | List expenses for the authenticated user (paginated: `?page=1&pageSize=5`) |
 | `GET` | `/api/spent/:id` | Get expense by ID |
 | `PATCH` | `/api/spent/:id` | Update expense |
 | `DELETE` | `/api/spent/:id` | Delete expense |
@@ -306,6 +334,8 @@ Form to add a construction item with name, quantity, and unit value — the subt
 | `POSTGRES_DB` | Database name | `finans` |
 | `PORT` | NestJS server port | `3004` |
 | `NODE_ENV` | Runtime environment | `development` |
+| `JWT_SECRET` | Secret key for JWT signing | `your-secret-key` |
+| `JWT_EXPIRATION` | Token expiration time | `7d` |
 
 ### Frontend (`frontend/.env`)
 
