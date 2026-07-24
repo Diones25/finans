@@ -15,6 +15,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdateBalanceCategoryDto } from './dto/update-balance-category.dto';
 import { SanitizePipe } from '../pipes/sanitize.pipe';
+import { CurrentUser } from '../decorators/current-user.decorator';
 
 @Controller('category')
 export class CategoryController {
@@ -54,8 +55,8 @@ export class CategoryController {
       statusCode: 500,
     },
   })
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
+  create(@Body() createCategoryDto: CreateCategoryDto, @CurrentUser('id') userId: string) {
+    return this.categoryService.create(createCategoryDto, userId);
   }
 
   @Get('all')
@@ -82,8 +83,8 @@ export class CategoryController {
       },
     ],
   })
-  findAll() {
-    return this.categoryService.findAll();
+  findAll(@CurrentUser('id') userId: string) {
+    return this.categoryService.findAll(userId);
   }
 
   @Get('balance/:id')
@@ -108,8 +109,8 @@ export class CategoryController {
       statusCode: 404,
     },
   })
-  findBalance(@Param('id') id: string) {
-    return this.categoryService.findBalance(id);
+  findBalance(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.categoryService.findBalance(id, userId);
   }
 
   @Get(':id')
@@ -137,8 +138,8 @@ export class CategoryController {
       statusCode: 404,
     },
   })
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(id);
+  findOne(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.categoryService.findOne(id, userId);
   }
 
   @Patch(':id')
@@ -179,8 +180,9 @@ export class CategoryController {
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
+    @CurrentUser('id') userId: string,
   ) {
-    return this.categoryService.update(id, updateCategoryDto);
+    return this.categoryService.update(id, updateCategoryDto, userId);
   }
 
   @Put('balance/add/:id')
@@ -220,10 +222,12 @@ export class CategoryController {
   updateBalance(
     @Param('id') id: string,
     @Body() updateBalanceCategoryDto: UpdateBalanceCategoryDto,
+    @CurrentUser('id') userId: string,
   ) {
     return this.categoryService.addBalance(
       id,
       updateBalanceCategoryDto.balance,
+      userId,
     );
   }
 
@@ -261,7 +265,7 @@ export class CategoryController {
       statusCode: 500,
     },
   })
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(id);
+  remove(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.categoryService.remove(id, userId);
   }
 }

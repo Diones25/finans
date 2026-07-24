@@ -15,20 +15,24 @@ export class CategoryService {
 
   private readonly logger = new Logger(CategoryService.name);
 
-  async create(createCategoryDto: CreateCategoryDto) {
-    await this.categoryExistsByName(createCategoryDto.name);
+  async create(createCategoryDto: CreateCategoryDto, userId: string) {
+    await this.categoryExistsByName(createCategoryDto.name, userId);
 
     try {
-      return this.prisma.category.create({ data: createCategoryDto });
+      return this.prisma.category.create({
+        data: { ...createCategoryDto, userId },
+      });
     } catch (error) {
       this.logger.error('Erro ao criar categoria', error);
       throw new InternalServerErrorException('Erro ao criar categoria');
     }
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     this.logger.log('Buscando todas as categorias');
-    const categories = await this.prisma.category.findMany();
+    const categories = await this.prisma.category.findMany({
+      where: { userId },
+    });
     if (!categories || categories.length === 0) {
       this.logger.error('Nenhuma categoria encontrada');
       throw new NotFoundException('Nenhuma categoria encontrada');
@@ -37,8 +41,8 @@ export class CategoryService {
     return categories;
   }
 
-  async findOne(id: string) {
-    await this.categoryNotExistsById(id);
+  async findOne(id: string, userId: string) {
+    await this.categoryNotExistsById(id, userId);
     this.logger.log(`Buscando categoria com id ${id}`);
     return this.prisma.category.findUnique({
       where: {
@@ -47,8 +51,8 @@ export class CategoryService {
     });
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    await this.categoryNotExistsById(id);
+  async update(id: string, updateCategoryDto: UpdateCategoryDto, userId: string) {
+    await this.categoryNotExistsById(id, userId);
     try {
       return this.prisma.category.update({
         where: {
@@ -62,8 +66,8 @@ export class CategoryService {
     }
   }
 
-  async remove(id: string) {
-    await this.categoryNotExistsById(id);
+  async remove(id: string, userId: string) {
+    await this.categoryNotExistsById(id, userId);
     const hasSpents = await this.hasLinkedSpents(id);
     if (hasSpents) {
       throw new BadRequestException(
@@ -89,13 +93,14 @@ export class CategoryService {
       },
     });
 
-    return !!spents; // Retorna true se existir algum gasto vinculado
+    return !!spents;
   }
 
-  async categoryNotExistsById(id: string) {
-    const category = await this.prisma.category.findUnique({
+  async categoryNotExistsById(id: string, userId: string) {
+    const category = await this.prisma.category.findFirst({
       where: {
         id,
+        userId,
       },
     });
     if (!category) {
@@ -104,13 +109,14 @@ export class CategoryService {
     }
   }
 
-  async categoryExistsByName(name: string) {
+  async categoryExistsByName(name: string, userId: string) {
     const category = await this.prisma.category.findFirst({
       select: {
         name: true,
       },
       where: {
         name,
+        userId,
       },
     });
     if (category) {
@@ -119,8 +125,8 @@ export class CategoryService {
     }
   }
 
-  async findBalance(id: string) {
-    await this.categoryNotExistsById(id);
+  async findBalance(id: string, userId: string) {
+    await this.categoryNotExistsById(id, userId);
     return await this.prisma.category.findUnique({
       where: {
         id,
@@ -131,9 +137,9 @@ export class CategoryService {
     });
   }
 
-  async addBalance(id: string, balance: number) {
+  async addBalance(id: string, balance: number, userId: string) {
     try {
-      const balanceBD = await this.findBalance(id);
+      const balanceBD = await this.findBalance(id, userId);
       const newBalance = Number(balanceBD?.balance) + Number(balance);
 
       this.logger.log(
@@ -153,10 +159,10 @@ export class CategoryService {
     }
   }
 
-  async updateCategoryBalance(id: string, balance: number) {
+  async updateCategoryBalance(id: string, balance: number, userId: string) {
     return await this.prisma.category.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         balance: balance,
