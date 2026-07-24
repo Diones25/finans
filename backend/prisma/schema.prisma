@@ -11,6 +11,7 @@ model User {
   name      String
   email     String   @unique
   password  String
+  spent     Spent[]
   createdAt DateTime @default(now())
 }
 
@@ -20,6 +21,8 @@ model Spent {
   description String
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
 }
 

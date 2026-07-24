@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { PaginationDto } from './dto/pagination.dto';
 import { SanitizePipe } from '../pipes/sanitize.pipe';
+import { CurrentUser } from '../decorators/current-user.decorator';
 
 @ApiTags('spent')
 @ApiBearerAuth()
@@ -78,8 +79,8 @@ export class SpentController {
       statusCode: 500,
     },
   })
-  create(@Body() createSpentDto: CreateSpentDto) {
-    return this.spentService.create(createSpentDto);
+  create(@Body() createSpentDto: CreateSpentDto, @CurrentUser('id') userId: string) {
+    return this.spentService.create(createSpentDto, userId);
   }
 
   @Get('all')
@@ -155,8 +156,8 @@ export class SpentController {
       statusCode: 500,
     },
   })
-  findAll(@Query() pagination: PaginationDto) {
-    return this.spentService.findAll(pagination);
+  findAll(@Query() pagination: PaginationDto, @CurrentUser('id') userId: string) {
+    return this.spentService.findAll(pagination, userId);
   }
 
   @Get(':id')
@@ -185,8 +186,8 @@ export class SpentController {
       statusCode: 404,
     },
   })
-  findOne(@Param('id') id: string) {
-    return this.spentService.findOne(id);
+  findOne(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.spentService.findOne(id, userId);
   }
 
   @Patch(':id')
@@ -226,8 +227,8 @@ export class SpentController {
       statusCode: 500,
     },
   })
-  update(@Param('id') id: string, @Body() updateSpentDto: UpdateSpentDto) {
-    return this.spentService.update(id, updateSpentDto);
+  update(@Param('id') id: string, @Body() updateSpentDto: UpdateSpentDto, @CurrentUser('id') userId: string) {
+    return this.spentService.update(id, updateSpentDto, userId);
   }
 
   @Delete(':id')
@@ -257,7 +258,7 @@ export class SpentController {
       statusCode: 404,
     },
   })
-  remove(@Param('id') id: string) {
-    return this.spentService.remove(id);
+  remove(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.spentService.remove(id, userId);
   }
 }
