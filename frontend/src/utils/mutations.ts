@@ -7,7 +7,9 @@ import {
   deleteConstruction,
   deleteSpent,
   editCategory,
-  editConstruction
+  editConstruction,
+  login,
+  registerUser,
 } from "@/service/api";
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "./queryClient";
@@ -15,6 +17,8 @@ import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import type { EditCategory } from "@/types/EditCategory";
 import type { EditConstruction } from "@/types/EditConstruction";
+import axios from "axios";
+import { useAuthStore } from "@/store/auth";
 
 
 export const useAddSpent = () => {
@@ -199,3 +203,49 @@ export const useRemoveconstruction = () => {
 
   return mutation;
 }
+
+function getApiErrorMessage(error: unknown) {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as { message?: string | string[] } | undefined;
+    const msg = data?.message;
+    if (Array.isArray(msg)) return msg.join("\n");
+    if (typeof msg === "string" && msg.trim()) return msg;
+  }
+  return error instanceof Error ? error.message : "Erro inesperado";
+}
+
+export const useLogin = () => {
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      setAccessToken(data.access_token);
+      queryClient.invalidateQueries();
+      toast.success("Login realizado com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error));
+    },
+  });
+
+  return mutation;
+};
+
+export const useRegister = () => {
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (data) => {
+      setAccessToken(data.access_token);
+      queryClient.invalidateQueries();
+      toast.success("Conta criada com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error));
+    },
+  });
+
+  return mutation;
+};

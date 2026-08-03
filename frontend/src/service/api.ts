@@ -8,6 +8,7 @@ import type { EditCategory } from "@/types/EditCategory";
 import type { EditConstruction } from "@/types/EditConstruction";
 import type { Spent } from "@/types/Spent";
 import axios from "axios";
+import { getAccessToken, useAuthStore } from "@/store/auth";
 
 
 const baseUrl = import.meta.env.VITE_API_URL;
@@ -15,6 +16,63 @@ const baseUrl = import.meta.env.VITE_API_URL;
 const instance = axios.create({
   baseURL: baseUrl
 });
+
+instance.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  if (token) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+instance.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    if (error?.response?.status === 401) {
+      // Any auth-protected call failing should drop the session.
+      useAuthStore.getState().logout();
+    }
+    return Promise.reject(error);
+  }
+);
+
+export type LoginPayload = {
+  email: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  access_token: string;
+};
+
+export type RegisterPayload = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type RegisterResponse = {
+  access_token: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    createdAt: string;
+  };
+};
+
+export const login = async (data: LoginPayload): Promise<LoginResponse> => {
+  const response = await instance.post("auth/login", data);
+  return response.data;
+};
+
+export const registerUser = async (
+  data: RegisterPayload
+): Promise<RegisterResponse> => {
+  const response = await instance.post("auth/register", data);
+  return response.data;
+};
 
 export const getAllSpents = async (page: number, pageSize: number): Promise<Spent> => {
   const response = await instance.get('spent/all', {
@@ -38,7 +96,7 @@ export const addSpent = async (data: CreateSpent) => {
 }
 
 export const editSpent = async (id: string | undefined, description: string, value: number, categoryId: string) => {
-  const response = await instance.put(`spent/${id}`, {
+  const response = await instance.patch(`spent/${id}`, {
     description,
     value,
     categoryId
