@@ -23,13 +23,13 @@ function AddCategory() {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<z.infer<typeof addCategorySchema>>({
     resolver: zodResolver(addCategorySchema)
   })
 
-  const namePreview = register("name");
-  const balancePreview = register("balance");
+  const nameValue = watch("name");
 
   const handleFormSubmit: SubmitHandler<z.infer<typeof addCategorySchema>> = (data) => {
     const convertedValue = parseFloat(formattedValue.replace(',', '.'));
@@ -68,7 +68,7 @@ function AddCategory() {
                 <Input
                   id="name"
                   placeholder="Ex: Alimentação"
-                  {...namePreview}
+                  {...register("name")}
                   className={errors.name ? "border-destructive" : ""}
                 />
                 {errors.name && (
@@ -93,8 +93,13 @@ function AddCategory() {
                     customInput={Input}
                     onValueChange={(values) => {
                       setFormattedValue(values.value);
-                      setValue("balance", parseFloat(values.value.replace(',', '.')));
+                      setValue(
+                        "balance",
+                        parseFloat(values.value.replace(",", ".")),
+                        { shouldValidate: true }
+                      );
                     }}
+                    {...register("balance", { valueAsNumber: true })}
                     className={`pl-10 ${errors.balance ? "border-destructive" : ""}`}
                     placeholder="0,00"
                   />
@@ -112,7 +117,7 @@ function AddCategory() {
                 <div className="hidden sm:block">
                   <p className="text-xs text-muted-foreground">Preview</p>
                   <div className="mt-1 inline-flex items-center rounded-full border border-border bg-background/40 px-2.5 py-1 text-xs">
-                    {String((namePreview as any)?.value ?? "") || "Nova categoria"}
+                    {nameValue?.trim() || "Nova categoria"}
                   </div>
                 </div>
 
