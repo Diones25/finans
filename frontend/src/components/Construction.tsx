@@ -20,7 +20,7 @@ function Construction() {
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(5);
   const [totalPages, setTotalPages] = useState(1);
-  const [maxButtons, __] = useState(10);
+  const [maxButtons] = useState(10);
 
   const {
     data,

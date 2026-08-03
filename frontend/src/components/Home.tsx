@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "./ui/button"
 import { Link } from "react-router-dom"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, type ComponentType } from "react"
 import { formatCurrency, formateDate } from "@/lib/utils";
 import Pagination from "./Pagination";
 import { useAllSpents, useCategories } from "@/utils/queries";
@@ -105,7 +105,9 @@ function ConfirmDialog({
 }
 
 // Estado vazio reutilizável — comunica claramente que não há dados e qual a próxima ação.
-function EmptyState({ icon: Icon, title, subtitle }: { icon: any; title: string; subtitle: string }) {
+type EmptyStateIcon = ComponentType<{ className?: string }>;
+
+function EmptyState({ icon: Icon, title, subtitle }: { icon: EmptyStateIcon; title: string; subtitle: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-2 py-14 text-center">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
@@ -139,7 +141,7 @@ function Home() {
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(5);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [maxButtons, __] = useState(10);
+  const [maxButtons] = useState(10);
 
   const [spentToDelete, setSpentToDelete] = useState<string | null>(null);
   const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
@@ -183,8 +185,8 @@ function Home() {
         {/* ------------------------------------------------------------ */}
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex items-center gap-4 rounded-xl border border-border bg-card p-5">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-500/15">
-              <Wallet className="h-5 w-5 text-violet-400" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/15">
+              <Wallet className="h-5 w-5 text-primary" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Saldo total</p>
@@ -194,8 +196,8 @@ function Home() {
             </div>
           </div>
           <div className="flex items-center gap-4 rounded-xl border border-border bg-card p-5">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-500/15">
-              <Tag className="h-5 w-5 text-blue-400" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-chart-2/15">
+              <Tag className="h-5 w-5 text-chart-2" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Categorias ativas</p>
@@ -342,7 +344,7 @@ function Home() {
                           <div className="flex items-center justify-end gap-1">
                             <Link to={`/add/balance/${cat.id}`}>
                               <button
-                                className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-violet-500/10 hover:text-violet-400"
+                                className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
                                 aria-label={`Adicionar saldo em ${cat.name}`}
                                 title="Adicionar saldo"
                               >
@@ -351,7 +353,7 @@ function Home() {
                             </Link>
                             <Link to={`/edit/category/${cat.id}`}>
                               <button
-                                className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-blue-500/10 hover:text-blue-400"
+                                className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                                 aria-label={`Editar ${cat.name}`}
                                 title="Editar categoria"
                               >
